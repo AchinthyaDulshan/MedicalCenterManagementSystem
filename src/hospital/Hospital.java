@@ -11,14 +11,20 @@ package hospital;
 public class Hospital {
     private String hospitalId;
     private String hospitalName;
-    private String hospitalContactNo_1;
-    private String hospitalContactNo_2;
+    private String hospitalAddress;
+    private String contactNo_1;
+    private String contactNo_2;
 
-    public Hospital(String hospitalId, String hospitalName, String hospitalContactNo_1, String hospitalContactNo_2) {
+    public Hospital() {
+    }
+
+
+    public Hospital(String hospitalId, String hospitalName, String hospitalAddress, String hospitalContactNo_1, String hospitalContactNo_2) {
         this.hospitalId = hospitalId;
         this.hospitalName = hospitalName;
-        this.hospitalContactNo_1 = hospitalContactNo_1;
-        this.hospitalContactNo_2 = hospitalContactNo_2;
+        this.hospitalAddress = hospitalAddress;
+        this.contactNo_1 = hospitalContactNo_1;
+        this.contactNo_2 = hospitalContactNo_2;
     }
 
     public String getHospitalId() {
@@ -37,21 +43,32 @@ public class Hospital {
         this.hospitalName = hospitalName;
     }
 
-    public String getHospitalContactNo_1() {
-        return hospitalContactNo_1;
+    public String getContactNo_1() {
+        return contactNo_1;
     }
 
-    public void setHospitalContactNo_1(String hospitalContactNo_1) {
-        this.hospitalContactNo_1 = hospitalContactNo_1;
+    public void setContactNo_1(String contactNo_1) {
+        this.contactNo_1 = contactNo_1;
     }
 
-    public String getHospitalContactNo_2() {
-        return hospitalContactNo_2;
+    public String getContactNo_2() {
+        return contactNo_2;
     }
 
-    public void setHospitalContactNo_2(String hospitalContactNo_2) {
-        this.hospitalContactNo_2 = hospitalContactNo_2;
+    public void setContactNo_2(String contactNo_2) {
+        this.contactNo_2 = contactNo_2;
     }
+
+    
+
+    public String getHospitalAddress() {
+        return hospitalAddress;
+    }
+
+    public void setHospitalAddress(String hospitalAddress) {
+        this.hospitalAddress = hospitalAddress;
+    }
+    
     
     
 }

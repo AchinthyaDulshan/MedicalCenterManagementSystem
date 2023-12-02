@@ -30,9 +30,12 @@ public class PatientDao {
     // define method for insert patient to database
     // parameter --> Patient object
     public void insertPatient(Patient patient,JFrame PatientRegForm) {
+        
         // Define SQL statement for insertion
         final String INSERT_PATIENT = "INSERT INTO patient (patientId, firstName, lastName, address, nic, gender, dob, bloodGroup) VALUES (?,?,?,?,?,?,?,?)";
+        // SQL for get last patient Id
         final String GET_LAST_PATIENT_ID = "SELECT max(patientId) FROM patient";
+        // SQL for insert patient contacts
         final String INSERT_PATIENT_CONTACTS = "INSERT INTO patient_contact (contact_no_1 ,contact_no_2 ,patient_id) VALUES (?,?,?)";
 
         // Get a database connection
@@ -62,13 +65,15 @@ public class PatientDao {
             patientStatement.setString(4, patient.getAddress());
             patientStatement.setString(5, patient.getNIC());
             patientStatement.setString(6, patient.getGender());
+            
+//            ================================= Please try to choose date picker ========================
 //            patientStatement.setDate(8, new java.sql.Date(patient.getDateOfBirth()));
+
             patientStatement.setString(7, patient.getDateOfBirth());
             patientStatement.setString(8, patient.getBloodGroup());
             
+            // execute patient insertion
             patientStatement.executeUpdate();
-            
-            System.out.println("0-- " + patientStatement.getGeneratedKeys());
 
             // Get the auto-generated key (parent_id)
             int parentId;
@@ -92,8 +97,9 @@ public class PatientDao {
             JOptionPane.showMessageDialog(PatientRegForm, "Data inserted successfully");
 
             //close resources
-            patientStatement.close();
             getLastPatientIdStatement.close();
+            patientStatement.close();
+            patientContactStatement.close();
             con.close();
 
         } catch (SQLException e) {

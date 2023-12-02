@@ -237,6 +237,11 @@ public class PatientRegForm extends javax.swing.JFrame {
         btnReturnToHome.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnReturnToHome.setForeground(new java.awt.Color(255, 255, 255));
         btnReturnToHome.setText("Return to Home");
+        btnReturnToHome.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReturnToHomeMouseClicked(evt);
+            }
+        });
         btnReturnToHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReturnToHomeActionPerformed(evt);
@@ -302,9 +307,14 @@ public class PatientRegForm extends javax.swing.JFrame {
 
     private void btnReturnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnToHomeActionPerformed
         // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btnReturnToHomeActionPerformed
+
+    private void btnReturnToHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReturnToHomeMouseClicked
+        // TODO add your handling code here:
         new HomeForm().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_btnReturnToHomeActionPerformed
+    }//GEN-LAST:event_btnReturnToHomeMouseClicked
 
     private void validateMobileNo(java.awt.event.KeyEvent evt,JTextField textField) {
 

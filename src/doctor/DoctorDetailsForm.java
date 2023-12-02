@@ -5,6 +5,8 @@
 package doctor;
 
 import home.HomeForm;
+import java.sql.ResultSet;
+import net.proteanit.sql.DbUtils;
 
 
 /**
@@ -13,11 +15,14 @@ import home.HomeForm;
  */
 public class DoctorDetailsForm extends javax.swing.JFrame {
 
+    DoctorDao dao;
     /**
      * Creates new form PatientDetailsForm
      */
     public DoctorDetailsForm() {
         initComponents();
+        dao = new DoctorDao();
+        loadTable();
     }
 
     /**
@@ -44,7 +49,7 @@ public class DoctorDetailsForm extends javax.swing.JFrame {
         mainDataPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        doctorTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -155,7 +160,7 @@ public class DoctorDetailsForm extends javax.swing.JFrame {
         jLabel1.setText("Doctor Details");
         mainDataPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, 140, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        doctorTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -166,7 +171,7 @@ public class DoctorDetailsForm extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(doctorTable);
 
         mainDataPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 700, 440));
 
@@ -194,6 +199,11 @@ public class DoctorDetailsForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnReturnToHomeActionPerformed
 
+    private void loadTable() {
+        ResultSet rs = dao.fillTableData();
+        doctorTable.setModel(DbUtils.resultSetToTableModel(rs));
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -239,13 +249,13 @@ public class DoctorDetailsForm extends javax.swing.JFrame {
     private javax.swing.JButton btnReturnToHome;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JTable doctorTable;
     private javax.swing.JPanel footer;
     private javax.swing.JLabel footerText;
     private javax.swing.JPanel header;
     private javax.swing.JLabel headerText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel mainDataPanel;
     private javax.swing.JPanel navPanel;

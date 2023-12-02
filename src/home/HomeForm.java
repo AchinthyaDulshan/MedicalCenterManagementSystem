@@ -5,6 +5,7 @@
 package home;
 
 import doctor.DoctorDetailsForm;
+import hospital.HospitalDetailsForm;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -45,10 +46,10 @@ public class HomeForm extends javax.swing.JFrame {
         footerText = new javax.swing.JLabel();
         navPanel = new javax.swing.JPanel();
         btnPatient = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnDoctor = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnHospital = new javax.swing.JButton();
         mainDataPanel = new javax.swing.JPanel();
         txtDate = new javax.swing.JLabel();
 
@@ -105,14 +106,19 @@ public class HomeForm extends javax.swing.JFrame {
         });
         navPanel.add(btnPatient, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 42, 250, 40));
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton2.setText("Doctors");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+        btnDoctor.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnDoctor.setText("Doctors");
+        btnDoctor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDoctorMouseClicked(evt);
             }
         });
-        navPanel.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 250, 40));
+        btnDoctor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDoctorActionPerformed(evt);
+            }
+        });
+        navPanel.add(btnDoctor, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 250, 40));
 
         jButton3.setText("jButton3");
         navPanel.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 250, 40));
@@ -120,9 +126,14 @@ public class HomeForm extends javax.swing.JFrame {
         jButton4.setText("jButton4");
         navPanel.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 250, 40));
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton5.setText("Hospitals");
-        navPanel.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 250, 40));
+        btnHospital.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnHospital.setText("Hospitals");
+        btnHospital.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnHospitalMouseClicked(evt);
+            }
+        });
+        navPanel.add(btnHospital, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 250, 40));
 
         getContentPane().add(navPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 280, 530));
 
@@ -180,10 +191,20 @@ public class HomeForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnPatientMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnDoctorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoctorActionPerformed
         new DoctorDetailsForm().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnDoctorActionPerformed
+
+    private void btnHospitalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHospitalMouseClicked
+        new HospitalDetailsForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnHospitalMouseClicked
+
+    private void btnDoctorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDoctorMouseClicked
+        new DoctorDetailsForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnDoctorMouseClicked
 
     /**
      * @param args the command line arguments
@@ -221,15 +242,15 @@ public class HomeForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDoctor;
+    private javax.swing.JButton btnHospital;
     private javax.swing.JButton btnPatient;
     private javax.swing.JPanel footer;
     private javax.swing.JLabel footerText;
     private javax.swing.JPanel header;
     private javax.swing.JLabel headerText;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JPanel mainDataPanel;
     private javax.swing.JPanel navPanel;
     private javax.swing.JLabel txtDate;

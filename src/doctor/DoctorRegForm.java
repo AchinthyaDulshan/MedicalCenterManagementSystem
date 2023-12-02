@@ -12,11 +12,15 @@ import home.HomeForm;
  */
 public class DoctorRegForm extends javax.swing.JFrame {
 
+    DoctorDao dao;
+
+    
     /**
      * Creates new form patientForm
      */
     public DoctorRegForm() {
         initComponents();
+        dao = new DoctorDao();
     }
 
     /**
@@ -42,19 +46,19 @@ public class DoctorRegForm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        txtFirstName = new javax.swing.JTextField();
+        txtLastName = new javax.swing.JTextField();
+        txtNIC = new javax.swing.JTextField();
+        selectGender = new javax.swing.JComboBox<>();
+        txtContact_1 = new javax.swing.JTextField();
+        txtContact_2 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtAddress = new javax.swing.JTextArea();
         jLabel10 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        txtDateofBirth = new javax.swing.JTextField();
+        txtSpecialization = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        txtLicenseNo = new javax.swing.JTextField();
         navPanel = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
         btnShowDoctorDetails = new javax.swing.JButton();
@@ -147,24 +151,30 @@ public class DoctorRegForm extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Specialization :");
         mainDataPanel.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
-        mainDataPanel.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 210, 30));
-        mainDataPanel.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 70, 210, 30));
-        mainDataPanel.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 210, 30));
+        mainDataPanel.add(txtFirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 210, 30));
+        mainDataPanel.add(txtLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 70, 210, 30));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
-        mainDataPanel.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 190, 210, 30));
-        mainDataPanel.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, 210, 30));
-
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        txtNIC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                txtNICActionPerformed(evt);
             }
         });
-        mainDataPanel.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 340, 210, 30));
+        mainDataPanel.add(txtNIC, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 210, 30));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        selectGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        mainDataPanel.add(selectGender, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 190, 210, 30));
+        mainDataPanel.add(txtContact_1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, 210, 30));
+
+        txtContact_2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtContact_2ActionPerformed(evt);
+            }
+        });
+        mainDataPanel.add(txtContact_2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 340, 210, 30));
+
+        txtAddress.setColumns(20);
+        txtAddress.setRows(5);
+        jScrollPane1.setViewportView(txtAddress);
 
         mainDataPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 560, 50));
 
@@ -172,14 +182,14 @@ public class DoctorRegForm extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Doctor Registration");
         mainDataPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, 220, 30));
-        mainDataPanel.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 240, 210, 30));
-        mainDataPanel.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, 210, 30));
+        mainDataPanel.add(txtDateofBirth, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 240, 210, 30));
+        mainDataPanel.add(txtSpecialization, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, 210, 30));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("License No :");
         mainDataPanel.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 290, -1, -1));
-        mainDataPanel.add(jTextField8, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, 210, 30));
+        mainDataPanel.add(txtLicenseNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, 210, 30));
 
         getContentPane().add(mainDataPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, 720, 530));
 
@@ -191,6 +201,11 @@ public class DoctorRegForm extends javax.swing.JFrame {
         btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
+        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAddMouseClicked(evt);
+            }
+        });
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -247,9 +262,9 @@ public class DoctorRegForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void txtContact_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContact_2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_txtContact_2ActionPerformed
 
     private void btnShowDoctorDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowDoctorDetailsActionPerformed
         new DoctorDetailsForm().setVisible(true);
@@ -260,6 +275,27 @@ public class DoctorRegForm extends javax.swing.JFrame {
         new HomeForm().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnReturnToHomeActionPerformed
+
+    private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
+        Doctor insertingDoctor = new Doctor();
+
+        insertingDoctor.setFirstName(txtFirstName.getText());
+        insertingDoctor.setLastName(txtLastName.getText());
+        insertingDoctor.setAddress(txtAddress.getText());
+        insertingDoctor.setNic(txtNIC.getText());
+        insertingDoctor.setDob(txtDateofBirth.getText());
+        insertingDoctor.setGender(selectGender.getSelectedItem().toString());
+        insertingDoctor.setSpecialization(txtSpecialization.getText());
+        insertingDoctor.setLicenseNumber(txtLicenseNo.getText());
+        insertingDoctor.setContactNo_1(txtContact_1.getText());
+        insertingDoctor.setContactNo_2(txtContact_2.getText());
+        
+        dao.insertMedicalStaff(insertingDoctor, this);
+    }//GEN-LAST:event_btnAddMouseClicked
+
+    private void txtNICActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNICActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNICActionPerformed
 
     /**
      * @param args the command line arguments
@@ -314,7 +350,6 @@ public class DoctorRegForm extends javax.swing.JFrame {
     private javax.swing.JLabel footerText;
     private javax.swing.JPanel header;
     private javax.swing.JLabel headerText;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -327,16 +362,17 @@ public class DoctorRegForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JPanel mainDataPanel;
     private javax.swing.JPanel navPanel;
+    private javax.swing.JComboBox<String> selectGender;
+    private javax.swing.JTextArea txtAddress;
+    private javax.swing.JTextField txtContact_1;
+    private javax.swing.JTextField txtContact_2;
+    private javax.swing.JTextField txtDateofBirth;
+    private javax.swing.JTextField txtFirstName;
+    private javax.swing.JTextField txtLastName;
+    private javax.swing.JTextField txtLicenseNo;
+    private javax.swing.JTextField txtNIC;
+    private javax.swing.JTextField txtSpecialization;
     // End of variables declaration//GEN-END:variables
 }
