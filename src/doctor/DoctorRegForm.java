@@ -187,6 +187,7 @@ public class DoctorRegForm extends javax.swing.JFrame {
         navPanel.setForeground(new java.awt.Color(255, 255, 255));
         navPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        btnAdd.setBackground(new java.awt.Color(0, 255, 51));
         btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
@@ -207,11 +208,13 @@ public class DoctorRegForm extends javax.swing.JFrame {
         });
         navPanel.add(btnShowDoctorDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 250, 40));
 
+        btnUpdate.setBackground(new java.awt.Color(102, 102, 255));
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("UPDATE");
         navPanel.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 200, 40));
 
+        btnDelete.setBackground(new java.awt.Color(255, 0, 0));
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
@@ -228,6 +231,7 @@ public class DoctorRegForm extends javax.swing.JFrame {
         });
         navPanel.add(btnReturnToHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 250, 40));
 
+        btnClear.setBackground(new java.awt.Color(204, 204, 0));
         btnClear.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("CLEAR");

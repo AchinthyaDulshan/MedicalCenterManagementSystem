@@ -126,10 +126,13 @@ public class LogInForm extends javax.swing.JFrame {
 
         //create user object & assign entered values
         User user = new User(txtUsername.getText(), txtPassword.getText());
+        
         //create new user database object 
         UserDao userDao = new UserDao();
+        
         //pass entered data for checking with database
         boolean status = userDao.checkUser(user);
+        
         //if credentials are correct login form will be closed
         if (status) {
             windowClose(this);

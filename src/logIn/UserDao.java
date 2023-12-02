@@ -34,6 +34,7 @@ public class UserDao {
 
         //create connection object
         Connection con = database.getDataBaseConnection();
+        
         //create resultset to catch data from DB
         ResultSet rs = null;
 

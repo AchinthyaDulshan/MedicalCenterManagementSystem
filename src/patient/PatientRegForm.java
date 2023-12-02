@@ -12,9 +12,12 @@ import javax.swing.JTextField;
  * @author Achinthya Dulshan
  */
 public class PatientRegForm extends javax.swing.JFrame {
+    
+    PatientDao dao;
 
     public PatientRegForm() {
         initComponents();
+        dao = new PatientDao();
     }
 
     @SuppressWarnings("unchecked")
@@ -284,9 +287,9 @@ public class PatientRegForm extends javax.swing.JFrame {
         insertingPatient.setBloodGroup(selectBloodGroup.getSelectedItem().toString());
         insertingPatient.setContactNo_1(txtContact_1.getText());
         insertingPatient.setContactNo_2(txtContact_2.getText());
-
-//        System.out.println("Blood Group: " + selectBloodGroup.getSelectedItem());
-//        System.out.println("Gender: " + selectGender.getSelectedItem());
+        
+        dao.insertPatient(insertingPatient, this);
+        
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void txtContact_1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContact_1KeyTyped

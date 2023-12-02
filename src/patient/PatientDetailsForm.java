@@ -230,8 +230,9 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         searchingPatient.setIdFromDB(Integer.parseInt(txtSearch.getText()));
 
         //invoke method in patientDao and return resultset
-        ResultSet rs = patientDBObj.searchPatient(searchingPatient);
-        patientTable.setModel(DbUtils.resultSetToTableModel(rs));
+//        ResultSet rs = patientDBObj.searchPatient(searchingPatient);
+//        patientTable.setModel(DbUtils.resultSetToTableModel(rs));
+        
     }//GEN-LAST:event_btnSearchMouseClicked
 
 //    ========================================== Need to Check Again doesn't work > bind data to patient object Passed ==================================================================================

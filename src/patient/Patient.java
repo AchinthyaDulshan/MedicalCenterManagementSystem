@@ -10,6 +10,7 @@ package patient;
  */
 public class Patient {
     private int idFromDB;
+    private String patientId;
     private String firstName;
     private String lastName;
     private String address;
@@ -42,6 +43,14 @@ public class Patient {
 
     public void setIdFromDB(int idFromDB) {
         this.idFromDB = idFromDB;
+    }
+    
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setIdFromDB(String patientId) {
+        this.patientId = patientId;
     }
 
     public String getFirstName() {

@@ -16,49 +16,51 @@ import java.util.logging.Logger;
  */
 public class MedicalCenterDataBase {
 
-    private String jdbcURL = "jdbc:mysql://localhost:3306/medicalcenterdb?zeroDateTimeBehavior=CONVERT_TO_NULL";
-    private String jdbcUserName = "root";
-    private String jdbcPassword = "1234";
-    private String jdbcDriver = "com.mysql.cj.jdbc.Driver";
+    // define database connection parameters
+    private final String jdbcURL = "jdbc:mysql://localhost:3306/medicalcenterdb?zeroDateTimeBehavior=CONVERT_TO_NULL";
+    private final String jdbcUserName = "root";
+    private final String jdbcPassword = "1234";
+    private final String jdbcDriver = "com.mysql.cj.jdbc.Driver";
 
+    // default constructor
     public MedicalCenterDataBase() {
     }
 
+    // create method for get database connection
+    // return --> connection
     public Connection getDataBaseConnection() {
         Connection con = null;
-        
+
         try {
+            
             Class.forName(jdbcDriver);
+            
             try {
+                
                 con = DriverManager.getConnection(jdbcURL, jdbcUserName, jdbcPassword);
+                
             } catch (SQLException e) {
 
-                e.printStackTrace();
+                e.getMessage();
+                
             }
 
         } catch (ClassNotFoundException e) {
 
-            e.printStackTrace();
+            e.getMessage();
+            
         }
-//        } finally {
-//        if (con != null) {
-//            try {
-//                con.close();
-//            } catch (SQLException ex) {
-//                System.out.println(ex);
-//            }
-//        }
-//    }
+
         return con;
     }
-    
-    public void closeConnection(Connection con){
+
+    // define method for connection close
+    public void closeConnection(Connection con) {
         try {
             con.close();
         } catch (SQLException ex) {
             Logger.getLogger(MedicalCenterDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
 }
