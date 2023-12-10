@@ -7,7 +7,11 @@ package patient;
 import home.HomeForm;
 import net.proteanit.sql.DbUtils;
 import java.sql.ResultSet;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -24,6 +28,8 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         initComponents();
         patientDBObj = new PatientDao();
         loadTable();
+        btnUpdate.setVisible(false);
+        btnDelete.setVisible(false);
     }
 
 
@@ -119,10 +125,15 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         btnUpdate.setBackground(new java.awt.Color(70, 73, 75));
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
-        btnUpdate.setText("UPDATE");
+        btnUpdate.setText("EDIT");
         btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnUpdateMouseClicked(evt);
+            }
+        });
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
             }
         });
         navPanel.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 200, 40));
@@ -131,6 +142,11 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
+        btnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteMouseClicked(evt);
+            }
+        });
         navPanel.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 200, 40));
 
         btnReturnToHome.setBackground(new java.awt.Color(255, 197, 62));
@@ -210,7 +226,8 @@ public class PatientDetailsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPatientRegisterMouseClicked
 
     private void patientTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_patientTableMouseClicked
-
+        btnUpdate.setVisible(true);
+        btnDelete.setVisible(true);
     }//GEN-LAST:event_patientTableMouseClicked
 
     //when update button clicked this will load a patient update form
@@ -242,6 +259,27 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnReturnToHomeMouseClicked
 
+    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
+        // TODO add your handling code here:
+        int selectedRow = patientTable.getSelectedRow();
+
+        
+        DefaultTableModel model = (DefaultTableModel) patientTable.getModel();
+        
+        Patient deletingPatient = new Patient();
+        
+        deletingPatient.setPatientId(model.getValueAt(selectedRow, 0).toString());
+        
+        patientDBObj.deletePatient(deletingPatient);
+        
+        loadTable();
+        
+    }//GEN-LAST:event_btnDeleteMouseClicked
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
 //    ========================================== Need to Check Again doesn't work > bind data to patient object Passed ==================================================================================
     //create method to generate update patient details form
     private void generateUpdateFormValues(int selectedRow) {
@@ -250,7 +288,7 @@ public class PatientDetailsForm extends javax.swing.JFrame {
 
         Patient updatingPatient = new Patient();
 
-        updatingPatient.setIdFromDB(Integer.parseInt(model.getValueAt(selectedRow, 0).toString()));
+        updatingPatient.setPatientId(model.getValueAt(selectedRow, 0).toString());
         updatingPatient.setFirstName(model.getValueAt(selectedRow, 1).toString());
         updatingPatient.setLastName(model.getValueAt(selectedRow, 2).toString());
         updatingPatient.setAddress(model.getValueAt(selectedRow, 3).toString());
@@ -260,9 +298,13 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         updatingPatient.setBloodGroup(model.getValueAt(selectedRow, 7).toString());
         updatingPatient.setContactNo_1(model.getValueAt(selectedRow, 8).toString());
         updatingPatient.setContactNo_2(model.getValueAt(selectedRow, 9).toString());
-
+        
         PatientRegForm patientForm = new PatientRegForm();
-        patientForm.updatePatientDetails(updatingPatient);
+        try {
+            patientForm.updatePatientDetails(updatingPatient);
+        } catch (ParseException ex) {
+            Logger.getLogger(PatientDetailsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }
 

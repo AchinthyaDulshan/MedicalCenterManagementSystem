@@ -24,8 +24,9 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(int idFromDB, String firstName, String lastName, String address, String NIC, String dateOfBirth, String gender, String bloodGroup, String contactNo_1, String contactNo_2) {
+    public Patient(int idFromDB, String patientId, String firstName, String lastName, String address, String NIC, String dateOfBirth, String gender, String bloodGroup, String contactNo_1, String contactNo_2) {
         this.idFromDB = idFromDB;
+        this.patientId = patientId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -36,6 +37,8 @@ public class Patient {
         this.contactNo_1 = contactNo_1;
         this.contactNo_2 = contactNo_2;
     }
+    
+    
 
     public int getIdFromDB() {
         return idFromDB;
@@ -44,12 +47,12 @@ public class Patient {
     public void setIdFromDB(int idFromDB) {
         this.idFromDB = idFromDB;
     }
-    
+
     public String getPatientId() {
         return patientId;
     }
 
-    public void setIdFromDB(String patientId) {
+    public void setPatientId(String patientId) {
         this.patientId = patientId;
     }
 
@@ -124,6 +127,8 @@ public class Patient {
     public void setContactNo_2(String contactNo_2) {
         this.contactNo_2 = contactNo_2;
     }
+
+    
 
     
     

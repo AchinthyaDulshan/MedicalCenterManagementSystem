@@ -17,10 +17,10 @@ public class Doctor {
     private String firstName;
     private String lastName;
     private String address;
-    private String nic;
+    private String NIC;
     private String licenseNumber;
     private String Specialization;
-    private String dob;
+    private String dateOfBirth;
     private String gender;
     private String contactNo_1;
     private String contactNo_2;
@@ -28,16 +28,16 @@ public class Doctor {
     public Doctor() {
     }
 
-    public Doctor(Integer id, String staffId, String firstName, String lastName, String address, String nic, String licenseNumber, String Specialization, String dob, String gender, String contactNo_1, String contactNo_2) {
+    public Doctor(Integer id, String staffId, String firstName, String lastName, String address, String NIC, String licenseNumber, String Specialization, String dateOfBirth, String gender, String contactNo_1, String contactNo_2) {
         this.id = id;
         this.staffId = staffId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.nic = nic;
+        this.NIC = NIC;
         this.licenseNumber = licenseNumber;
         this.Specialization = Specialization;
-        this.dob = dob;
+        this.dateOfBirth = dateOfBirth;
         this.gender = gender;
         this.contactNo_1 = contactNo_1;
         this.contactNo_2 = contactNo_2;
@@ -83,12 +83,12 @@ public class Doctor {
         this.address = address;
     }
 
-    public String getNic() {
-        return nic;
+    public String getNIC() {
+        return NIC;
     }
 
-    public void setNic(String nic) {
-        this.nic = nic;
+    public void setNIC(String NIC) {
+        this.NIC = NIC;
     }
 
     public String getLicenseNumber() {
@@ -107,12 +107,12 @@ public class Doctor {
         this.Specialization = Specialization;
     }
 
-    public String getDob() {
-        return dob;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDob(String dob) {
-        this.dob = dob;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getGender() {

@@ -29,8 +29,8 @@ public class PatientDao {
 
     // define method for insert patient to database
     // parameter --> Patient object
-    public void insertPatient(Patient patient,JFrame PatientRegForm) {
-        
+    public void insertPatient(Patient patient) {
+
         // Define SQL statement for insertion
         final String INSERT_PATIENT = "INSERT INTO patient (patientId, firstName, lastName, address, nic, gender, dob, bloodGroup) VALUES (?,?,?,?,?,?,?,?)";
         // SQL for get last patient Id
@@ -39,9 +39,7 @@ public class PatientDao {
         final String INSERT_PATIENT_CONTACTS = "INSERT INTO patient_contact (contact_no_1 ,contact_no_2 ,patient_id) VALUES (?,?,?)";
 
         // Get a database connection
-        Connection con = database.getDataBaseConnection();
-
-        try {
+        try (Connection con = database.getDataBaseConnection()) {
             // Get the last patientId
             PreparedStatement getLastPatientIdStatement = con.prepareStatement(GET_LAST_PATIENT_ID);
             ResultSet rs = getLastPatientIdStatement.executeQuery();
@@ -65,13 +63,9 @@ public class PatientDao {
             patientStatement.setString(4, patient.getAddress());
             patientStatement.setString(5, patient.getNIC());
             patientStatement.setString(6, patient.getGender());
-            
-//            ================================= Please try to choose date picker ========================
-//            patientStatement.setDate(8, new java.sql.Date(patient.getDateOfBirth()));
-
             patientStatement.setString(7, patient.getDateOfBirth());
             patientStatement.setString(8, patient.getBloodGroup());
-            
+
             // execute patient insertion
             patientStatement.executeUpdate();
 
@@ -80,7 +74,7 @@ public class PatientDao {
             try (var generatedKeys = patientStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     parentId = generatedKeys.getInt(1);
-                    System.out.println("id"+ parentId);
+                    System.out.println("id" + parentId);
                 } else {
                     throw new SQLException("Failed to get patient ID, no rows affected.");
                 }
@@ -94,8 +88,6 @@ public class PatientDao {
 
             patientContactStatement.executeUpdate();
 
-            JOptionPane.showMessageDialog(PatientRegForm, "Data inserted successfully");
-
             //close resources
             getLastPatientIdStatement.close();
             patientStatement.close();
@@ -106,8 +98,6 @@ public class PatientDao {
             e.printStackTrace();
         }
     }
-
-
 
     // padding patientId with 0
     private static String padWithZeros(String original, int targetLength) {
@@ -124,11 +114,10 @@ public class PatientDao {
         return zeros + original;
     }
 
-    
     // fill patient table from database values
     public ResultSet fillTableData() {
-        
-        final String SELECT_PATIENT_DETAILS = "select patientId, firstName, lastName, address, nic, gender, dob, bloodGroup, contact_no_1, contact_no_2 from patient p, patient_contact c where p.id = c.patient_id";
+
+        final String SELECT_PATIENT_DETAILS = "select p.patientId, p.firstName, p.lastName, p.address, p.nic, p.gender, p.dob, p.bloodGroup, c.contact_no_1, c.contact_no_2 from patient p, patient_contact c where p.id = c.patient_id AND delete_status = 0";
 
         Connection con = database.getDataBaseConnection();
         PreparedStatement ps;
@@ -138,14 +127,96 @@ public class PatientDao {
             ps = con.prepareStatement(SELECT_PATIENT_DETAILS);
             rs = ps.executeQuery();
 
-
         } catch (SQLException e) {
 
             e.printStackTrace();
-        } 
+        }
 
         return rs;
     }
-    
-    
+
+    // define methods for delete patient
+    public void deletePatient(Patient patient) {
+
+        //define SQL Delete statement
+        final String DELETE_PATIENT = "UPDATE patient SET delete_status = 1 WHERE patientId=?";
+
+        //create connection 
+        Connection con = database.getDataBaseConnection();
+
+        try {
+
+            PreparedStatement deletePatient = con.prepareStatement(DELETE_PATIENT);
+            deletePatient.setString(1, patient.getPatientId());
+
+            deletePatient.executeUpdate();
+
+//            JOptionPane.showMessageDialog(patientDetailsJOptionPane, "Patient Deleted successfully");
+            //close resources
+            deletePatient.close();
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void updatePatient(Patient patient) {
+
+        final String UPDATE_PATIENT = "UPDATE patient SET firstname=? ,lastName=? ,address=? ,nic=? ,gender=? ,dob=? ,bloodGroup=? WHERE patientId=?";
+
+        final String GET_SELECTED_PATIENT_ID = "SELECT id FROM patient WHERE patientId=?";
+
+        final String UPDATE_PATIENT_CONTACTS = "UPDATE patient_contact SET contact_no_1=? ,contact_no_2=? WHERE patient_id=?";
+
+        try (Connection con = database.getDataBaseConnection()) {
+            // Update patient information
+            try (PreparedStatement updatePatient = con.prepareStatement(UPDATE_PATIENT)) {
+                updatePatient.setString(1, patient.getFirstName());
+                updatePatient.setString(2, patient.getLastName());
+                updatePatient.setString(3, patient.getAddress());
+                updatePatient.setString(4, patient.getNIC());
+                updatePatient.setString(5, patient.getGender());
+                updatePatient.setString(6, patient.getDateOfBirth());
+                updatePatient.setString(7, patient.getBloodGroup());
+                updatePatient.setString(8, patient.getPatientId());
+
+                // Execute patient update
+                updatePatient.executeUpdate();
+                updatePatient.close();
+            }
+
+            // Get patient ID
+            int patientId = -1;
+            try (PreparedStatement getPatientId = con.prepareStatement(GET_SELECTED_PATIENT_ID)) {
+                getPatientId.setString(1, patient.getPatientId());
+
+                // Execute query and retrieve the result set
+                try (ResultSet rs = getPatientId.executeQuery()) {
+                    // Check if there is a result
+                    if (rs.next()) {
+                        patientId = rs.getInt(1);
+                    }
+                }
+                getPatientId.close();
+            }
+
+            // Update patient contacts
+            try (PreparedStatement patientContactUpdate = con.prepareStatement(UPDATE_PATIENT_CONTACTS)) {
+                patientContactUpdate.setString(1, patient.getContactNo_1());
+                patientContactUpdate.setString(2, patient.getContactNo_2());
+                patientContactUpdate.setInt(3, patientId);
+
+                // Execute contacts update
+                patientContactUpdate.executeUpdate();
+                patientContactUpdate.close();
+            }
+
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

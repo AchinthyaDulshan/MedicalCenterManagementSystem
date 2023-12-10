@@ -5,6 +5,21 @@
 package doctor;
 
 import home.HomeForm;
+import java.awt.Color;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
 /**
  *
@@ -12,15 +27,27 @@ import home.HomeForm;
  */
 public class DoctorRegForm extends javax.swing.JFrame {
 
-    DoctorDao dao;
+    DoctorDao doctorDao;
 
-    
-    /**
-     * Creates new form patientForm
-     */
+    //define static variables for future refrence
+    private static DoctorRegForm updatingDoctorForm;
+    private static Doctor updatingDoctor;
+    private static Doctor doctor;
+
+    //define validation borders
+    public static Border invalidBorder = new LineBorder(Color.red, 2, true);
+    public static Border validBorder = new LineBorder(Color.GREEN, 2, true);
+
+    //default constructor
     public DoctorRegForm() {
         initComponents();
-        dao = new DoctorDao();
+        // init doctorDao object
+        doctorDao = new DoctorDao();
+        // init doctor object 
+        doctor = new Doctor();
+
+        // set update button invisible
+        btnUpdate.setVisible(false);
     }
 
     /**
@@ -54,18 +81,16 @@ public class DoctorRegForm extends javax.swing.JFrame {
         txtContact_2 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAddress = new javax.swing.JTextArea();
-        jLabel10 = new javax.swing.JLabel();
-        txtDateofBirth = new javax.swing.JTextField();
+        formHeading = new javax.swing.JLabel();
         txtSpecialization = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         txtLicenseNo = new javax.swing.JTextField();
+        txtDateofBirth = new com.toedter.calendar.JDateChooser();
         navPanel = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
         btnShowDoctorDetails = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
         btnReturnToHome = new javax.swing.JButton();
-        btnClear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -151,23 +176,46 @@ public class DoctorRegForm extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Specialization :");
         mainDataPanel.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
+
+        txtFirstName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFirstNameKeyReleased(evt);
+            }
+        });
         mainDataPanel.add(txtFirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 210, 30));
+
+        txtLastName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtLastNameKeyReleased(evt);
+            }
+        });
         mainDataPanel.add(txtLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 70, 210, 30));
 
-        txtNIC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNICActionPerformed(evt);
+        txtNIC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNICKeyReleased(evt);
             }
         });
         mainDataPanel.add(txtNIC, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 190, 210, 30));
 
-        selectGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
+        selectGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Gender", "Male", "Female" }));
+        selectGender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectGenderActionPerformed(evt);
+            }
+        });
         mainDataPanel.add(selectGender, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 190, 210, 30));
+
+        txtContact_1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtContact_1KeyReleased(evt);
+            }
+        });
         mainDataPanel.add(txtContact_1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 340, 210, 30));
 
-        txtContact_2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtContact_2ActionPerformed(evt);
+        txtContact_2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtContact_2KeyReleased(evt);
             }
         });
         mainDataPanel.add(txtContact_2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 340, 210, 30));
@@ -178,18 +226,30 @@ public class DoctorRegForm extends javax.swing.JFrame {
 
         mainDataPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 560, 50));
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Doctor Registration");
-        mainDataPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, 220, 30));
-        mainDataPanel.add(txtDateofBirth, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 240, 210, 30));
+        formHeading.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        formHeading.setForeground(new java.awt.Color(255, 255, 255));
+        formHeading.setText("Doctor Registration");
+        mainDataPanel.add(formHeading, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, 220, 30));
+
+        txtSpecialization.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSpecializationKeyReleased(evt);
+            }
+        });
         mainDataPanel.add(txtSpecialization, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 290, 210, 30));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("License No :");
         mainDataPanel.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 290, -1, -1));
+
+        txtLicenseNo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtLicenseNoKeyReleased(evt);
+            }
+        });
         mainDataPanel.add(txtLicenseNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 290, 210, 30));
+        mainDataPanel.add(txtDateofBirth, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 240, 210, -1));
 
         getContentPane().add(mainDataPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, 720, 530));
 
@@ -206,12 +266,7 @@ public class DoctorRegForm extends javax.swing.JFrame {
                 btnAddMouseClicked(evt);
             }
         });
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
-        navPanel.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 200, 40));
+        navPanel.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 200, 40));
 
         btnShowDoctorDetails.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnShowDoctorDetails.setForeground(new java.awt.Color(255, 255, 255));
@@ -227,13 +282,12 @@ public class DoctorRegForm extends javax.swing.JFrame {
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("UPDATE");
-        navPanel.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 200, 40));
-
-        btnDelete.setBackground(new java.awt.Color(255, 0, 0));
-        btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete.setText("DELETE");
-        navPanel.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 200, 40));
+        btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnUpdateMouseClicked(evt);
+            }
+        });
+        navPanel.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 200, 40));
 
         btnReturnToHome.setBackground(new java.awt.Color(255, 197, 62));
         btnReturnToHome.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -246,56 +300,328 @@ public class DoctorRegForm extends javax.swing.JFrame {
         });
         navPanel.add(btnReturnToHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 250, 40));
 
-        btnClear.setBackground(new java.awt.Color(204, 204, 0));
-        btnClear.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnClear.setForeground(new java.awt.Color(255, 255, 255));
-        btnClear.setText("CLEAR");
-        navPanel.add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, 200, 40));
-
         getContentPane().add(navPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 280, 530));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddActionPerformed
-
-    private void txtContact_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContact_2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtContact_2ActionPerformed
-
+    // when click on Show Patient Details button
     private void btnShowDoctorDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowDoctorDetailsActionPerformed
         new DoctorDetailsForm().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnShowDoctorDetailsActionPerformed
 
     private void btnReturnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnToHomeActionPerformed
+        //show Home page and close this one
         new HomeForm().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnReturnToHomeActionPerformed
 
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
-        Doctor insertingDoctor = new Doctor();
 
-        insertingDoctor.setFirstName(txtFirstName.getText());
-        insertingDoctor.setLastName(txtLastName.getText());
-        insertingDoctor.setAddress(txtAddress.getText());
-        insertingDoctor.setNic(txtNIC.getText());
-        insertingDoctor.setDob(txtDateofBirth.getText());
-        insertingDoctor.setGender(selectGender.getSelectedItem().toString());
-        insertingDoctor.setSpecialization(txtSpecialization.getText());
-        insertingDoctor.setLicenseNumber(txtLicenseNo.getText());
-        insertingDoctor.setContactNo_1(txtContact_1.getText());
-        insertingDoctor.setContactNo_2(txtContact_2.getText());
-        
-        dao.insertMedicalStaff(insertingDoctor, this);
+        // setAddress in doctor
+        doctor.setAddress(txtAddress.getText());
+        // setDateOfBirth in patient
+        doctor.setDateOfBirth(getSelectedBirthDate());
+
+        /* when the txtContact_2(optional) field is empty it will store NULL in database, 
+        in update this will be an error therefore it set to empty String*/
+        if (txtContact_2.getText().equals("")) {
+            doctor.setContactNo_2("");
+        }
+
+        // checking form has empty fields
+        String errors = checkErrors();
+
+        if (errors.equals("")) {
+
+            // if it doesn't have empty field 
+            // insert to database and give message
+            doctorDao.insertMedicalStaff(doctor);
+            JOptionPane.showMessageDialog(this, "Doctor Registered Successfully.");
+
+            new DoctorDetailsForm().setVisible(true);
+            this.dispose();
+        } else {
+            // if it have empty fields indicate using message
+            JOptionPane.showMessageDialog(this, "You have following errors.\n" + errors);
+        }
+
+
     }//GEN-LAST:event_btnAddMouseClicked
 
-    private void txtNICActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNICActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNICActionPerformed
+    private void txtFirstNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFirstNameKeyReleased
+        String pattern = "^([A-Z][a-z]{3,25})$";
+        txtFieldValidation(txtFirstName, pattern, doctor, "setFirstName");
+    }//GEN-LAST:event_txtFirstNameKeyReleased
+
+    private void txtLastNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLastNameKeyReleased
+        String pattern = "^([A-Z][a-z]{3,25})$";
+        txtFieldValidation(txtLastName, pattern, doctor, "setLastName");
+    }//GEN-LAST:event_txtLastNameKeyReleased
+
+    private void txtNICKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNICKeyReleased
+        String pattern = "^([12][09][01789][0-9]{9})|([789][0-9]{8}[V|v])$";
+        txtFieldValidation(txtNIC, pattern, doctor, "setNIC");
+    }//GEN-LAST:event_txtNICKeyReleased
+
+    private void txtSpecializationKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSpecializationKeyReleased
+        String pattern = "^(.*)$";
+        txtFieldValidation(txtSpecialization, pattern, doctor, "setSpecialization");
+    }//GEN-LAST:event_txtSpecializationKeyReleased
+
+    private void txtLicenseNoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLicenseNoKeyReleased
+        String pattern = "^(.*)$";
+        txtFieldValidation(txtLicenseNo, pattern, doctor, "setLicenseNumber");
+    }//GEN-LAST:event_txtLicenseNoKeyReleased
+
+    private void txtContact_1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContact_1KeyReleased
+        String pattern = "^([0][7][01245678][0-9]{7})|([0][012345689][0-9]{8})$";
+        txtFieldValidation(txtContact_1, pattern, doctor, "setContactNo_1");
+    }//GEN-LAST:event_txtContact_1KeyReleased
+
+    private void txtContact_2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContact_2KeyReleased
+        String pattern = "^([0][7][01245678][0-9]{7})|([0][012345689][0-9]{8})$";
+        txtFieldValidation(txtContact_2, pattern, doctor, "setContactNo_2");
+    }//GEN-LAST:event_txtContact_2KeyReleased
+
+    //format entered date 
+    private String getSelectedBirthDate() {
+        Date birthDate = txtDateofBirth.getDate();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String strBirthDate = formatter.format(birthDate);
+        return strBirthDate;
+    }
+
+    private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
+
+        // get staffId to future refrences
+        doctor.setStaffId(updatingDoctor.getStaffId());
+
+        //set values to object
+        doctor.setAddress(txtAddress.getText());
+        doctor.setDateOfBirth(getSelectedBirthDate());
+
+        // check what values were updated
+        String updates = checkUpdates(doctor);
+
+        // check whether reqiured fields have empty values
+        String errors = checkErrors();
+
+        if (errors.equals("")) {
+
+            // if required fields are filled
+            if (updates == "") {
+                // if it doesn't update any value --> show message
+                JOptionPane.showMessageDialog(this, "No updates have been done.");
+
+            } else {
+                // if it update any value --> show message with updated fields
+                int result = JOptionPane.showConfirmDialog(this, updates);
+
+                // Check the user's choice
+                if (result == JOptionPane.YES_OPTION) {
+
+                    //perform update & load doctor table
+                    doctorDao.updateDoctor(doctor);
+                    new DoctorDetailsForm().setVisible(true);
+                    this.dispose();
+
+                } else if (result == JOptionPane.NO_OPTION) {
+
+                } else if (result == JOptionPane.CANCEL_OPTION) {
+
+                    //reload Patient details form and abort action
+                    new DoctorDetailsForm().setVisible(true);
+                    this.dispose();
+
+                } else if (result == JOptionPane.CLOSED_OPTION) {
+
+                }
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "You have following errors.\n" + errors);
+        }
+
+    }//GEN-LAST:event_btnUpdateMouseClicked
+
+    private void selectGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectGenderActionPerformed
+
+        try {
+            selectFieldValidation(selectGender, "Select Gender", doctor, "setGender");
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(DoctorRegForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(DoctorRegForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalArgumentException ex) {
+            Logger.getLogger(DoctorRegForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvocationTargetException ex) {
+            Logger.getLogger(DoctorRegForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_selectGenderActionPerformed
+
+    public static void txtFieldValidation(JTextField textField, String matchingPattern, Object object, String method) {
+        Pattern pattern;
+        Matcher isMatching;
+        Border invalidBorder = new LineBorder(Color.red, 2, true);
+        Border validBorder = new LineBorder(Color.GREEN, 2, true);
+
+        pattern = Pattern.compile(matchingPattern);
+        isMatching = pattern.matcher(textField.getText());
+
+        if (isMatching.matches()) {
+            textField.setBorder(validBorder);
+            try {
+                // Method name to be invoked
+                String methodName = method;
+
+                // Get the method with the specified name
+                Method executingMethod = object.getClass().getDeclaredMethod(methodName, String.class);
+
+                // Invoke the method on the instance
+                executingMethod.invoke(object, textField.getText());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            textField.setBorder(invalidBorder);
+        }
+
+    }
+
+    // define method for select field validation
+    public static void selectFieldValidation(JComboBox comboBox, String defaultSelectedOption, Object object, String method) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        String selectedOption = comboBox.getSelectedItem().toString();
+
+        if (selectedOption.equals(defaultSelectedOption)) {
+            comboBox.setBorder(invalidBorder);
+            // Get the method with the specified name
+            Method executingMethod = object.getClass().getDeclaredMethod(method, String.class);
+
+            // Invoke the method on the instance
+            executingMethod.invoke(object, null);
+        } else {
+
+            comboBox.setBorder(validBorder);
+
+            // Get the method with the specified name
+            Method executingMethod = object.getClass().getDeclaredMethod(method, String.class);
+
+            // Invoke the method on the instance
+            executingMethod.invoke(object, selectedOption);
+
+        }
+    }
+
+    private String checkUpdates(Doctor existingDoctor) {
+
+        String updates = "";
+
+        if (!updatingDoctor.getFirstName().equals(existingDoctor.getFirstName())) {
+            updates += "First name Changed. \n";
+        }
+        if (!updatingDoctor.getLastName().equals(existingDoctor.getLastName())) {
+            updates += "Last name Changed. \n";
+        }
+        if (!updatingDoctor.getAddress().equals(existingDoctor.getAddress())) {
+            updates += "Address Changed. \n";
+        }
+        if (!updatingDoctor.getNIC().equals(existingDoctor.getNIC())) {
+            updates += "NIC Changed. \n";
+        }
+        if (!updatingDoctor.getDateOfBirth().equals(existingDoctor.getDateOfBirth())) {
+            updates += "Date of Birth Changed. \n";
+        }
+        if (!updatingDoctor.getGender().equals(existingDoctor.getGender())) {
+            updates += "Gender Changed. \n";
+        }
+        if (!updatingDoctor.getSpecialization().equals(existingDoctor.getSpecialization())) {
+            updates += "Specialization Changed. \n";
+        }
+        if (!updatingDoctor.getLicenseNumber().equals(existingDoctor.getLicenseNumber())) {
+            updates += "License number Changed. \n";
+        }
+        if (!updatingDoctor.getContactNo_1().equals(existingDoctor.getContactNo_1())) {
+            updates += "Contact No:1 Changed. \n";
+        }
+        if (!updatingDoctor.getContactNo_2().equals(existingDoctor.getContactNo_2())) {
+            updates += "Contact No:2 Changed. \n";
+        }
+
+        return updates;
+    }
+
+    private String checkErrors() {
+
+        String errors = "";
+
+        if (doctor.getFirstName() == null) {
+            errors += "First name not entered.\n";
+        }
+        if (doctor.getLastName() == null) {
+            errors += "Last name not entered.\n";
+        }
+        if (doctor.getAddress() == null) {
+            errors += "Address not entered.\n";
+        }
+        if (doctor.getNIC() == null) {
+            errors += "NIC not entered.\n";
+        }
+        if (doctor.getGender() == null) {
+            errors += "Gender not selected.\n";
+        }
+        if (doctor.getDateOfBirth() == null) {
+            errors += "Date of birth not selected.\n";
+        }
+        if (doctor.getSpecialization() == null) {
+            errors += "Specialization not entered.\n";
+        }
+        if (doctor.getLicenseNumber() == null) {
+            errors += "License number not entered.\n";
+        }
+        if (doctor.getContactNo_1() == null) {
+            errors += "Contact No:1 not entered.\n";
+        }
+
+        return errors;
+    }
+
+    public void updateDoctorDetails(Doctor selectedDoctor) throws ParseException {
+
+        doctor = selectedDoctor;
+        updatingDoctor = selectedDoctor;
+
+        if (updatingDoctorForm == null) {
+            updatingDoctorForm = new DoctorRegForm();
+        }
+
+        System.out.println("name: " + selectedDoctor.getFirstName() + " " + selectedDoctor.getLastName());
+
+        updatingDoctorForm.formHeading.setText("Update Doctor Details");
+
+        updatingDoctorForm.txtFirstName.setText(selectedDoctor.getFirstName());
+        updatingDoctorForm.txtLastName.setText(selectedDoctor.getLastName());
+        updatingDoctorForm.txtAddress.setText(selectedDoctor.getAddress());
+        updatingDoctorForm.txtNIC.setText(selectedDoctor.getNIC());
+        updatingDoctorForm.selectGender.setSelectedItem(selectedDoctor.getGender());
+
+        updatingDoctorForm.txtDateofBirth.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(selectedDoctor.getDateOfBirth()));
+        updatingDoctorForm.txtSpecialization.setText(selectedDoctor.getSpecialization());
+        updatingDoctorForm.txtLicenseNo.setText(selectedDoctor.getLicenseNumber());
+        updatingDoctorForm.txtContact_1.setText(selectedDoctor.getContactNo_1());
+        updatingDoctorForm.txtContact_2.setText(selectedDoctor.getContactNo_2());
+
+        updatingDoctorForm.btnAdd.setVisible(false);
+        updatingDoctorForm.btnUpdate.setVisible(true);
+
+        updatingDoctorForm.setVisible(true);
+
+    }
 
     /**
      * @param args the command line arguments
@@ -341,17 +667,15 @@ public class DoctorRegForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnClear;
-    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnReturnToHome;
     private javax.swing.JButton btnShowDoctorDetails;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JPanel footer;
     private javax.swing.JLabel footerText;
+    private javax.swing.JLabel formHeading;
     private javax.swing.JPanel header;
     private javax.swing.JLabel headerText;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -368,7 +692,7 @@ public class DoctorRegForm extends javax.swing.JFrame {
     private javax.swing.JTextArea txtAddress;
     private javax.swing.JTextField txtContact_1;
     private javax.swing.JTextField txtContact_2;
-    private javax.swing.JTextField txtDateofBirth;
+    private com.toedter.calendar.JDateChooser txtDateofBirth;
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtLicenseNo;

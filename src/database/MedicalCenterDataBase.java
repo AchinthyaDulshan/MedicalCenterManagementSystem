@@ -54,13 +54,5 @@ public class MedicalCenterDataBase {
         return con;
     }
 
-    // define method for connection close
-    public void closeConnection(Connection con) {
-        try {
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(MedicalCenterDataBase.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
 }

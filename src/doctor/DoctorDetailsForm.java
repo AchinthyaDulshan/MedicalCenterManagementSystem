@@ -6,7 +6,14 @@ package doctor;
 
 import home.HomeForm;
 import java.sql.ResultSet;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
+import patient.Patient;
+import patient.PatientDetailsForm;
+import patient.PatientRegForm;
 
 
 /**
@@ -23,6 +30,8 @@ public class DoctorDetailsForm extends javax.swing.JFrame {
         initComponents();
         dao = new DoctorDao();
         loadTable();
+        btnUpdate.setVisible(false);
+        btnDelete.setVisible(false);
     }
 
     /**
@@ -118,12 +127,22 @@ public class DoctorDetailsForm extends javax.swing.JFrame {
         btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("EDIT");
+        btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnUpdateMouseClicked(evt);
+            }
+        });
         navPanel.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 200, 40));
 
         btnDelete.setBackground(new java.awt.Color(70, 73, 75));
         btnDelete.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
+        btnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteMouseClicked(evt);
+            }
+        });
         navPanel.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 210, 200, 40));
 
         btnReturnToHome.setBackground(new java.awt.Color(255, 197, 62));
@@ -171,6 +190,11 @@ public class DoctorDetailsForm extends javax.swing.JFrame {
 
             }
         ));
+        doctorTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                doctorTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(doctorTable);
 
         mainDataPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 700, 440));
@@ -199,6 +223,58 @@ public class DoctorDetailsForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnReturnToHomeActionPerformed
 
+    private void doctorTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_doctorTableMouseClicked
+        btnUpdate.setVisible(true);
+        btnDelete.setVisible(true);
+    }//GEN-LAST:event_doctorTableMouseClicked
+
+    private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
+        int selectedRow = doctorTable.getSelectedRow();
+        generateUpdateFormValues(selectedRow);
+    }//GEN-LAST:event_btnUpdateMouseClicked
+
+    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
+        int selectedRow = doctorTable.getSelectedRow();
+
+        
+        DefaultTableModel model = (DefaultTableModel) doctorTable.getModel();
+        
+        Doctor deletingDoctor = new Doctor();
+        
+        deletingDoctor.setStaffId(model.getValueAt(selectedRow, 0).toString());
+        
+        dao.deleteDoctor(deletingDoctor);
+        
+        loadTable();
+    }//GEN-LAST:event_btnDeleteMouseClicked
+
+    //create method to generate update patient details form
+    private void generateUpdateFormValues(int selectedRow) {
+
+        DefaultTableModel model = (DefaultTableModel) doctorTable.getModel();
+
+        Doctor updatingDoctor = new Doctor();
+
+        updatingDoctor.setStaffId(model.getValueAt(selectedRow, 0).toString());
+        updatingDoctor.setFirstName(model.getValueAt(selectedRow, 1).toString());
+        updatingDoctor.setLastName(model.getValueAt(selectedRow, 2).toString());
+        updatingDoctor.setAddress(model.getValueAt(selectedRow, 3).toString());
+        updatingDoctor.setNIC(model.getValueAt(selectedRow, 4).toString());
+        updatingDoctor.setLicenseNumber(model.getValueAt(selectedRow, 5).toString());
+        updatingDoctor.setSpecialization(model.getValueAt(selectedRow, 6).toString());
+        updatingDoctor.setDateOfBirth(model.getValueAt(selectedRow, 7).toString());
+        updatingDoctor.setGender(model.getValueAt(selectedRow, 8).toString());
+        updatingDoctor.setContactNo_1(model.getValueAt(selectedRow, 9).toString());
+        updatingDoctor.setContactNo_2(model.getValueAt(selectedRow, 10).toString());
+        
+        DoctorRegForm doctorForm = new DoctorRegForm();
+        try {
+            doctorForm.updateDoctorDetails(updatingDoctor);
+        } catch (ParseException ex) {
+            Logger.getLogger(PatientDetailsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+    }
     private void loadTable() {
         ResultSet rs = dao.fillTableData();
         doctorTable.setModel(DbUtils.resultSetToTableModel(rs));
