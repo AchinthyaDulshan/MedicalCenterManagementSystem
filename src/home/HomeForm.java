@@ -4,6 +4,8 @@
  */
 package home;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import doctor.DoctorDetailsForm;
 import hospital.HospitalDetailsForm;
 import java.text.SimpleDateFormat;
@@ -12,6 +14,10 @@ import java.time.format.DateTimeFormatter;
 import patient.PatientDetailsForm;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import logIn.LogInForm;
 
 /**
  *
@@ -40,60 +46,67 @@ public class HomeForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        header = new javax.swing.JPanel();
-        headerText = new javax.swing.JLabel();
-        footer = new javax.swing.JPanel();
-        footerText = new javax.swing.JLabel();
-        navPanel = new javax.swing.JPanel();
+        headerPanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        btnClose = new javax.swing.JButton();
+        btnLogOut = new javax.swing.JButton();
+        txtDate = new javax.swing.JLabel();
         btnPatient = new javax.swing.JButton();
         btnDoctor = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         btnHospital = new javax.swing.JButton();
-        mainDataPanel = new javax.swing.JPanel();
-        txtDate = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        bgImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        header.setBackground(new java.awt.Color(25, 123, 48));
+        headerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        headerText.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        headerText.setForeground(new java.awt.Color(255, 255, 255));
-        headerText.setText("Medical Center Management System (MCMS)");
+        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        jLabel1.setText("Medical Center Management System");
+        headerPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 228, -1));
 
-        javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
-        header.setLayout(headerLayout);
-        headerLayout.setHorizontalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addGap(248, 248, 248)
-                .addComponent(headerText, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(207, Short.MAX_VALUE))
-        );
-        headerLayout.setVerticalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerLayout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
-                .addComponent(headerText)
-                .addGap(33, 33, 33))
-        );
+        btnClose.setBackground(new java.awt.Color(255, 255, 255));
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/close.png"))); // NOI18N
+        btnClose.setToolTipText("Close Application");
+        btnClose.setBorder(null);
+        btnClose.setBorderPainted(false);
+        btnClose.setContentAreaFilled(false);
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+        headerPanel.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 0, 30, 30));
 
-        getContentPane().add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 100));
+        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/logout.png"))); // NOI18N
+        btnLogOut.setToolTipText("Log out");
+        btnLogOut.setBorder(null);
+        btnLogOut.setBorderPainted(false);
+        btnLogOut.setContentAreaFilled(false);
+        btnLogOut.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
+        headerPanel.add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 0, 30, 30));
 
-        footer.setBackground(new java.awt.Color(0, 0, 102));
-        footer.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 30));
 
-        footerText.setText("Footer text");
-        footer.add(footerText, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, 471, -1));
+        txtDate.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        txtDate.setText("2023/10/06  10.33.40");
+        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 80, -1, -1));
 
-        getContentPane().add(footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 630, 1000, 20));
-
-        navPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        btnPatient.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnPatient.setText("Patients");
+        btnPatient.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        btnPatient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/patient.png"))); // NOI18N
+        btnPatient.setText(" Patients");
+        btnPatient.setToolTipText("View Patient Details");
+        btnPatient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPatient.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnPatientMouseClicked(evt);
@@ -104,10 +117,13 @@ public class HomeForm extends javax.swing.JFrame {
                 btnPatientActionPerformed(evt);
             }
         });
-        navPanel.add(btnPatient, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 42, 250, 40));
+        getContentPane().add(btnPatient, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 250, 50));
 
-        btnDoctor.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnDoctor.setText("Doctors");
+        btnDoctor.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        btnDoctor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/doctor.png"))); // NOI18N
+        btnDoctor.setText(" Doctors");
+        btnDoctor.setToolTipText("View Doctor Details");
+        btnDoctor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnDoctor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnDoctorMouseClicked(evt);
@@ -118,33 +134,40 @@ public class HomeForm extends javax.swing.JFrame {
                 btnDoctorActionPerformed(evt);
             }
         });
-        navPanel.add(btnDoctor, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 250, 40));
+        getContentPane().add(btnDoctor, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 250, 50));
 
-        jButton3.setText("jButton3");
-        navPanel.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 250, 40));
-
-        jButton4.setText("jButton4");
-        navPanel.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 250, 40));
-
-        btnHospital.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnHospital.setText("Hospitals");
+        btnHospital.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        btnHospital.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/redCross.png"))); // NOI18N
+        btnHospital.setText(" Hospitals");
+        btnHospital.setToolTipText("View Hospital Details");
+        btnHospital.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnHospital.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnHospitalMouseClicked(evt);
             }
         });
-        navPanel.add(btnHospital, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 250, 40));
+        getContentPane().add(btnHospital, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, 250, 50));
 
-        getContentPane().add(navPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 280, 530));
+        jButton4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/healthcare.png"))); // NOI18N
+        jButton4.setText(" Appoinments");
+        jButton4.setToolTipText("View Appoinment Details");
+        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 250, 50));
 
-        mainDataPanel.setForeground(new java.awt.Color(255, 255, 255));
-        mainDataPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jButton3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/records.png"))); // NOI18N
+        jButton3.setText(" Medical Records");
+        jButton3.setToolTipText("View Medical Records");
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 250, 50));
 
-        txtDate.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        txtDate.setText("2023/10/06  10.33.40");
-        mainDataPanel.add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 30, -1, -1));
+        jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
+        jButton1.setText("No of Doctors We have");
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 170, 200, 120));
 
-        getContentPane().add(mainDataPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, 720, 530));
+        bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/adminPanel.png"))); // NOI18N
+        getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 570));
 
         pack();
         setLocationRelativeTo(null);
@@ -206,33 +229,35 @@ public class HomeForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnDoctorMouseClicked
 
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
+//        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+      if(res == 0) {
+         System.exit(res);
+      } else if (res == 1) {
+//         System.out.println("Pressed NO");
+      }
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\logout 50.png");
+//        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to Log Out ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+      if(res == 0) {
+         new LogInForm().setVisible(true);
+         this.dispose();
+      } else if (res == 1) {
+//         System.out.println("Pressed NO");
+      }
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HomeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HomeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HomeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
+        FlatIntelliJLaf.setup();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -242,17 +267,17 @@ public class HomeForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel bgImage;
+    private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDoctor;
     private javax.swing.JButton btnHospital;
+    private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnPatient;
-    private javax.swing.JPanel footer;
-    private javax.swing.JLabel footerText;
-    private javax.swing.JPanel header;
-    private javax.swing.JLabel headerText;
+    private javax.swing.JPanel headerPanel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JPanel mainDataPanel;
-    private javax.swing.JPanel navPanel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel txtDate;
     // End of variables declaration//GEN-END:variables
 }

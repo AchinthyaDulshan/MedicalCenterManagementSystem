@@ -41,6 +41,7 @@ public class UserDao {
         //try to execute query
         try {
 
+          
             PreparedStatement ps = con.prepareStatement(GET_USER);
             ps.setString(1, user.getUserName());
             //execute query and assign result to ResultSet obj

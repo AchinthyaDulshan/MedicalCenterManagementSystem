@@ -38,6 +38,20 @@ public class Patient {
         this.contactNo_2 = contactNo_2;
     }
     
+    public Patient(Patient other) {
+        this.idFromDB = other.idFromDB;
+        this.patientId = other.patientId;
+        this.firstName = other.firstName;
+        this.lastName = other.lastName;
+        this.address = other.address;
+        this.NIC = other.NIC;
+        this.dateOfBirth = other.dateOfBirth;
+        this.gender = other.gender;
+        this.bloodGroup = other.bloodGroup;
+        this.contactNo_1 = other.contactNo_1;
+        this.contactNo_2 = other.contactNo_2;
+    }
+    
     
 
     public int getIdFromDB() {

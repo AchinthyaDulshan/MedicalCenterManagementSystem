@@ -1,0 +1,8 @@
+********* PRESCRIPTION *********
+Date and Time : 2023/12/16 12:36:43
+Doctor Name : name of doctor
+
+====================================
+| Medication | Dosage | Start date | End date |
+ - dgfgdt | fgfetetg | 2023-12-14 | 2023-12-14 | 
+ - fgfgd | dsfsf | 2023-12-13 | 2023-12-16 | 

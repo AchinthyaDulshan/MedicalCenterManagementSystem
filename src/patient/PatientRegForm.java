@@ -4,6 +4,7 @@
  */
 package patient;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.toedter.calendar.JCalendar;
 import home.HomeForm;
 import java.awt.Color;
@@ -18,10 +19,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import logIn.LogInForm;
 
 /**
  *
@@ -35,6 +39,7 @@ public class PatientRegForm extends javax.swing.JFrame {
     private static PatientRegForm updatingPatientForm;
     private static Patient updatingPatient;
     private static Patient patient;
+    private static Patient newPatient;
 
     //define validation borders
     public static Border invalidBorder = new LineBorder(Color.red, 2, true);
@@ -46,151 +51,56 @@ public class PatientRegForm extends javax.swing.JFrame {
         initComponents();
         // init dao object
         patientDao = new PatientDao();
-        // init patient object
-        patient = new Patient();
+        
+        //init patient object
+        newPatient = new Patient();
         
         // set update button invisible
         btnUpdate.setVisible(false);
 
-        // try to set min,max date on date of birth date picker
-        // max date --> Today
-        // min date --> set by getMinDate()
-        try {
-            txtDateofBirth.setSelectableDateRange(getMinDate(), new java.util.Date());
-        } catch (ParseException ex) {
-            Logger.getLogger(PatientRegForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        header = new javax.swing.JPanel();
-        headerText = new javax.swing.JLabel();
-        footer = new javax.swing.JPanel();
-        footerText = new javax.swing.JLabel();
-        mainDataPanel = new javax.swing.JPanel();
+        txtFirstName = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        txtFirstName = new javax.swing.JTextField();
         txtLastName = new javax.swing.JTextField();
-        txtNIC = new javax.swing.JTextField();
-        selectGender = new javax.swing.JComboBox<>();
-        selectBloodGroup = new javax.swing.JComboBox<>();
-        txtContact_1 = new javax.swing.JTextField();
-        txtContact_2 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAddress = new javax.swing.JTextArea();
-        formHeading = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtNIC = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        selectGender = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
         txtDateofBirth = new com.toedter.calendar.JDateChooser();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        navPanel = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        selectBloodGroup = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
+        txtContact_1 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
         btnAdd = new javax.swing.JButton();
-        btnShowPatientDetails = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
+        btnShowPatientDetails = new javax.swing.JButton();
         btnReturnToHome = new javax.swing.JButton();
+        txtContact_2 = new javax.swing.JTextField();
+        formHeading = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        headerPanel = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        btnClose = new javax.swing.JButton();
+        btnLogOut = new javax.swing.JButton();
+        bgImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        header.setBackground(new java.awt.Color(25, 123, 48));
-
-        headerText.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        headerText.setForeground(new java.awt.Color(255, 255, 255));
-        headerText.setText("Medical Center Management System (MCMS)");
-
-        javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
-        header.setLayout(headerLayout);
-        headerLayout.setHorizontalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addGap(248, 248, 248)
-                .addComponent(headerText, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(207, Short.MAX_VALUE))
-        );
-        headerLayout.setVerticalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerLayout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
-                .addComponent(headerText)
-                .addGap(33, 33, 33))
-        );
-
-        getContentPane().add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 100));
-
-        footer.setBackground(new java.awt.Color(0, 0, 102));
-        footer.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        footerText.setText("Footer text");
-        footer.add(footerText, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 0, 471, -1));
-
-        getContentPane().add(footer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 630, 1000, 20));
-
-        mainDataPanel.setBackground(new java.awt.Color(78, 80, 82));
-        mainDataPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("First Name  :");
-        mainDataPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 89, -1));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Last Name  :");
-        mainDataPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 120, -1, -1));
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Address  :");
-        mainDataPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, -1, -1));
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("NIC  :");
-        mainDataPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, -1));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Gender  :");
-        mainDataPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 250, -1, -1));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Date of Birth  :");
-        mainDataPanel.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, -1, -1));
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Contact No  :");
-        mainDataPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 350, -1, -1));
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Contact No  :");
-        mainDataPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, -1, -1));
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("Blood Group  :");
-        mainDataPanel.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 300, -1, -1));
-
+        txtFirstName.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtFirstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFirstNameActionPerformed(evt);
@@ -201,53 +111,33 @@ public class PatientRegForm extends javax.swing.JFrame {
                 txtFirstNameKeyReleased(evt);
             }
         });
-        mainDataPanel.add(txtFirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 210, 30));
+        getContentPane().add(txtFirstName, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 300, 210, 30));
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("First Name  :");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 300, 100, -1));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Last Name  :");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 300, 100, -1));
+
+        txtLastName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         txtLastName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtLastNameKeyReleased(evt);
             }
         });
-        mainDataPanel.add(txtLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 120, 210, 30));
+        getContentPane().add(txtLastName, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 300, 230, 30));
 
-        txtNIC.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtNICKeyReleased(evt);
-            }
-        });
-        mainDataPanel.add(txtNIC, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 210, 30));
-
-        selectGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Gender", "Male", "Female" }));
-        selectGender.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectGenderActionPerformed(evt);
-            }
-        });
-        mainDataPanel.add(selectGender, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 210, 30));
-
-        selectBloodGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Blood Group", "A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-" }));
-        selectBloodGroup.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectBloodGroupActionPerformed(evt);
-            }
-        });
-        mainDataPanel.add(selectBloodGroup, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 300, 210, 30));
-
-        txtContact_1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtContact_1KeyReleased(evt);
-            }
-        });
-        mainDataPanel.add(txtContact_1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, 210, 30));
-
-        txtContact_2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtContact_2KeyReleased(evt);
-            }
-        });
-        mainDataPanel.add(txtContact_2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 350, 210, 30));
+        jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Address  :");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 360, 80, -1));
 
         txtAddress.setColumns(20);
+        txtAddress.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtAddress.setRows(5);
         txtAddress.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -256,112 +146,168 @@ public class PatientRegForm extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(txtAddress);
 
-        mainDataPanel.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, 550, 60));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 350, 650, 60));
 
-        formHeading.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        formHeading.setForeground(new java.awt.Color(255, 255, 255));
-        formHeading.setText("Register Patient");
-        mainDataPanel.add(formHeading, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
+        jLabel4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("NIC  :");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 430, 50, -1));
+
+        txtNIC.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        txtNIC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNICKeyReleased(evt);
+            }
+        });
+        getContentPane().add(txtNIC, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 430, 210, 30));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Gender  :");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 430, 80, -1));
+
+        selectGender.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        selectGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Gender", "Male", "Female" }));
+        selectGender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectGenderActionPerformed(evt);
+            }
+        });
+        getContentPane().add(selectGender, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 430, 210, 30));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Date of Birth  :");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 480, 110, -1));
 
         txtDateofBirth.setBackground(new java.awt.Color(40, 40, 40));
-        mainDataPanel.add(txtDateofBirth, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 300, 210, -1));
+        getContentPane().add(txtDateofBirth, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 480, 220, -1));
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel10.setText("*  Required");
-        mainDataPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 80, -1, -1));
+        jLabel9.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Blood Group  :");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 480, 110, -1));
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel11.setText("*");
-        mainDataPanel.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 240, 10, -1));
+        selectBloodGroup.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        selectBloodGroup.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Blood Group", "A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-" }));
+        selectBloodGroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectBloodGroupActionPerformed(evt);
+            }
+        });
+        getContentPane().add(selectBloodGroup, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 480, 210, 30));
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel12.setText("*");
-        mainDataPanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 110, 10, -1));
+        jLabel8.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Contact No  :");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 540, 100, -1));
 
-        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel13.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel13.setText("*");
-        mainDataPanel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 160, 10, -1));
+        txtContact_1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        txtContact_1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtContact_1KeyReleased(evt);
+            }
+        });
+        getContentPane().add(txtContact_1, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 530, 210, 30));
 
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel14.setText("*");
-        mainDataPanel.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 10, -1));
+        jLabel7.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Contact No  :");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 530, 100, -1));
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel15.setText("*");
-        mainDataPanel.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, 10, -1));
-
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel16.setText("*");
-        mainDataPanel.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 290, 10, -1));
-
-        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel17.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel17.setText("*");
-        mainDataPanel.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 340, 10, -1));
-
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel18.setText("*");
-        mainDataPanel.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, 10, -1));
-
-        getContentPane().add(mainDataPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 100, 720, 530));
-
-        navPanel.setBackground(new java.awt.Color(78, 80, 82));
-        navPanel.setForeground(new java.awt.Color(255, 255, 255));
-        navPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        btnAdd.setBackground(new java.awt.Color(0, 255, 51));
-        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
-        btnAdd.setText("REGISTER");
+        btnAdd.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/verify 30.png"))); // NOI18N
+        btnAdd.setText(" REGISTER");
         btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnAddMouseClicked(evt);
             }
         });
-        navPanel.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, 200, 40));
+        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, 200, 50));
 
-        btnShowPatientDetails.setBackground(new java.awt.Color(70, 73, 75));
-        btnShowPatientDetails.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnShowPatientDetails.setForeground(new java.awt.Color(255, 255, 255));
-        btnShowPatientDetails.setText("Show Patient Details");
-        btnShowPatientDetails.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnShowPatientDetailsMouseClicked(evt);
-            }
-        });
-        navPanel.add(btnShowPatientDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, 250, 40));
-
-        btnUpdate.setBackground(new java.awt.Color(102, 102, 255));
-        btnUpdate.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         btnUpdate.setText("UPDATE");
         btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnUpdateMouseClicked(evt);
             }
         });
-        navPanel.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 200, 40));
+        getContentPane().add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 320, 200, 50));
 
-        btnReturnToHome.setBackground(new java.awt.Color(255, 197, 62));
-        btnReturnToHome.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnReturnToHome.setForeground(new java.awt.Color(255, 255, 255));
-        btnReturnToHome.setText("Return to Home");
+        btnShowPatientDetails.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        btnShowPatientDetails.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/patient.png"))); // NOI18N
+        btnShowPatientDetails.setText(" Show Patient Details");
+        btnShowPatientDetails.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnShowPatientDetailsMouseClicked(evt);
+            }
+        });
+        getContentPane().add(btnShowPatientDetails, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 550, 250, 50));
+
+        btnReturnToHome.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        btnReturnToHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/home.png"))); // NOI18N
+        btnReturnToHome.setText(" Return to Home");
         btnReturnToHome.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnReturnToHomeMouseClicked(evt);
             }
         });
-        navPanel.add(btnReturnToHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 250, 40));
+        getContentPane().add(btnReturnToHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 610, 250, 50));
 
-        getContentPane().add(navPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 280, 530));
+        txtContact_2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        txtContact_2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtContact_2KeyReleased(evt);
+            }
+        });
+        getContentPane().add(txtContact_2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 530, 210, 30));
+
+        formHeading.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        formHeading.setForeground(new java.awt.Color(255, 255, 255));
+        formHeading.setText("Register Patient");
+        getContentPane().add(formHeading, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 110, -1, -1));
+
+        jSeparator1.setForeground(new java.awt.Color(204, 102, 0));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 170, 860, 10));
+
+        headerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        jLabel10.setText("Medical Center Management System");
+        headerPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 228, -1));
+
+        btnClose.setBackground(new java.awt.Color(255, 255, 255));
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/close.png"))); // NOI18N
+        btnClose.setToolTipText("Close Application");
+        btnClose.setBorder(null);
+        btnClose.setBorderPainted(false);
+        btnClose.setContentAreaFilled(false);
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+        headerPanel.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(1370, 0, 30, 30));
+
+        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/logout.png"))); // NOI18N
+        btnLogOut.setToolTipText("Log out");
+        btnLogOut.setBorder(null);
+        btnLogOut.setBorderPainted(false);
+        btnLogOut.setContentAreaFilled(false);
+        btnLogOut.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
+        headerPanel.add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(1330, 0, 30, 30));
+
+        getContentPane().add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 30));
+
+        bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/patientRegister.png"))); // NOI18N
+        bgImage.setText("jLabel19");
+        getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 750));
 
         pack();
         setLocationRelativeTo(null);
@@ -369,7 +315,7 @@ public class PatientRegForm extends javax.swing.JFrame {
 
     // define method to get minimum date as a Date
     private Date getMinDate() throws ParseException {
-        String strMinDate = "31/12/1998";
+        String strMinDate = "01/01/1970";
         Date minDate = new SimpleDateFormat("dd/MM/yyyy").parse(strMinDate);
         return minDate;
     }
@@ -384,25 +330,25 @@ public class PatientRegForm extends javax.swing.JFrame {
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
 
         // setAddress in patient
-        patient.setAddress(txtAddress.getText());
+//        patient.setAddress(txtAddress.getText());
         // setDateOfBirth in patient
-        patient.setDateOfBirth(getSelectedBirthDate());
+        newPatient.setDateOfBirth(getSelectedBirthDate());
 
         /* when the txtContact_2(optional) field is empty it will store NULL in database, 
         in update this will be an error therefore it set to empty String*/
         
         if (txtContact_2.getText().equals("")) {
-            patient.setContactNo_2("");
+            newPatient.setContactNo_2("");
         }
         
         // checking form has empty fields
-        String errors = checkErrors();
+        String errors = checkErrors(newPatient);
 
         if (errors.equals("")) {
 
             // if it doesn't have empty field 
             // insert to database and give message
-            patientDao.insertPatient(patient);
+            patientDao.insertPatient(newPatient);
             JOptionPane.showMessageDialog(this, "Patient Registered Successfully.");
 
             // close form and open table
@@ -439,18 +385,21 @@ public class PatientRegForm extends javax.swing.JFrame {
         //set values to object
         patient.setAddress(txtAddress.getText());
         patient.setDateOfBirth(getSelectedBirthDate());
+        
+        System.out.println("in upt  "+patient.getFirstName()+" "+patient.getLastName() );
 
         // check what values were updated
         String updates = checkUpdates(patient);
 
 
         // check whether reqiured fields have empty values
-      String errors = checkErrors();
+      String errors = checkErrors(patient);
 
       if (errors.equals("")) {
 
             // if required fields are filled
-            
+            System.out.println("in upt normal "+patient.getFirstName()+" "+patient.getLastName() );
+            System.out.println("in upt updating "+updatingPatient.getFirstName()+" "+updatingPatient.getLastName() );
             if (updates.equals("")) {
                 
                 // if it doesn't update any value --> show message
@@ -486,48 +435,48 @@ public class PatientRegForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "You have following errors.\n" + errors);
         }
 
-
+       
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     // first name validation
     private void txtFirstNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFirstNameKeyReleased
         String pattern = "^([A-Z][a-z]{3,25})$";
-        txtFieldValidation(txtFirstName, pattern, patient, "setFirstName");
+        txtFieldValidation(txtFirstName, pattern, newPatient, "setFirstName");
     }//GEN-LAST:event_txtFirstNameKeyReleased
 
     // last name validation
     private void txtLastNameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLastNameKeyReleased
         String pattern = "^([A-Z][a-z]{3,25})$";
-        txtFieldValidation(txtLastName, pattern, patient, "setLastName");
+        txtFieldValidation(txtLastName, pattern, newPatient, "setLastName");
     }//GEN-LAST:event_txtLastNameKeyReleased
 
     // nic validation
     private void txtNICKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNICKeyReleased
         String pattern = "^([12][09][01789][0-9]{9})|([789][0-9]{8}[V|v])$";
-        txtFieldValidation(txtNIC, pattern, patient, "setNIC");
+        txtFieldValidation(txtNIC, pattern, newPatient, "setNIC");
     }//GEN-LAST:event_txtNICKeyReleased
 
     // contact_no_1 validation 
     private void txtContact_1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContact_1KeyReleased
         String pattern = "^([0][7][01245678][0-9]{7})|([0][012345689][0-9]{8})$";
-        txtFieldValidation(txtContact_1, pattern, patient, "setContactNo_1");
+        txtFieldValidation(txtContact_1, pattern, newPatient, "setContactNo_1");
     }//GEN-LAST:event_txtContact_1KeyReleased
 
     // contact_no_2 validation 
     private void txtContact_2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContact_2KeyReleased
         String pattern = "^([0][7][01245678][0-9]{7})|([0][012345689][0-9]{8})$";
-        txtFieldValidation(txtContact_2, pattern, patient, "setContactNo_2");
+        txtFieldValidation(txtContact_2, pattern, newPatient, "setContactNo_2");
     }//GEN-LAST:event_txtContact_2KeyReleased
 
     private void txtAddressKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAddressKeyReleased
-//        String pattern = "^([0][7][01245678][0-9]{7})|([0][012345689][0-9]{8})$";
-//        txtFieldValidation(txtAddress, pattern, patient,"setAddress");
+        String pattern = "^(.*)$";
+        txtAreaValidation(txtAddress, pattern, newPatient,"setAddress");
     }//GEN-LAST:event_txtAddressKeyReleased
 
     // gender validation
     private void selectGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectGenderActionPerformed
         try {
-            selectFieldValidation(selectGender, "Select Gender", patient, "setGender");
+            selectFieldValidation(selectGender, "Select Gender", newPatient, "setGender");
 
 //            System.out.println("Gender-- "+patient.getGender());
         } catch (NoSuchMethodException ex) {
@@ -544,7 +493,7 @@ public class PatientRegForm extends javax.swing.JFrame {
     // blodgroup validation
     private void selectBloodGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectBloodGroupActionPerformed
         try {
-            selectFieldValidation(selectBloodGroup, "Select Blood Group", patient, "setBloodGroup");
+            selectFieldValidation(selectBloodGroup, "Select Blood Group", newPatient, "setBloodGroup");
 //            System.out.println("Blood-- "+patient.getBloodGroup());
         } catch (NoSuchMethodException ex) {
             Logger.getLogger(PatientRegForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -559,13 +508,38 @@ public class PatientRegForm extends javax.swing.JFrame {
 
     private void txtFirstNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFirstNameActionPerformed
         String pattern = "^([A-Z][a-z]{3,25})$";
-        txtFieldValidation(txtFirstName, pattern, patient, "setFirstName");
+        txtFieldValidation(txtFirstName, pattern, newPatient, "setFirstName");
         System.out.println("Action --- ");
     }//GEN-LAST:event_txtFirstNameActionPerformed
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning res.png");
+        //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+        if(res == 0) {
+            System.exit(res);
+        } else if (res == 1) {
+            //         System.out.println("Pressed NO");
+        }
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\logout 50.png");
+        //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to Log Out ?", "Log Out", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+        if(res == 0) {
+            new LogInForm().setVisible(true);
+            this.dispose();
+        } else if (res == 1) {
+            //         System.out.println("Pressed NO");
+        }
+    }//GEN-LAST:event_btnLogOutActionPerformed
 
     // define method for select field validation
     public static void selectFieldValidation(JComboBox comboBox, String defaultSelectedOption, Object object, String method) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         String selectedOption = comboBox.getSelectedItem().toString();
+        
+        System.out.println("s- "+selectedOption);
 
         if (selectedOption.equals(defaultSelectedOption)) {
             comboBox.setBorder(invalidBorder);
@@ -573,7 +547,7 @@ public class PatientRegForm extends javax.swing.JFrame {
             Method executingMethod = object.getClass().getDeclaredMethod(method, String.class);
 
             // Invoke the method on the instance
-            executingMethod.invoke(object, null);
+            executingMethod.invoke(object, (Object)null);
         } else {
 
             comboBox.setBorder(validBorder);
@@ -613,6 +587,62 @@ public class PatientRegForm extends javax.swing.JFrame {
 
         } else {
             textField.setBorder(invalidBorder);
+            try {
+                // Method name to be invoked
+                String methodName = method;
+
+                // Get the method with the specified name
+                Method executingMethod = object.getClass().getDeclaredMethod(methodName, String.class);
+
+                // Invoke the method on the instance
+                executingMethod.invoke(object, (Object)null);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+    
+    // define method for text field validation
+    public static void txtAreaValidation(JTextArea textArea, String matchingPattern, Object object, String method) {
+        Pattern pattern;
+        Matcher isMatching;
+
+        pattern = Pattern.compile(matchingPattern);
+        isMatching = pattern.matcher(textArea.getText());
+
+        if (isMatching.matches()) {
+            textArea.setBorder(validBorder);
+            try {
+                // Method name to be invoked
+                String methodName = method;
+
+                // Get the method with the specified name
+                Method executingMethod = object.getClass().getDeclaredMethod(methodName, String.class);
+
+                // Invoke the method on the instance
+                executingMethod.invoke(object, textArea.getText());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            textArea.setBorder(invalidBorder);
+            try {
+                // Method name to be invoked
+                String methodName = method;
+
+                // Get the method with the specified name
+                Method executingMethod = object.getClass().getDeclaredMethod(methodName, String.class);
+
+                // Invoke the method on the instance
+                executingMethod.invoke(object, (Object)null);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -665,7 +695,7 @@ public class PatientRegForm extends javax.swing.JFrame {
     }
 
     // define method for check empty values in required fields
-    private String checkErrors() {
+    private String checkErrors(Patient patient) {
 
         String errors = "";
 
@@ -700,10 +730,12 @@ public class PatientRegForm extends javax.swing.JFrame {
     // define method for update patient details
     public void updatePatientDetails(Patient selectedPatient) throws ParseException {
 
-        updatingPatient = new Patient();
-        updatingPatient = selectedPatient;
+        updatingPatient =new Patient(selectedPatient);
         
-        patient = selectedPatient;
+        patient = new Patient(selectedPatient);
+
+        
+        System.out.println("ss"+ patient.getFirstName());
 
         if (updatingPatientForm == null) {
             updatingPatientForm = new PatientRegForm();
@@ -733,37 +765,30 @@ public class PatientRegForm extends javax.swing.JFrame {
 
     // main method
     public static void main(String args[]) {
+        
+        FlatIntelliJLaf.setup();
 
         /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new PatientRegForm().setVisible(true);
-//            }
-//        });
-        new PatientRegForm().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new PatientRegForm().setVisible(true);
+            }
+        });
 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel bgImage;
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnReturnToHome;
     private javax.swing.JButton btnShowPatientDetails;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JPanel footer;
-    private javax.swing.JLabel footerText;
     private javax.swing.JLabel formHeading;
-    private javax.swing.JPanel header;
-    private javax.swing.JLabel headerText;
+    private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -773,8 +798,7 @@ public class PatientRegForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel mainDataPanel;
-    private javax.swing.JPanel navPanel;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JComboBox<String> selectBloodGroup;
     private javax.swing.JComboBox<String> selectGender;
     private javax.swing.JTextArea txtAddress;
