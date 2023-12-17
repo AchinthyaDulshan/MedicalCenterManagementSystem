@@ -6,8 +6,11 @@ package patient;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.toedter.calendar.JCalendar;
+import static common.CommonFunctions.getMinDate;
 import home.HomeForm;
 import java.awt.Color;
+import static java.awt.Color.GREEN;
+import static java.awt.Color.green;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
@@ -26,6 +29,10 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import logIn.LogInForm;
+import static validation.Validation.selectFieldValidation;
+import static validation.Validation.txtAreaValidation;
+import static validation.Validation.txtFieldValidation;
+import static common.CommonFunctions.getSelectedBirthDate;
 
 /**
  *
@@ -39,7 +46,7 @@ public class PatientRegForm extends javax.swing.JFrame {
     private static PatientRegForm updatingPatientForm;
     private static Patient updatingPatient;
     private static Patient patient;
-    private static Patient newPatient;
+    private static Patient newPatient= new Patient();
 
     //define validation borders
     public static Border invalidBorder = new LineBorder(Color.red, 2, true);
@@ -51,14 +58,21 @@ public class PatientRegForm extends javax.swing.JFrame {
         initComponents();
         // init dao object
         patientDao = new PatientDao();
-        
+
         //init patient object
-        newPatient = new Patient();
-        
+//        newPatient ;
+
         // set update button invisible
         btnUpdate.setVisible(false);
 
-        
+        // try to set min,max date on date of birth date picker
+        // max date --> Today
+        // min date --> set by getMinDate()
+        try {
+            txtDateofBirth.setSelectableDateRange(getMinDate(), new java.util.Date());
+        } catch (ParseException ex) {
+            Logger.getLogger(PatientRegForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -123,7 +137,7 @@ public class PatientRegForm extends javax.swing.JFrame {
         jLabel2.setText("Last Name  :");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 300, 100, -1));
 
-        txtLastName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        txtLastName.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtLastName.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtLastNameKeyReleased(evt);
@@ -181,6 +195,7 @@ public class PatientRegForm extends javax.swing.JFrame {
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 480, 110, -1));
 
         txtDateofBirth.setBackground(new java.awt.Color(40, 40, 40));
+        txtDateofBirth.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         getContentPane().add(txtDateofBirth, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 480, 220, -1));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
@@ -216,7 +231,7 @@ public class PatientRegForm extends javax.swing.JFrame {
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 530, 100, -1));
 
         btnAdd.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
-        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/verify 30.png"))); // NOI18N
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/add.png"))); // NOI18N
         btnAdd.setText(" REGISTER");
         btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -226,7 +241,8 @@ public class PatientRegForm extends javax.swing.JFrame {
         getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, 200, 50));
 
         btnUpdate.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
-        btnUpdate.setText("UPDATE");
+        btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/update.png"))); // NOI18N
+        btnUpdate.setText(" UPDATE");
         btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnUpdateMouseClicked(evt);
@@ -313,12 +329,7 @@ public class PatientRegForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    // define method to get minimum date as a Date
-    private Date getMinDate() throws ParseException {
-        String strMinDate = "01/01/1970";
-        Date minDate = new SimpleDateFormat("dd/MM/yyyy").parse(strMinDate);
-        return minDate;
-    }
+    
 
     // when click on Show Patient Details button
     private void btnShowPatientDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnShowPatientDetailsMouseClicked
@@ -332,15 +343,14 @@ public class PatientRegForm extends javax.swing.JFrame {
         // setAddress in patient
 //        patient.setAddress(txtAddress.getText());
         // setDateOfBirth in patient
-        newPatient.setDateOfBirth(getSelectedBirthDate());
+        newPatient.setDateOfBirth(getSelectedBirthDate(txtDateofBirth));
 
         /* when the txtContact_2(optional) field is empty it will store NULL in database, 
         in update this will be an error therefore it set to empty String*/
-        
         if (txtContact_2.getText().equals("")) {
             newPatient.setContactNo_2("");
         }
-        
+
         // checking form has empty fields
         String errors = checkErrors(newPatient);
 
@@ -349,7 +359,7 @@ public class PatientRegForm extends javax.swing.JFrame {
             // if it doesn't have empty field 
             // insert to database and give message
             patientDao.insertPatient(newPatient);
-            JOptionPane.showMessageDialog(this, "Patient Registered Successfully.");
+            JOptionPane.showMessageDialog(null, "Patient Registered Successfully.");
 
             // close form and open table
             new PatientDetailsForm().setVisible(true);
@@ -357,7 +367,7 @@ public class PatientRegForm extends javax.swing.JFrame {
 
         } else {
             // if it have empty fields indicate using message
-            JOptionPane.showMessageDialog(this, "You have following errors.\n" + errors);
+            JOptionPane.showMessageDialog(null, "You have following errors.\n" + errors);
         }
 
     }//GEN-LAST:event_btnAddMouseClicked
@@ -369,39 +379,35 @@ public class PatientRegForm extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnReturnToHomeMouseClicked
 
-    //format entered date 
-    private String getSelectedBirthDate() {
-        Date birthDate = txtDateofBirth.getDate();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String strBirthDate = formatter.format(birthDate);
-        return strBirthDate;
-    }
-    
+   
+
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
 
         // get patientId to future refrences
-        patient.setPatientId(updatingPatient.getPatientId());
+//        patient.setPatientId(updatingPatient.getPatientId());
 
         //set values to object
-        patient.setAddress(txtAddress.getText());
-        patient.setDateOfBirth(getSelectedBirthDate());
-        
-        System.out.println("in upt  "+patient.getFirstName()+" "+patient.getLastName() );
+//        newPatient.setAddress(txtAddress.getText());
+        newPatient.setDateOfBirth(getSelectedBirthDate(txtDateofBirth));
+
+        if (txtContact_2.getText().equals("")) {
+            newPatient.setContactNo_2("");
+        }
+//        System.out.println("in upt  " + patient.getFirstName() + " " + patient.getLastName());
 
         // check what values were updated
-        String updates = checkUpdates(patient);
-
+        String updates = checkUpdates(newPatient);
 
         // check whether reqiured fields have empty values
-      String errors = checkErrors(patient);
+        String errors = checkErrors(newPatient);
 
-      if (errors.equals("")) {
+        if (errors.equals("")) {
 
             // if required fields are filled
-            System.out.println("in upt normal "+patient.getFirstName()+" "+patient.getLastName() );
-            System.out.println("in upt updating "+updatingPatient.getFirstName()+" "+updatingPatient.getLastName() );
+//            System.out.println("in upt normal " + patient.getFirstName() + " " + patient.getLastName());
+//            System.out.println("in upt updating " + updatingPatient.getFirstName() + " " + updatingPatient.getLastName());
             if (updates.equals("")) {
-                
+
                 // if it doesn't update any value --> show message
                 JOptionPane.showMessageDialog(this, "No updates have been done.");
 
@@ -414,7 +420,7 @@ public class PatientRegForm extends javax.swing.JFrame {
                 if (result == JOptionPane.YES_OPTION) {
 
                     //perform update & load patient table
-                    patientDao.updatePatient(patient);
+                    patientDao.updatePatient(newPatient);
                     new PatientDetailsForm().setVisible(true);
                     this.dispose();
 
@@ -435,7 +441,7 @@ public class PatientRegForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "You have following errors.\n" + errors);
         }
 
-       
+
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     // first name validation
@@ -470,7 +476,7 @@ public class PatientRegForm extends javax.swing.JFrame {
 
     private void txtAddressKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAddressKeyReleased
         String pattern = "^(.*)$";
-        txtAreaValidation(txtAddress, pattern, newPatient,"setAddress");
+        txtAreaValidation(txtAddress, pattern, newPatient, "setAddress");
     }//GEN-LAST:event_txtAddressKeyReleased
 
     // gender validation
@@ -516,7 +522,7 @@ public class PatientRegForm extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning res.png");
         //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
         int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
-        if(res == 0) {
+        if (res == 0) {
             System.exit(res);
         } else if (res == 1) {
             //         System.out.println("Pressed NO");
@@ -527,7 +533,7 @@ public class PatientRegForm extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\logout 50.png");
         //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
         int res = JOptionPane.showConfirmDialog(null, "Are you sure to Log Out ?", "Log Out", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
-        if(res == 0) {
+        if (res == 0) {
             new LogInForm().setVisible(true);
             this.dispose();
         } else if (res == 1) {
@@ -535,117 +541,10 @@ public class PatientRegForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLogOutActionPerformed
 
-    // define method for select field validation
-    public static void selectFieldValidation(JComboBox comboBox, String defaultSelectedOption, Object object, String method) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        String selectedOption = comboBox.getSelectedItem().toString();
-        
-        System.out.println("s- "+selectedOption);
-
-        if (selectedOption.equals(defaultSelectedOption)) {
-            comboBox.setBorder(invalidBorder);
-            // Get the method with the specified name
-            Method executingMethod = object.getClass().getDeclaredMethod(method, String.class);
-
-            // Invoke the method on the instance
-            executingMethod.invoke(object, (Object)null);
-        } else {
-
-            comboBox.setBorder(validBorder);
-
-            // Get the method with the specified name
-            Method executingMethod = object.getClass().getDeclaredMethod(method, String.class);
-
-            // Invoke the method on the instance
-            executingMethod.invoke(object, selectedOption);
-
-        }
-    }
-
-    // define method for text field validation
-    public static void txtFieldValidation(JTextField textField, String matchingPattern, Object object, String method) {
-        Pattern pattern;
-        Matcher isMatching;
-
-        pattern = Pattern.compile(matchingPattern);
-        isMatching = pattern.matcher(textField.getText());
-
-        if (isMatching.matches()) {
-            textField.setBorder(validBorder);
-            try {
-                // Method name to be invoked
-                String methodName = method;
-
-                // Get the method with the specified name
-                Method executingMethod = object.getClass().getDeclaredMethod(methodName, String.class);
-
-                // Invoke the method on the instance
-                executingMethod.invoke(object, textField.getText());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            textField.setBorder(invalidBorder);
-            try {
-                // Method name to be invoked
-                String methodName = method;
-
-                // Get the method with the specified name
-                Method executingMethod = object.getClass().getDeclaredMethod(methodName, String.class);
-
-                // Invoke the method on the instance
-                executingMethod.invoke(object, (Object)null);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
     
-    // define method for text field validation
-    public static void txtAreaValidation(JTextArea textArea, String matchingPattern, Object object, String method) {
-        Pattern pattern;
-        Matcher isMatching;
+    
 
-        pattern = Pattern.compile(matchingPattern);
-        isMatching = pattern.matcher(textArea.getText());
-
-        if (isMatching.matches()) {
-            textArea.setBorder(validBorder);
-            try {
-                // Method name to be invoked
-                String methodName = method;
-
-                // Get the method with the specified name
-                Method executingMethod = object.getClass().getDeclaredMethod(methodName, String.class);
-
-                // Invoke the method on the instance
-                executingMethod.invoke(object, textArea.getText());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        } else {
-            textArea.setBorder(invalidBorder);
-            try {
-                // Method name to be invoked
-                String methodName = method;
-
-                // Get the method with the specified name
-                Method executingMethod = object.getClass().getDeclaredMethod(methodName, String.class);
-
-                // Invoke the method on the instance
-                executingMethod.invoke(object, (Object)null);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
+    
 
     // define method to track updates
     private String checkUpdates(Patient existingPatient) {
@@ -705,7 +604,7 @@ public class PatientRegForm extends javax.swing.JFrame {
         if (patient.getLastName() == null) {
             errors += "Last name not entered.\n";
         }
-        if (patient.getAddress() == null) {
+        if (patient.getAddress() == null || patient.getAddress().equals("")) {
             errors += "Address not entered.\n";
         }
         if (patient.getNIC() == null) {
@@ -730,12 +629,15 @@ public class PatientRegForm extends javax.swing.JFrame {
     // define method for update patient details
     public void updatePatientDetails(Patient selectedPatient) throws ParseException {
 
-        updatingPatient =new Patient(selectedPatient);
-        
-        patient = new Patient(selectedPatient);
+//        updatingPatient = selectedPatient;
 
-        
-        System.out.println("ss"+ patient.getFirstName());
+//        newPatient = new Patient(selectedPatient);
+//String patientId, String firstName, String lastName, String address, String NIC, String dateOfBirth, String gender, String bloodGroup, String contactNo_1, String contactNo_2
+        newPatient = new Patient(selectedPatient.getPatientId(), selectedPatient.getFirstName(), selectedPatient.getLastName(), selectedPatient.getAddress(), selectedPatient.getNIC(), selectedPatient.getDateOfBirth(), selectedPatient.getGender(),selectedPatient.getBloodGroup(),selectedPatient.getContactNo_1(),selectedPatient.getContactNo_2());
+        updatingPatient = new Patient(selectedPatient.getPatientId(), selectedPatient.getFirstName(), selectedPatient.getLastName(), selectedPatient.getAddress(), selectedPatient.getNIC(), selectedPatient.getDateOfBirth(), selectedPatient.getGender(),selectedPatient.getBloodGroup(),selectedPatient.getContactNo_1(),selectedPatient.getContactNo_2());
+
+        patient = selectedPatient;
+        System.out.println("ss" + patient.getFirstName());
 
         if (updatingPatientForm == null) {
             updatingPatientForm = new PatientRegForm();
@@ -765,7 +667,7 @@ public class PatientRegForm extends javax.swing.JFrame {
 
     // main method
     public static void main(String args[]) {
-        
+
         FlatIntelliJLaf.setup();
 
         /* Create and display the form */

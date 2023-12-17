@@ -28,11 +28,11 @@ public class PrescriptionDao {
     public String getPrescriptionId() {
 
         // SQL for get last prescription Id
-        final String GET_LAST_PATIENT_ID = "SELECT max(prescriptionId) FROM prescription;";
+        final String GET_LAST_PRESCRIPTION_ID = "SELECT max(prescriptionId) FROM prescription;";
 
         try (Connection con = database.getDataBaseConnection()) {
             // Get the last prescriptionId
-            PreparedStatement getLastPrescriptionIdStatement = con.prepareStatement(GET_LAST_PATIENT_ID);
+            PreparedStatement getLastPrescriptionIdStatement = con.prepareStatement(GET_LAST_PRESCRIPTION_ID);
             ResultSet rs = getLastPrescriptionIdStatement.executeQuery();
 
             String lastPrescriptionId = "";

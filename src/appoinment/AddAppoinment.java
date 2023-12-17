@@ -4,6 +4,7 @@
  */
 package appoinment;
 
+import availableAppoinments.AvailableAppoinmentDao;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import doctor.Doctor;
@@ -11,8 +12,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import logIn.LogInForm;
 import static patient.PatientRegForm.invalidBorder;
 import static patient.PatientRegForm.validBorder;
 
@@ -47,9 +50,6 @@ public class AddAppoinment extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        headerPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        btnClose = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         selectDoctorType = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
@@ -62,88 +62,140 @@ public class AddAppoinment extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtNotes = new javax.swing.JTextArea();
         btnAddAppoinment = new javax.swing.JButton();
+        headerPanel = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        btnClose = new javax.swing.JButton();
+        btnLogOut = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        bgImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        headerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Select Type :");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 270, 110, -1));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel1.setText("Medical Center Management System");
-        headerPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 228, -1));
-
-        btnClose.setBackground(new java.awt.Color(255, 0, 0));
-        btnClose.setIcon(new javax.swing.ImageIcon("C:\\Users\\Achinthya Dulshan\\Downloads\\close re.png")); // NOI18N
-        btnClose.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCloseActionPerformed(evt);
-            }
-        });
-        headerPanel.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 0, 30, 30));
-
-        jPanel1.add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 30));
-
-        jLabel2.setText("Select Type:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, -1, -1));
-
+        selectDoctorType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         selectDoctorType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select the type of Doctor", "General Practitioner (GP) or Family Physician", "Otolaryngologist (ENT Specialist)", "Neurologist", "Dermatologist", "Cardiologist" }));
         selectDoctorType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectDoctorTypeActionPerformed(evt);
             }
         });
-        jPanel1.add(selectDoctorType, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 210, 170, -1));
+        jPanel1.add(selectDoctorType, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 270, 410, -1));
 
-        jLabel3.setText("Select Doctor:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 180, -1, -1));
+        jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Select Doctor :");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 330, 120, -1));
 
+        selectDoctor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         selectDoctor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select the Doctor" }));
         selectDoctor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectDoctorActionPerformed(evt);
             }
         });
-        jPanel1.add(selectDoctor, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 200, 300, 30));
+        jPanel1.add(selectDoctor, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 330, 410, 30));
 
-        jLabel4.setText("Select Time Slot:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 100, -1));
+        jLabel4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Select Time Slot :");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 390, 140, -1));
 
+        selectTimeSlot.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         selectTimeSlot.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Time Slot" }));
         selectTimeSlot.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectTimeSlotActionPerformed(evt);
             }
         });
-        jPanel1.add(selectTimeSlot, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 310, 410, 30));
+        jPanel1.add(selectTimeSlot, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 390, 410, 30));
 
+        txtPatientId.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtPatientId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPatientIdActionPerformed(evt);
             }
         });
-        jPanel1.add(txtPatientId, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 200, -1));
+        jPanel1.add(txtPatientId, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 210, 400, -1));
 
-        jLabel5.setText("Patient ID:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 70, -1));
+        jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Patient ID :");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 210, 90, -1));
 
-        jLabel6.setText("notes:");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 380, -1, -1));
+        jLabel6.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Notes:");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 450, -1, -1));
 
         txtNotes.setColumns(20);
+        txtNotes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtNotes.setRows(5);
         jScrollPane1.setViewportView(txtNotes);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 380, -1, -1));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 450, 410, -1));
 
+        btnAddAppoinment.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         btnAddAppoinment.setText("Add Appoinment");
         btnAddAppoinment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddAppoinmentActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAddAppoinment, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 530, 150, 40));
+        jPanel1.add(btnAddAppoinment, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 610, 200, 50));
+
+        headerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        jLabel10.setText("Medical Center Management System");
+        headerPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 228, -1));
+
+        btnClose.setBackground(new java.awt.Color(255, 255, 255));
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/close.png"))); // NOI18N
+        btnClose.setToolTipText("Close Application");
+        btnClose.setBorder(null);
+        btnClose.setBorderPainted(false);
+        btnClose.setContentAreaFilled(false);
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+        headerPanel.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(1370, 0, 30, 30));
+
+        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/logout.png"))); // NOI18N
+        btnLogOut.setToolTipText("Log out");
+        btnLogOut.setBorder(null);
+        btnLogOut.setBorderPainted(false);
+        btnLogOut.setContentAreaFilled(false);
+        btnLogOut.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
+        headerPanel.add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(1330, 0, 30, 30));
+
+        jPanel1.add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 30));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Add Appoinment");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 100, 290, -1));
+
+        jSeparator1.setForeground(new java.awt.Color(255, 204, 0));
+        jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 160, 950, 10));
+
+        bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/addAppoinment.png"))); // NOI18N
+        jPanel1.add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 750));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,16 +205,12 @@ public class AddAppoinment extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
-
-    }//GEN-LAST:event_btnCloseActionPerformed
 
     private void selectDoctorTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectDoctorTypeActionPerformed
         String selectedOption = selectDoctorType.getSelectedItem().toString();
@@ -175,13 +223,13 @@ public class AddAppoinment extends javax.swing.JFrame {
         System.out.println("doc type" + selectedOption);
 
         if (selectedOption.equals("Select the type of Doctor")) {
-            JOptionPane.showMessageDialog(this, "Invalid Selection.");
+            JOptionPane.showMessageDialog(null, "Invalid Selection.");
         } else {
             String viewingDoctor = "";
             ArrayList<ArrayList<String>> selectedDoctors = dao.getDoctorsByType(selectedOption);
 //            String doctorsList[] = new String[selectedDoctors.size()];
             if (selectedDoctors == null) {
-                JOptionPane.showMessageDialog(this, "There are no Doctors with this type.");
+                JOptionPane.showMessageDialog(null, "There are no Doctors with this type.");
             } else {
                 for (ArrayList<String> selectedDoctor : selectedDoctors) {
                     viewingDoctor = selectedDoctor.get(0) + " | " + selectedDoctor.get(1) + " " + selectedDoctor.get(2);
@@ -202,12 +250,12 @@ public class AddAppoinment extends javax.swing.JFrame {
         ArrayList<ArrayList<String>> appoinmentList = appoinmentDao.getAvailableAppoinmentDetails(selectedOption.split(" | ")[0].trim());
 
         if (selectedOption.equals("Select time Slot")) {
-            JOptionPane.showMessageDialog(this, "Invalid Selection.");
+            JOptionPane.showMessageDialog(null, "Invalid Selection.");
         } else {
             String availableSlot = "";
 
             if (appoinmentList == null) {
-                JOptionPane.showMessageDialog(this, "Not available time slots.");
+                JOptionPane.showMessageDialog(null, "Not available time slots.");
             } else {
                 for (ArrayList<String> availableAppoinment : appoinmentList) {
                     System.out.println("a" + availableAppoinment);
@@ -229,7 +277,7 @@ public class AddAppoinment extends javax.swing.JFrame {
     private void btnAddAppoinmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAppoinmentActionPerformed
 
         if (txtPatientId.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Patient ID not entered");
+            JOptionPane.showMessageDialog(null, "Patient ID not entered");
         } else {
             appoinment.setPatient_id(txtPatientId.getText());
 
@@ -248,6 +296,29 @@ public class AddAppoinment extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAddAppoinmentActionPerformed
 
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
+        //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+        if(res == 0) {
+            System.exit(res);
+        } else if (res == 1) {
+            //         System.out.println("Pressed NO");
+        }
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\logout 50.png");
+        //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to Log Out ?", "Log Out", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+        if(res == 0) {
+            new LogInForm().setVisible(true);
+            this.dispose();
+        } else if (res == 1) {
+            //         System.out.println("Pressed NO");
+        }
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -264,10 +335,13 @@ public class AddAppoinment extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel bgImage;
     private javax.swing.JButton btnAddAppoinment;
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnLogOut;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -275,6 +349,7 @@ public class AddAppoinment extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JComboBox<String> selectDoctor;
     private javax.swing.JComboBox<String> selectDoctorType;
     private javax.swing.JComboBox<String> selectTimeSlot;

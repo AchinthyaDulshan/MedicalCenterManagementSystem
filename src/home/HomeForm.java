@@ -57,6 +57,9 @@ public class HomeForm extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
         bgImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -81,7 +84,7 @@ public class HomeForm extends javax.swing.JFrame {
                 btnCloseActionPerformed(evt);
             }
         });
-        headerPanel.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 0, 30, 30));
+        headerPanel.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(1370, 0, 30, 30));
 
         btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/logout.png"))); // NOI18N
         btnLogOut.setToolTipText("Log out");
@@ -94,13 +97,14 @@ public class HomeForm extends javax.swing.JFrame {
                 btnLogOutActionPerformed(evt);
             }
         });
-        headerPanel.add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 0, 30, 30));
+        headerPanel.add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(1330, 0, 30, 30));
 
-        getContentPane().add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 30));
+        getContentPane().add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 30));
 
         txtDate.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        txtDate.setForeground(new java.awt.Color(0, 0, 0));
         txtDate.setText("2023/10/06  10.33.40");
-        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 80, -1, -1));
+        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 120, -1, -1));
 
         btnPatient.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         btnPatient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/patient.png"))); // NOI18N
@@ -117,7 +121,7 @@ public class HomeForm extends javax.swing.JFrame {
                 btnPatientActionPerformed(evt);
             }
         });
-        getContentPane().add(btnPatient, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 250, 50));
+        getContentPane().add(btnPatient, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, 250, 70));
 
         btnDoctor.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         btnDoctor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/doctor.png"))); // NOI18N
@@ -134,7 +138,7 @@ public class HomeForm extends javax.swing.JFrame {
                 btnDoctorActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDoctor, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 250, 50));
+        getContentPane().add(btnDoctor, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 260, 250, 70));
 
         btnHospital.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         btnHospital.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/redCross.png"))); // NOI18N
@@ -146,28 +150,39 @@ public class HomeForm extends javax.swing.JFrame {
                 btnHospitalMouseClicked(evt);
             }
         });
-        getContentPane().add(btnHospital, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, 250, 50));
+        getContentPane().add(btnHospital, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 530, 250, 70));
 
         jButton4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/healthcare.png"))); // NOI18N
         jButton4.setText(" Appoinments");
         jButton4.setToolTipText("View Appoinment Details");
         jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 250, 50));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 440, 250, 70));
 
         jButton3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/records.png"))); // NOI18N
         jButton3.setText(" Medical Records");
         jButton3.setToolTipText("View Medical Records");
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 250, 50));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 350, 250, 70));
 
         jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jButton1.setText("No of Doctors We have");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 170, 200, 120));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 190, 320, 230));
 
-        bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/adminPanel.png"))); // NOI18N
-        getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 570));
+        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("admin");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 50, 80, -1));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/admin 50.png"))); // NOI18N
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1290, 40, 50, 50));
+
+        jSeparator1.setForeground(new java.awt.Color(0, 204, 204));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 160, 890, 10));
+
+        bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/adminHome.png"))); // NOI18N
+        getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 780));
 
         pack();
         setLocationRelativeTo(null);
@@ -278,6 +293,9 @@ public class HomeForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel txtDate;
     // End of variables declaration//GEN-END:variables
 }

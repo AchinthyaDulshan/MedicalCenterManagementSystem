@@ -178,7 +178,7 @@ public class DoctorDao {
 
         final String GET_SELECTED_STAFF_ID = "SELECT id FROM medical_staff WHERE staffId=?";
 
-        final String UPDATE_STAFF_CONTACTS = "UPDATE staff_contact SET contact_no_1=? ,contact_no_2=? WHERE staffId=?";
+        final String UPDATE_STAFF_CONTACTS = "UPDATE staff_contact SET contact_no_1=? ,contact_no_2=? WHERE medical_staff_id=?";
 
         try (Connection con = database.getDataBaseConnection()) {
             // Update patient information

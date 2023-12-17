@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import logIn.LogInForm;
 
-
 /**
  *
  * @author Achinthya Dulshan
@@ -37,7 +36,6 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         btnUpdate.setVisible(false);
         btnDelete.setVisible(false);
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -257,7 +255,7 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         //invoke method in patientDao and return resultset
 //        ResultSet rs = patientDBObj.searchPatient(searchingPatient);
 //        patientTable.setModel(DbUtils.resultSetToTableModel(rs));
-        
+
     }//GEN-LAST:event_btnSearchMouseClicked
 
     private void btnReturnToHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReturnToHomeMouseClicked
@@ -266,20 +264,25 @@ public class PatientDetailsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReturnToHomeMouseClicked
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
-        // TODO add your handling code here:
-        int selectedRow = patientTable.getSelectedRow();
 
-        
-        DefaultTableModel model = (DefaultTableModel) patientTable.getModel();
-        
-        Patient deletingPatient = new Patient();
-        
-        deletingPatient.setPatientId(model.getValueAt(selectedRow, 0).toString());
-        
-        patientDBObj.deletePatient(deletingPatient);
-        
-        loadTable();
-        
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to delete ?", "Delete Message", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (res == 0) {
+            int selectedRow = patientTable.getSelectedRow();
+
+            DefaultTableModel model = (DefaultTableModel) patientTable.getModel();
+
+            Patient deletingPatient = new Patient();
+
+            deletingPatient.setPatientId(model.getValueAt(selectedRow, 0).toString());
+
+            patientDBObj.deletePatient(deletingPatient);
+
+            loadTable();
+        } else if (res == 1) {
+            //         System.out.println("Pressed NO");
+        }
+
+
     }//GEN-LAST:event_btnDeleteMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -290,7 +293,7 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
         //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
         int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
-        if(res == 0) {
+        if (res == 0) {
             System.exit(res);
         } else if (res == 1) {
             //         System.out.println("Pressed NO");
@@ -301,7 +304,7 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\logout 50.png");
         //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
         int res = JOptionPane.showConfirmDialog(null, "Are you sure to Log Out ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
-        if(res == 0) {
+        if (res == 0) {
             new LogInForm().setVisible(true);
             this.dispose();
         } else if (res == 1) {
@@ -327,7 +330,7 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         updatingPatient.setBloodGroup(model.getValueAt(selectedRow, 7).toString());
         updatingPatient.setContactNo_1(model.getValueAt(selectedRow, 8).toString());
         updatingPatient.setContactNo_2(model.getValueAt(selectedRow, 9).toString());
-        
+
         PatientRegForm patientForm = new PatientRegForm();
         try {
             patientForm.updatePatientDetails(updatingPatient);
@@ -337,16 +340,14 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         this.dispose();
     }
 
-    
     //create method to load patient details to JTable
     private void loadTable() {
         ResultSet rs = patientDBObj.fillTableData();
         patientTable.setModel(DbUtils.resultSetToTableModel(rs));
     }
 
-    
     public static void main(String args[]) {
-        
+
         FlatIntelliJLaf.setup();
 
         /* Create and display the form */

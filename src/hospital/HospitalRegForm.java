@@ -99,7 +99,8 @@ public class HospitalRegForm extends javax.swing.JFrame {
         getContentPane().add(formHeading, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 100, 330, 60));
 
         btnAdd.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
-        btnAdd.setText("ADD");
+        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/add.png"))); // NOI18N
+        btnAdd.setText(" ADD");
         btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnAddMouseClicked(evt);
@@ -175,7 +176,6 @@ public class HospitalRegForm extends javax.swing.JFrame {
         getContentPane().add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 30));
 
         bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/hospitalRegister.png"))); // NOI18N
-        bgImage.setText("jLabel2");
         getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 750));
 
         pack();

@@ -28,8 +28,7 @@ public class Doctor {
     public Doctor() {
     }
 
-    public Doctor(Integer id, String staffId, String firstName, String lastName, String address, String NIC, String licenseNumber, String Specialization, String dateOfBirth, String gender, String contactNo_1, String contactNo_2) {
-        this.id = id;
+    public Doctor(String staffId, String firstName, String lastName, String address, String NIC, String licenseNumber, String Specialization, String dateOfBirth, String gender, String contactNo_1, String contactNo_2) {
         this.staffId = staffId;
         this.firstName = firstName;
         this.lastName = lastName;

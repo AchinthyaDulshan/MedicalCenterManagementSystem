@@ -24,8 +24,7 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(int idFromDB, String patientId, String firstName, String lastName, String address, String NIC, String dateOfBirth, String gender, String bloodGroup, String contactNo_1, String contactNo_2) {
-        this.idFromDB = idFromDB;
+    public Patient(String patientId, String firstName, String lastName, String address, String NIC, String dateOfBirth, String gender, String bloodGroup, String contactNo_1, String contactNo_2) {
         this.patientId = patientId;
         this.firstName = firstName;
         this.lastName = lastName;

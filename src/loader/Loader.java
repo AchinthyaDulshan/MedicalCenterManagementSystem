@@ -5,6 +5,7 @@
 package loader;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import java.awt.Color;
 import logIn.LogInForm;
 
 /**
@@ -18,6 +19,7 @@ public class Loader extends javax.swing.JFrame {
      */
     public Loader() {
         initComponents();
+        loaderProgress.setBackground(new Color(0,0,0,0));
     }
 
     /**
@@ -33,6 +35,7 @@ public class Loader extends javax.swing.JFrame {
         loaderHeader = new javax.swing.JLabel();
         loaderProgress = new javax.swing.JProgressBar();
         loaderPercentage = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         loaderBg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -42,27 +45,31 @@ public class Loader extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        loaderHeader.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        loaderHeader.setFont(new java.awt.Font("Segoe UI Semibold", 1, 48)); // NOI18N
         loaderHeader.setForeground(new java.awt.Color(255, 255, 255));
-        loaderHeader.setText("Medical Center Management System (MCMS)");
-        jPanel1.add(loaderHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
+        loaderHeader.setText("Medical Center ");
+        jPanel1.add(loaderHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 110, 350, 80));
 
-        loaderProgress.setBackground(new java.awt.Color(25, 123, 48));
         loaderProgress.setForeground(new java.awt.Color(255, 255, 255));
         loaderProgress.setBorder(null);
         loaderProgress.setBorderPainted(false);
         loaderProgress.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel1.add(loaderProgress, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 600, 10));
+        jPanel1.add(loaderProgress, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 600, 10));
 
         loaderPercentage.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         loaderPercentage.setForeground(new java.awt.Color(255, 255, 255));
         loaderPercentage.setText("%");
-        jPanel1.add(loaderPercentage, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 250, -1, -1));
+        jPanel1.add(loaderPercentage, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 290, -1, -1));
 
-        loaderBg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/loader.png"))); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 20)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Management System");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 190, 220, 40));
+
+        loaderBg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/Untitled-1 v3.png"))); // NOI18N
         jPanel1.add(loaderBg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 300));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 340));
 
         pack();
         setLocationRelativeTo(null);
@@ -90,6 +97,7 @@ public class Loader extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel loaderBg;
     private javax.swing.JLabel loaderHeader;

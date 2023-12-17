@@ -68,6 +68,8 @@ public class AppoinmentDao {
 
         final String GET_SELECTED_APPOINMENT_ID = "SELECT id FROM availableappoinments WHERE availableAppoinmentId=?;";
 
+        final String UPDATE_AVAILABLE_APPOINMENTS = "UPDATE availableappoinments SET status = 1 where id=?";
+
         // Get a database connection
         try (Connection con = dataBase.getDataBaseConnection()) {
 
@@ -134,6 +136,10 @@ public class AppoinmentDao {
             // execute patient insertion
             addAppoinment.executeUpdate();
 
+            PreparedStatement updateAvailableAppoinments = con.prepareStatement(UPDATE_AVAILABLE_APPOINMENTS);
+            updateAvailableAppoinments.setInt(1,availableAppoinmentId);
+            updateAvailableAppoinments.executeUpdate();
+            
             //close resources
             getMaxAppoinmentIdStatement.close();
             getPrescriptionIdStatement.close();
@@ -159,5 +165,27 @@ public class AppoinmentDao {
         String zeros = "0".repeat(numberOfZerosToAdd);
 
         return zeros + original;
+    }
+    
+    // fill patient table from database values
+    public ResultSet fillTableData() {
+        
+        final String SELECT_APPOINMENT_DETAILS = "SELECT a.appoinmentId,a.status,a.notes,v.availableAppoinmentId,v.date,v.startTime,v.endTime,s.firstName,s.lastName,p.firstName,p.lastName FROM medicalcenterdb.appoinment a,medicalcenterdb.availableappoinments v,medicalcenterdb.medical_staff s, medicalcenterdb.patient p where a.patient_id=p.id AND a.medical_staff_id=s.id AND a.availableAppoinments_id=v.id;";
+
+        Connection con = dataBase.getDataBaseConnection();
+        PreparedStatement ps;
+        ResultSet rs = null;
+
+        try {
+            ps = con.prepareStatement(SELECT_APPOINMENT_DETAILS);
+            rs = ps.executeQuery();
+
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        } 
+
+        return rs;
     }
 }
