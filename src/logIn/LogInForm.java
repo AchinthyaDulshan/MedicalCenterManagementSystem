@@ -4,12 +4,9 @@
  */
 package logIn;
 
-import com.formdev.flatlaf.FlatDarkLaf;
+
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+
 
 /**
  *
@@ -52,11 +49,6 @@ public class LogInForm extends javax.swing.JFrame {
         txtUsername.setBackground(new java.awt.Color(255, 255, 255));
         txtUsername.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtUsername.setForeground(new java.awt.Color(0, 0, 0));
-        txtUsername.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUsernameActionPerformed(evt);
-            }
-        });
         getContentPane().add(txtUsername, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 240, 340, -1));
 
         passwordLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -76,11 +68,6 @@ public class LogInForm extends javax.swing.JFrame {
         btnClear.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("Clear");
-        btnClear.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnClearMouseClicked(evt);
-            }
-        });
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClearActionPerformed(evt);
@@ -106,9 +93,9 @@ public class LogInForm extends javax.swing.JFrame {
         btnLogIn.setForeground(new java.awt.Color(255, 255, 255));
         btnLogIn.setText("Log In");
         btnLogIn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnLogIn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnLogInMouseClicked(evt);
+        btnLogIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogInActionPerformed(evt);
             }
         });
         getContentPane().add(btnLogIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 420, 200, 40));
@@ -131,17 +118,13 @@ public class LogInForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUsernameActionPerformed
-
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
+        txtUsername.setText("");
+        txtPassword.setText("");
     }//GEN-LAST:event_btnClearActionPerformed
 
-    //define method -> when Log In button was clicked
-    private void btnLogInMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLogInMouseClicked
-
+    private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
+        
         //create user object & assign entered values
         User user = new User(txtUsername.getText(), txtPassword.getText());
         
@@ -153,26 +136,18 @@ public class LogInForm extends javax.swing.JFrame {
         
         //if credentials are correct login form will be closed
         if (status) {
-            windowClose(this);
+            this.dispose();
         }
-    }//GEN-LAST:event_btnLogInMouseClicked
-
-    //clear text field when reset button was clicked
-    private void btnClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearMouseClicked
-        txtUsername.setText("");
-        txtPassword.setText("");
-    }//GEN-LAST:event_btnClearMouseClicked
-
-    //create method to close loginForm
-    private static void windowClose(LogInForm obj) {
-        obj.dispose();
-    }
+    }//GEN-LAST:event_btnLogInActionPerformed
 
     public static void main(String args[]) {
         FlatIntelliJLaf.setup();
         //create loginform object and set it visible
-        LogInForm logInObj = new LogInForm();
-        logInObj.setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new LogInForm().setVisible(true);
+            }
+        });
 
     }
 

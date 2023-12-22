@@ -5,34 +5,24 @@
 package patient;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.toedter.calendar.JCalendar;
 import static common.CommonFunctions.getMinDate;
 import home.HomeForm;
-import java.awt.Color;
-import static java.awt.Color.GREEN;
-import static java.awt.Color.green;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.ParseException;
 import javax.swing.JTextField;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import logIn.LogInForm;
 import static validation.Validation.selectFieldValidation;
 import static validation.Validation.txtAreaValidation;
 import static validation.Validation.txtFieldValidation;
 import static common.CommonFunctions.getSelectedBirthDate;
+import home.HomeFormDoctor;
+import home.HomeFormReceptionist;
+import logIn.UserDao;
 
 /**
  *
@@ -41,16 +31,13 @@ import static common.CommonFunctions.getSelectedBirthDate;
 public class PatientRegForm extends javax.swing.JFrame {
 
     PatientDao patientDao;
+    private String userRole = UserDao.logInUser.getRole();
 
     //define static variables for future refrence
     private static PatientRegForm updatingPatientForm;
     private static Patient updatingPatient;
     private static Patient patient;
-    private static Patient newPatient= new Patient();
-
-    //define validation borders
-    public static Border invalidBorder = new LineBorder(Color.red, 2, true);
-    public static Border validBorder = new LineBorder(Color.GREEN, 2, true);
+    private static Patient newPatient = new Patient();
 
     //default constructor
     public PatientRegForm() {
@@ -61,7 +48,6 @@ public class PatientRegForm extends javax.swing.JFrame {
 
         //init patient object
 //        newPatient ;
-
         // set update button invisible
         btnUpdate.setVisible(false);
 
@@ -73,6 +59,7 @@ public class PatientRegForm extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(PatientRegForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+        checkPrivillage();
     }
 
     @SuppressWarnings("unchecked")
@@ -181,7 +168,7 @@ public class PatientRegForm extends javax.swing.JFrame {
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 430, 80, -1));
 
         selectGender.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        selectGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Gender", "Male", "Female" }));
+        selectGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Gender", "Male", "Female", "Preferred not to say" }));
         selectGender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectGenderActionPerformed(evt);
@@ -329,7 +316,11 @@ public class PatientRegForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    private void checkPrivillage() {
+        if (userRole.equals("reception")) {
+            btnShowPatientDetails.setVisible(false);
+        }
+    }
 
     // when click on Show Patient Details button
     private void btnShowPatientDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnShowPatientDetailsMouseClicked
@@ -340,8 +331,6 @@ public class PatientRegForm extends javax.swing.JFrame {
     // define method to btnAdd --> register patient
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
 
-        // setAddress in patient
-//        patient.setAddress(txtAddress.getText());
         // setDateOfBirth in patient
         newPatient.setDateOfBirth(getSelectedBirthDate(txtDateofBirth));
 
@@ -374,18 +363,30 @@ public class PatientRegForm extends javax.swing.JFrame {
 
     private void btnReturnToHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReturnToHomeMouseClicked
 
-        //show Home page and close this one
-        new HomeForm().setVisible(true);
-        this.dispose();
+        if (userRole.equals("reception")) {
+
+            new HomeFormReceptionist().setVisible(true);
+            this.dispose();
+
+        } else if (userRole.equals("doctor")) {
+
+            new HomeFormDoctor().setVisible(true);
+            this.dispose();
+
+        } else if (userRole.equals("admin")) {
+
+            new HomeForm().setVisible(true);
+            this.dispose();
+
+        }
+
     }//GEN-LAST:event_btnReturnToHomeMouseClicked
 
-   
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
 
         // get patientId to future refrences
 //        patient.setPatientId(updatingPatient.getPatientId());
-
         //set values to object
 //        newPatient.setAddress(txtAddress.getText());
         newPatient.setDateOfBirth(getSelectedBirthDate(txtDateofBirth));
@@ -541,11 +542,6 @@ public class PatientRegForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLogOutActionPerformed
 
-    
-    
-
-    
-
     // define method to track updates
     private String checkUpdates(Patient existingPatient) {
 
@@ -630,11 +626,10 @@ public class PatientRegForm extends javax.swing.JFrame {
     public void updatePatientDetails(Patient selectedPatient) throws ParseException {
 
 //        updatingPatient = selectedPatient;
-
 //        newPatient = new Patient(selectedPatient);
 //String patientId, String firstName, String lastName, String address, String NIC, String dateOfBirth, String gender, String bloodGroup, String contactNo_1, String contactNo_2
-        newPatient = new Patient(selectedPatient.getPatientId(), selectedPatient.getFirstName(), selectedPatient.getLastName(), selectedPatient.getAddress(), selectedPatient.getNIC(), selectedPatient.getDateOfBirth(), selectedPatient.getGender(),selectedPatient.getBloodGroup(),selectedPatient.getContactNo_1(),selectedPatient.getContactNo_2());
-        updatingPatient = new Patient(selectedPatient.getPatientId(), selectedPatient.getFirstName(), selectedPatient.getLastName(), selectedPatient.getAddress(), selectedPatient.getNIC(), selectedPatient.getDateOfBirth(), selectedPatient.getGender(),selectedPatient.getBloodGroup(),selectedPatient.getContactNo_1(),selectedPatient.getContactNo_2());
+        newPatient = new Patient(selectedPatient.getPatientId(), selectedPatient.getFirstName(), selectedPatient.getLastName(), selectedPatient.getAddress(), selectedPatient.getNIC(), selectedPatient.getDateOfBirth(), selectedPatient.getGender(), selectedPatient.getBloodGroup(), selectedPatient.getContactNo_1(), selectedPatient.getContactNo_2());
+        updatingPatient = new Patient(selectedPatient.getPatientId(), selectedPatient.getFirstName(), selectedPatient.getLastName(), selectedPatient.getAddress(), selectedPatient.getNIC(), selectedPatient.getDateOfBirth(), selectedPatient.getGender(), selectedPatient.getBloodGroup(), selectedPatient.getContactNo_1(), selectedPatient.getContactNo_2());
 
         patient = selectedPatient;
         System.out.println("ss" + patient.getFirstName());

@@ -4,7 +4,11 @@
  */
 package appoinment;
 
+import availableAppoinments.createAppoinment;
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import home.HomeForm;
+import home.HomeFormDoctor;
+import home.HomeFormReceptionist;
 import java.sql.ResultSet;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -18,6 +22,7 @@ import net.proteanit.sql.DbUtils;
 public class ViewAppoinments extends javax.swing.JFrame {
 
     private AppoinmentDao dao;
+    private static String nowStatus="";
     /**
      * Creates new form ViewAppoinments
      */
@@ -44,6 +49,9 @@ public class ViewAppoinments extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         btnClose = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
+        btnAddAppoinment = new javax.swing.JButton();
+        btnCreateAppoinment = new javax.swing.JButton();
+        btnHome = new javax.swing.JButton();
         bgImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -71,7 +79,7 @@ public class ViewAppoinments extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(appoinmentDetailsTable);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 180, 1030, 480));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, 1030, 480));
 
         headerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -108,6 +116,34 @@ public class ViewAppoinments extends javax.swing.JFrame {
 
         getContentPane().add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 30));
 
+        btnAddAppoinment.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        btnAddAppoinment.setText("Add Appoinment");
+        btnAddAppoinment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddAppoinmentActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAddAppoinment, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 180, 50));
+
+        btnCreateAppoinment.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        btnCreateAppoinment.setText("Create Appoinment");
+        btnCreateAppoinment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateAppoinmentActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnCreateAppoinment, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 180, 50));
+
+        btnHome.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        btnHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/home.png"))); // NOI18N
+        btnHome.setText(" Home");
+        btnHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHomeActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 180, 50));
+
         bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/appoinmenDetails.png"))); // NOI18N
         getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, -1));
 
@@ -115,6 +151,17 @@ public class ViewAppoinments extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void setStatus(String status) {
+        this.nowStatus = status;
+//        if (status.equals("reception")) {
+//            btnAddAppoinment.setVisible(false);
+//        }
+        
+        if (status.equals("doctor")) {
+            btnAddAppoinment.setVisible(false);
+        }
+    }
+    
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
         //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -138,6 +185,35 @@ public class ViewAppoinments extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLogOutActionPerformed
 
+    private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
+        if (nowStatus.equals("reception")) {
+
+            new HomeFormReceptionist().setVisible(true);
+            this.dispose();
+            
+        } else if (nowStatus.equals("doctor")) {
+            
+            new HomeFormDoctor().setVisible(true);
+            this.dispose();
+            
+        } else if (nowStatus.equals("admin")) {
+            
+            new HomeForm().setVisible(true);
+            this.dispose();
+            
+        }
+    }//GEN-LAST:event_btnHomeActionPerformed
+
+    private void btnAddAppoinmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAppoinmentActionPerformed
+        new AddAppoinment().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAddAppoinmentActionPerformed
+
+    private void btnCreateAppoinmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateAppoinmentActionPerformed
+        new createAppoinment().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCreateAppoinmentActionPerformed
+
     private void loadTable() {
         ResultSet rs = dao.fillTableData();
         appoinmentDetailsTable.setModel(DbUtils.resultSetToTableModel(rs));
@@ -147,6 +223,7 @@ public class ViewAppoinments extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         FlatIntelliJLaf.setup();
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -158,7 +235,10 @@ public class ViewAppoinments extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable appoinmentDetailsTable;
     private javax.swing.JLabel bgImage;
+    private javax.swing.JButton btnAddAppoinment;
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnCreateAppoinment;
+    private javax.swing.JButton btnHome;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel1;

@@ -4,10 +4,10 @@
  */
 package patient;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 import home.HomeForm;
+import home.HomeFormDoctor;
+import home.HomeFormReceptionist;
 import net.proteanit.sql.DbUtils;
 import java.sql.ResultSet;
 import java.text.ParseException;
@@ -17,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import logIn.LogInForm;
+import logIn.UserDao;
 
 /**
  *
@@ -25,6 +26,7 @@ import logIn.LogInForm;
 public class PatientDetailsForm extends javax.swing.JFrame {
 
     PatientDao patientDBObj;
+    private String userRole = UserDao.logInUser.getRole();
 
     /**
      * Creates new form PatientDetailsForm
@@ -35,6 +37,7 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         loadTable();
         btnUpdate.setVisible(false);
         btnDelete.setVisible(false);
+        checkPrivillage();
     }
 
     @SuppressWarnings("unchecked")
@@ -48,9 +51,6 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         btnDelete = new javax.swing.JButton();
         btnPatientRegister = new javax.swing.JButton();
         btnReturnToHome = new javax.swing.JButton();
-        btnClear = new javax.swing.JButton();
-        txtSearch = new javax.swing.JTextField();
-        btnSearch = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         headerPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -135,40 +135,6 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         });
         getContentPane().add(btnReturnToHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 600, 250, 50));
 
-        btnClear.setBackground(new java.awt.Color(255, 51, 51));
-        btnClear.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
-        btnClear.setForeground(new java.awt.Color(255, 255, 255));
-        btnClear.setText("CLEAR");
-        btnClear.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnClearMouseClicked(evt);
-            }
-        });
-        getContentPane().add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 90, 30));
-
-        txtSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSearchActionPerformed(evt);
-            }
-        });
-        getContentPane().add(txtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 200, 30));
-
-        btnSearch.setBackground(new java.awt.Color(0, 153, 153));
-        btnSearch.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
-        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
-        btnSearch.setText("SEARCH");
-        btnSearch.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnSearchMouseClicked(evt);
-            }
-        });
-        btnSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 160, 90, 30));
-
         jSeparator1.setForeground(new java.awt.Color(102, 255, 255));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 150, 880, 10));
 
@@ -215,14 +181,12 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSearchActionPerformed
-
-    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSearchActionPerformed
-
+    public void checkPrivillage() {
+        if (userRole.equals("reception")) {
+            
+        }
+    }
+    
     //view Patient Register form when patient registration is called
     private void btnPatientRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPatientRegisterMouseClicked
         new PatientRegForm().setVisible(true);
@@ -240,27 +204,23 @@ public class PatientDetailsForm extends javax.swing.JFrame {
         generateUpdateFormValues(selectedRow);
     }//GEN-LAST:event_btnUpdateMouseClicked
 
-    //clear search textField when btnClear clicked
-    private void btnClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClearMouseClicked
-        txtSearch.setText("");
-    }//GEN-LAST:event_btnClearMouseClicked
-
-    //create method to search a patient
-    private void btnSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSearchMouseClicked
-
-        //create patient object and set patientId for object in order to search
-        Patient searchingPatient = new Patient();
-        searchingPatient.setIdFromDB(Integer.parseInt(txtSearch.getText()));
-
-        //invoke method in patientDao and return resultset
-//        ResultSet rs = patientDBObj.searchPatient(searchingPatient);
-//        patientTable.setModel(DbUtils.resultSetToTableModel(rs));
-
-    }//GEN-LAST:event_btnSearchMouseClicked
-
     private void btnReturnToHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReturnToHomeMouseClicked
-        new HomeForm().setVisible(true);
-        this.dispose();
+        if (userRole.equals("reception")) {
+
+            new HomeFormReceptionist().setVisible(true);
+            this.dispose();
+            
+        } else if (userRole.equals("doctor")) {
+            
+            new HomeFormDoctor().setVisible(true);
+            this.dispose();
+            
+        } else if (userRole.equals("admin")) {
+            
+            new HomeForm().setVisible(true);
+            this.dispose();
+            
+        }
     }//GEN-LAST:event_btnReturnToHomeMouseClicked
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
@@ -360,13 +320,11 @@ public class PatientDetailsForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bgImage;
-    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnPatientRegister;
     private javax.swing.JButton btnReturnToHome;
-    private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel1;
@@ -374,6 +332,5 @@ public class PatientDetailsForm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable patientTable;
-    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

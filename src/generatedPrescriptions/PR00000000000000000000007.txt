@@ -1,0 +1,9 @@
+********* PRESCRIPTION *********
+Date and Time : 2023/12/18 13:00:52
+Doctor Name : name of doctor
+
+====================================
+| Medication | Dosage | Start date | End date |
+ - eferrc | rvrvewtv | 2023-12-18 | 2023-12-23 | 
+ - eferrc | rvrvewtv | 2023-12-18 | 2023-12-23 |  - rfrtgvtrgv | etbtebetb | 2023-12-18 | 2023-12-28 | 
+

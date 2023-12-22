@@ -6,9 +6,13 @@ package medicalRecords;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import home.HomeForm;
+import home.HomeFormDoctor;
+import home.HomeFormReceptionist;
+import java.sql.ResultSet;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import logIn.LogInForm;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -16,11 +20,16 @@ import logIn.LogInForm;
  */
 public class ViewMedicalRecords extends javax.swing.JFrame {
 
+    private MedicalRecordDao dao;
+    private static String nowStatus="";
     /**
      * Creates new form MedicalRecords
      */
     public ViewMedicalRecords() {
+        
         initComponents();
+        dao = new MedicalRecordDao();
+        loadTable();
     }
 
     /**
@@ -41,6 +50,7 @@ public class ViewMedicalRecords extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         btnClose = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         bgImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -48,6 +58,7 @@ public class ViewMedicalRecords extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Medical Records");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 90, 290, 50));
 
@@ -114,6 +125,16 @@ public class ViewMedicalRecords extends javax.swing.JFrame {
 
         getContentPane().add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 30));
 
+        jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/add.png"))); // NOI18N
+        jButton1.setText(" Add Record");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 680, 170, 50));
+
         bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/viewMedicalRecords.png"))); // NOI18N
         getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -121,6 +142,12 @@ public class ViewMedicalRecords extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void setStatus(String status) {
+        this.nowStatus = status;
+        if (status.equals("reception")) {
+//            btn.setVisible(false);
+        }
+    }
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
         //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -145,10 +172,33 @@ public class ViewMedicalRecords extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnReturnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnToHomeActionPerformed
-        new HomeForm().setVisible(true);
-        this.dispose();
+        if (nowStatus.equals("reception")) {
+
+            new HomeFormReceptionist().setVisible(true);
+            this.dispose();
+            
+        } else if (nowStatus.equals("doctor")) {
+            
+            new HomeFormDoctor().setVisible(true);
+            this.dispose();
+            
+        } else if (nowStatus.equals("admin")) {
+            
+            new HomeForm().setVisible(true);
+            this.dispose();
+            
+        }
     }//GEN-LAST:event_btnReturnToHomeActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new AddMedicalRecord().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void loadTable() {
+        ResultSet rs = dao.viewMedicalRecords();
+        jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+    }
     /**
      * @param args the command line arguments
      */
@@ -169,6 +219,7 @@ public class ViewMedicalRecords extends javax.swing.JFrame {
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnReturnToHome;
     private javax.swing.JPanel headerPanel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -66,7 +66,7 @@ public class Loader extends javax.swing.JFrame {
         jLabel1.setText("Management System");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 190, 220, 40));
 
-        loaderBg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/Untitled-1 v3.png"))); // NOI18N
+        loaderBg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/loader.png"))); // NOI18N
         jPanel1.add(loaderBg, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 340));

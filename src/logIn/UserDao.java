@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import database.MedicalCenterDataBase;
 import home.HomeForm;
+import home.HomeFormDoctor;
+import home.HomeFormReceptionist;
 import javax.swing.JOptionPane;
 import logIn.LogInForm;
 
@@ -18,7 +20,10 @@ import logIn.LogInForm;
  * @author Achinthya Dulshan
  */
 public class UserDao {
-
+    
+    public static User nowUser = new User();
+    public static User logInUser = new User();
+    
     //create a database object
     private MedicalCenterDataBase database;
 
@@ -30,18 +35,17 @@ public class UserDao {
     //create method to validate user
     public boolean checkUser(User user) {
         //get entered username data from database
-        final String GET_USER = "SELECT userName,password FROM user WHERE userName=?";
+        final String GET_USER = "SELECT userName,password,role FROM user WHERE userName=?";
 
         //create connection object
         Connection con = database.getDataBaseConnection();
-        
+
         //create resultset to catch data from DB
         ResultSet rs = null;
 
         //try to execute query
         try {
 
-          
             PreparedStatement ps = con.prepareStatement(GET_USER);
             ps.setString(1, user.getUserName());
             //execute query and assign result to ResultSet obj
@@ -52,8 +56,19 @@ public class UserDao {
 
                 if (user.getPassword().equals(rs.getString(2))) { //extract resultset data
 
+                    logInUser.setUserName(rs.getString(1));
+                    logInUser.setPassword(rs.getString(2));
+                    logInUser.setRole(rs.getString(3));
+                    
                     // if password is correct load homeForm
-                    new HomeForm().setVisible(true);
+                    if (logInUser.getRole().equals("admin")) {
+                        new HomeForm().setVisible(true);
+                    }else if (logInUser.getRole().equals("reception")) {
+                        new HomeFormReceptionist().setVisible(true);
+                    }else if (logInUser.getRole().equals("doctor")) {
+                        new HomeFormDoctor().setVisible(true);
+                    }
+                    
                     ps.close();
                     con.close();
                     return true;
@@ -79,5 +94,7 @@ public class UserDao {
         }
         return false;
     }
+
+
 
 }

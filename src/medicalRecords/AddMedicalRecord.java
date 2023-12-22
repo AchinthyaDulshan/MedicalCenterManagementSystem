@@ -7,6 +7,9 @@ package medicalRecords;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.toedter.calendar.JDateChooser;
+import home.HomeForm;
+import home.HomeFormDoctor;
+import home.HomeFormReceptionist;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -36,12 +39,14 @@ import prescription.PrescriptionDao;
  */
 public class AddMedicalRecord extends javax.swing.JFrame {
 
+    private static String nowStatus="";
     private MedicalRecordDao recordDao;
     private PrescriptionDao prescriptionDao;
     private Prescription newPrescription;
     private MedicalRecord newRecord;
     File newPrescriptionFile;
     ArrayList<ArrayList<String>> medicationsArray;
+    private static String dataText = "********* PRESCRIPTION *********\nDate and Time : " + new AddMedicalRecord().getDateAndTime() + "\n" + "Doctor Name : " + "name of doctor" + "\n\n" + "====================================\n" + "| Medication | Dosage | Start date | End date |\n";
 
     /**
      * Creates new form AddMedicalRecord
@@ -71,7 +76,6 @@ public class AddMedicalRecord extends javax.swing.JFrame {
 
         mainPanel = new javax.swing.JPanel();
         btnSubmit = new javax.swing.JButton();
-        btnPrint = new javax.swing.JButton();
         prescrptionDataEnterPanel = new javax.swing.JPanel();
         endDate = new com.toedter.calendar.JDateChooser();
         startDate = new com.toedter.calendar.JDateChooser();
@@ -105,7 +109,9 @@ public class AddMedicalRecord extends javax.swing.JFrame {
         btnLogOut = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtPrescriptionsData = new javax.swing.JTextArea();
+        btnHome = new javax.swing.JButton();
         bgImage = new javax.swing.JLabel();
+        btnPrint = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -119,16 +125,7 @@ public class AddMedicalRecord extends javax.swing.JFrame {
                 btnSubmitActionPerformed(evt);
             }
         });
-        mainPanel.add(btnSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 640, 120, 50));
-
-        btnPrint.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
-        btnPrint.setText("Print");
-        btnPrint.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPrintActionPerformed(evt);
-            }
-        });
-        mainPanel.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 640, 120, 50));
+        mainPanel.add(btnSubmit, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 630, 120, 50));
 
         prescrptionDataEnterPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         prescrptionDataEnterPanel.add(endDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 140, 190, -1));
@@ -284,13 +281,31 @@ public class AddMedicalRecord extends javax.swing.JFrame {
         mainPanel.add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         txtPrescriptionsData.setColumns(20);
+        txtPrescriptionsData.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         txtPrescriptionsData.setRows(5);
         jScrollPane3.setViewportView(txtPrescriptionsData);
 
         mainPanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 130, 460, 490));
 
+        btnHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/home.png"))); // NOI18N
+        btnHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHomeActionPerformed(evt);
+            }
+        });
+        mainPanel.add(btnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 40, -1, -1));
+
         bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/addMedicalRecord.png"))); // NOI18N
         mainPanel.add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 750));
+
+        btnPrint.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        btnPrint.setText("Print");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
+        mainPanel.add(btnPrint, new org.netbeans.lib.awtextra.AbsoluteConstraints(1140, 640, 120, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -307,6 +322,13 @@ public class AddMedicalRecord extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void setStatus(String status) {
+        this.nowStatus = status;
+        if (status.equals("reception")) {
+//            btn.setVisible(false);
+        }
+    }
+    
     private void txtMedicationNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMedicationNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMedicationNameActionPerformed
@@ -331,7 +353,7 @@ public class AddMedicalRecord extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
 
-        String text = "";
+//        txtPrescriptionsData.setText("");
         newPrescription.setMedicationName(txtMedicationName.getText());
         newPrescription.setDosage(txtDosage.getText());
         newPrescription.setStartDate(getSelectedDate(startDate));
@@ -344,23 +366,11 @@ public class AddMedicalRecord extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(this, "medication " + txtMedicationName.getText() + " added Successfully");
 
-            for (ArrayList<String> arrayList : medicationsArray) {
-                text += " - ";
-                for (String string : arrayList) {
-                    text += string + " | ";
-
-                }
-                appendStrToFile(newPrescriptionFile, text);
-                appendStrToFile(newPrescriptionFile, "\n");
-            }
-            try {
-                viewFileContent();
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(AddMedicalRecord.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(AddMedicalRecord.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            dataText += " - " + newPrescription.getMedicationName() + " | " + newPrescription.getDosage() + " | " + newPrescription.getStartDate() + " | " + newPrescription.getEndDate()+"\n";
+            
+            txtPrescriptionsData.setText(dataText);
+            
+            // reset field values
             txtMedicationName.setText("");
             txtDosage.setText("");
 
@@ -375,41 +385,39 @@ public class AddMedicalRecord extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void viewFileContent() throws FileNotFoundException, IOException {
-
-        BufferedReader br = new BufferedReader(new FileReader(newPrescriptionFile));
-
-        // Declaring a string variable
-        String st;
-        // Condition holds true till
-        // there is character in a string
-        while ((st = br.readLine()) != null) {
-            txtPrescriptionsData.setText(st);
-        }
-
-    }
-
+//    private void viewFileContent() throws FileNotFoundException, IOException {
+//
+//        BufferedReader br = new BufferedReader(new FileReader(newPrescriptionFile));
+//
+//        // Declaring a string variable
+//        String st;
+//        // Condition holds true till
+//        // there is character in a string
+//        while ((st = br.readLine()) != null) {
+//            txtPrescriptionsData.setText(st);
+//        }
+//
+//    }
     // TO append string into a file
-    public static void appendStrToFile(File file, String str) {
-        // Try block to check for exceptions
-        try {
-
-            // Open given file in append mode by creating an
-            // object of BufferedWriter class
-            BufferedWriter out = new BufferedWriter(new FileWriter(file, true));
-
-            // Writing on output stream
-            out.write(str);
-            // Closing the connection
-            out.close();
-        } // Catch block to handle the exceptions
-        catch (IOException e) {
-
-            // Display message when exception occurs
-            System.out.println("exception occurred" + e);
-        }
-    }
-
+//    public static void appendStrToFile(File file, String str) {
+//        // Try block to check for exceptions
+//        try {
+//
+//            // Open given file in append mode by creating an
+//            // object of BufferedWriter class
+//            BufferedWriter out = new BufferedWriter(new FileWriter(file, true));
+//
+//            // Writing on output stream
+//            out.write(str);
+//            // Closing the connection
+//            out.close();
+//        } // Catch block to handle the exceptions
+//        catch (IOException e) {
+//
+//            // Display message when exception occurs
+//            System.out.println("exception occurred" + e);
+//        }
+//    }
     //format entered date 
     private String getSelectedDate(JDateChooser datachooser) {
         Date date = datachooser.getDate();
@@ -429,6 +437,8 @@ public class AddMedicalRecord extends javax.swing.JFrame {
         newRecord.setTratmentPlan(txtTreatmentPlan.getText());
         newRecord.setTestResult(txtTestResults.getText());
 
+        writePrescriptionFile();
+
         prescriptionDao.insertPrescription(newPrescription);
         recordDao.insertMedicalRecord(newRecord);
 
@@ -438,26 +448,8 @@ public class AddMedicalRecord extends javax.swing.JFrame {
     private void checkPrescriptionRequiredActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkPrescriptionRequiredActionPerformed
 
         if (checkPrescriptionRequired.isSelected()) {
-//            prescrptionDataEnterPanel.setVisible(true);
-            try {
-                FileWriter newWriter = new FileWriter(newPrescriptionFile);
-                newWriter.write("********* PRESCRIPTION *********\n");
-                newWriter.write("Date and Time : " + getDateAndTime() + "\n");
-                newWriter.write("Doctor Name : " + "name of doctor" + "\n\n");
-                newWriter.write("====================================\n");
-                newWriter.write("| Medication | Dosage | Start date | End date |\n");
-                try {
-                    viewFileContent();
-                } catch (FileNotFoundException ex) {
-                    Logger.getLogger(AddMedicalRecord.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(AddMedicalRecord.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                newWriter.close();
-            } catch (IOException ex) {
-                Logger.getLogger(AddMedicalRecord.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            prescrptionDataEnterPanel.setVisible(true);
+            txtPrescriptionsData.setText(dataText);
 
         } else {
             prescrptionDataEnterPanel.setVisible(false);
@@ -465,6 +457,32 @@ public class AddMedicalRecord extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_checkPrescriptionRequiredActionPerformed
 
+    private void writePrescriptionFile() {
+        String text = "";
+        try {
+            FileWriter newWriter = new FileWriter(newPrescriptionFile);
+            newWriter.write("********* PRESCRIPTION *********\n");
+            newWriter.write("Date and Time : " + getDateAndTime() + "\n");
+            newWriter.write("Doctor Name : " + "name of doctor" + "\n\n");
+            newWriter.write("====================================\n");
+            newWriter.write("| Medication | Dosage | Start date | End date |\n");
+
+            for (ArrayList<String> arrayList : medicationsArray) {
+                text += " - ";
+                for (String string : arrayList) {
+                    text += string + " | ";
+                }
+
+                newWriter.write(text);
+                newWriter.write("\n");
+            }
+
+            newWriter.write("\n");
+            newWriter.close();
+        } catch (IOException ex) {
+            Logger.getLogger(AddMedicalRecord.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
         //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -492,6 +510,25 @@ public class AddMedicalRecord extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnPrintActionPerformed
 
+    private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
+        if (nowStatus.equals("reception")) {
+
+            new HomeFormReceptionist().setVisible(true);
+            this.dispose();
+            
+        } else if (nowStatus.equals("doctor")) {
+            
+            new HomeFormDoctor().setVisible(true);
+            this.dispose();
+            
+        } else if (nowStatus.equals("admin")) {
+            
+            new HomeForm().setVisible(true);
+            this.dispose();
+            
+        }
+    }//GEN-LAST:event_btnHomeActionPerformed
+
     private String getDateAndTime() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
@@ -518,6 +555,7 @@ public class AddMedicalRecord extends javax.swing.JFrame {
     private javax.swing.JLabel bgImage;
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnHome;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnPrint;
     private javax.swing.JButton btnSubmit;

@@ -8,6 +8,9 @@ import availableAppoinments.AvailableAppoinmentDao;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import doctor.Doctor;
+import home.HomeForm;
+import home.HomeFormDoctor;
+import home.HomeFormReceptionist;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -16,8 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import logIn.LogInForm;
-import static patient.PatientRegForm.invalidBorder;
-import static patient.PatientRegForm.validBorder;
+import static validation.Validation.txtFieldValidation;
 
 /**
  *
@@ -29,6 +31,7 @@ public class AddAppoinment extends javax.swing.JFrame {
     private DefaultComboBoxModel<String> comboBoxModel;
     private AvailableAppoinmentDao appoinmentDao;
     private Appoinment appoinment;
+    private static String nowStatus="";
 
     /**
      * Creates new form AddAppoinment
@@ -68,6 +71,7 @@ public class AddAppoinment extends javax.swing.JFrame {
         btnLogOut = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        btnHome = new javax.swing.JButton();
         bgImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -121,6 +125,11 @@ public class AddAppoinment extends javax.swing.JFrame {
         txtPatientId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPatientIdActionPerformed(evt);
+            }
+        });
+        txtPatientId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPatientIdKeyReleased(evt);
             }
         });
         jPanel1.add(txtPatientId, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 210, 400, -1));
@@ -194,6 +203,14 @@ public class AddAppoinment extends javax.swing.JFrame {
         jSeparator1.setForeground(new java.awt.Color(255, 204, 0));
         jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 160, 950, 10));
 
+        btnHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/home.png"))); // NOI18N
+        btnHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHomeActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(1330, 60, -1, -1));
+
         bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/addAppoinment.png"))); // NOI18N
         jPanel1.add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 750));
 
@@ -212,6 +229,12 @@ public class AddAppoinment extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void setStatus(String status) {
+        this.nowStatus = status;
+        if (status.equals("reception")) {
+//            btn.setVisible(false);
+        }
+    }
     private void selectDoctorTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectDoctorTypeActionPerformed
         String selectedOption = selectDoctorType.getSelectedItem().toString();
 
@@ -271,7 +294,8 @@ public class AddAppoinment extends javax.swing.JFrame {
     }//GEN-LAST:event_selectTimeSlotActionPerformed
 
     private void txtPatientIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPatientIdActionPerformed
-        // TODO add your handling code here:
+        String pattern = "^([P][T][0-9]{13})$";
+        txtFieldValidation(txtPatientId, pattern, appoinment, "setPatient_id");
     }//GEN-LAST:event_txtPatientIdActionPerformed
 
     private void btnAddAppoinmentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddAppoinmentActionPerformed
@@ -293,6 +317,9 @@ public class AddAppoinment extends javax.swing.JFrame {
         }
 
         dao.addAppoinment(appoinment);
+        
+        new ViewAppoinments().setVisible(true);
+        this.dispose();
 
     }//GEN-LAST:event_btnAddAppoinmentActionPerformed
 
@@ -319,6 +346,29 @@ public class AddAppoinment extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLogOutActionPerformed
 
+    private void txtPatientIdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPatientIdKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPatientIdKeyReleased
+
+    private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
+        if (nowStatus.equals("reception")) {
+
+            new HomeFormReceptionist().setVisible(true);
+            this.dispose();
+            
+        } else if (nowStatus.equals("doctor")) {
+            
+            new HomeFormDoctor().setVisible(true);
+            this.dispose();
+            
+        } else if (nowStatus.equals("admin")) {
+            
+            new HomeForm().setVisible(true);
+            this.dispose();
+            
+        }
+    }//GEN-LAST:event_btnHomeActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -338,6 +388,7 @@ public class AddAppoinment extends javax.swing.JFrame {
     private javax.swing.JLabel bgImage;
     private javax.swing.JButton btnAddAppoinment;
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnHome;
     private javax.swing.JButton btnLogOut;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel1;

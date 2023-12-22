@@ -1,0 +1,9 @@
+********* PRESCRIPTION *********
+Date and Time : 2023/12/18 12:42:32
+Doctor Name : name of doctor
+
+====================================
+| Medication | Dosage | Start date | End date |
+ - werwera | afasfer | 2023-12-21 | 2023-12-23 | 
+ - werwera | afasfer | 2023-12-21 | 2023-12-23 | 
+ - hjgfhj | ryehte | 2023-12-20 | 2023-12-23 | 

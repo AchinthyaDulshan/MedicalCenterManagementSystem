@@ -4,17 +4,29 @@
  */
 package home;
 
+import appoinment.ViewAppoinments;
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import hospital.HospitalDetailsForm;
+import hospital.HospitalRegForm;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import logIn.LogInForm;
+import logIn.UserDao;
+import medicalRecords.ViewMedicalRecords;
+import patient.PatientDetailsForm;
+
 /**
  *
  * @author Achinthya Dulshan
  */
-public class homeFormDoctor extends javax.swing.JFrame {
+public class HomeFormDoctor extends javax.swing.JFrame {
 
     /**
      * Creates new form homeFormDoctor
      */
-    public homeFormDoctor() {
+    public HomeFormDoctor() {
         initComponents();
+        txtUserName.setText(UserDao.logInUser.getUserName());
     }
 
     /**
@@ -29,8 +41,19 @@ public class homeFormDoctor extends javax.swing.JFrame {
         headerPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnClose = new javax.swing.JButton();
+        btnLogOut = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtUserName = new javax.swing.JLabel();
+        txtDate = new javax.swing.JLabel();
+        btnHospital = new javax.swing.JButton();
+        btnAppoinments = new javax.swing.JButton();
+        btnMedicalRecords = new javax.swing.JButton();
+        btnPatient = new javax.swing.JButton();
+        bgImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         headerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -38,75 +61,191 @@ public class homeFormDoctor extends javax.swing.JFrame {
         jLabel1.setText("Medical Center Management System");
         headerPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 228, -1));
 
-        btnClose.setBackground(new java.awt.Color(255, 0, 0));
-        btnClose.setIcon(new javax.swing.ImageIcon("C:\\Users\\Achinthya Dulshan\\Downloads\\close re.png")); // NOI18N
+        btnClose.setBackground(new java.awt.Color(255, 255, 255));
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/close.png"))); // NOI18N
+        btnClose.setToolTipText("Close Application");
+        btnClose.setBorder(null);
+        btnClose.setBorderPainted(false);
+        btnClose.setContentAreaFilled(false);
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnClose.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCloseActionPerformed(evt);
             }
         });
-        headerPanel.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 0, 30, 30));
+        headerPanel.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(1370, 0, 30, 30));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(headerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 533, Short.MAX_VALUE))
-        );
+        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/logout.png"))); // NOI18N
+        btnLogOut.setToolTipText("Log out");
+        btnLogOut.setBorder(null);
+        btnLogOut.setBorderPainted(false);
+        btnLogOut.setContentAreaFilled(false);
+        btnLogOut.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
+        headerPanel.add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(1330, 0, 30, 30));
+
+        getContentPane().add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 30));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/doctor 50.png"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1280, 30, 50, 50));
+
+        txtUserName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
+        txtUserName.setForeground(new java.awt.Color(0, 0, 0));
+        txtUserName.setText("doctor");
+        getContentPane().add(txtUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 40, -1, -1));
+
+        txtDate.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        txtDate.setForeground(new java.awt.Color(0, 0, 0));
+        txtDate.setText("2023/10/06  10.33.40");
+        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 100, -1, -1));
+
+        btnHospital.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        btnHospital.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/redCross.png"))); // NOI18N
+        btnHospital.setText(" Hospitals");
+        btnHospital.setToolTipText("View Hospital Details");
+        btnHospital.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHospital.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnHospitalMouseClicked(evt);
+            }
+        });
+        getContentPane().add(btnHospital, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 560, 250, 70));
+
+        btnAppoinments.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        btnAppoinments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/healthcare.png"))); // NOI18N
+        btnAppoinments.setText(" Appoinments");
+        btnAppoinments.setToolTipText("View Appoinment Details");
+        btnAppoinments.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAppoinments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAppoinmentsActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAppoinments, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 440, 250, 70));
+
+        btnMedicalRecords.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        btnMedicalRecords.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/records.png"))); // NOI18N
+        btnMedicalRecords.setText(" Medical Records");
+        btnMedicalRecords.setToolTipText("View Medical Records");
+        btnMedicalRecords.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnMedicalRecords.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMedicalRecordsActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnMedicalRecords, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 310, 250, 70));
+
+        btnPatient.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        btnPatient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/patient.png"))); // NOI18N
+        btnPatient.setText(" Patients");
+        btnPatient.setToolTipText("View Patient Details");
+        btnPatient.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPatient.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnPatientMouseClicked(evt);
+            }
+        });
+        btnPatient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPatientActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnPatient, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 250, 70));
+
+        bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/doctorHomePanel.png"))); // NOI18N
+        getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, -1));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
-
+        ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
+        //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+        if(res == 0) {
+            System.exit(res);
+        } else if (res == 1) {
+            //         System.out.println("Pressed NO");
+        }
     }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\logout 50.png");
+        //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to Log Out ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+        if(res == 0) {
+            new LogInForm().setVisible(true);
+            this.dispose();
+        } else if (res == 1) {
+            //         System.out.println("Pressed NO");
+        }
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void btnHospitalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHospitalMouseClicked
+        HospitalDetailsForm newHospitalDetailsForm = new HospitalDetailsForm();
+        HospitalRegForm newHospitalRegForm = new HospitalRegForm();
+        
+        newHospitalDetailsForm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnHospitalMouseClicked
+
+    private void btnAppoinmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAppoinmentsActionPerformed
+        ViewAppoinments newViewAppoinment = new ViewAppoinments();
+        newViewAppoinment.setVisible(true);
+        newViewAppoinment.setStatus("doctor");
+        this.dispose();
+
+    }//GEN-LAST:event_btnAppoinmentsActionPerformed
+
+    private void btnMedicalRecordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMedicalRecordsActionPerformed
+
+        ViewMedicalRecords newViewMedicalForm = new ViewMedicalRecords();
+        newViewMedicalForm.setVisible(true);
+        newViewMedicalForm.setStatus("doctor");
+        this.dispose();
+    }//GEN-LAST:event_btnMedicalRecordsActionPerformed
+
+    private void btnPatientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPatientMouseClicked
+       
+
+    }//GEN-LAST:event_btnPatientMouseClicked
+
+    private void btnPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPatientActionPerformed
+         PatientDetailsForm newPatientDetailsForm = new PatientDetailsForm();
+        newPatientDetailsForm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnPatientActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(homeFormDoctor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(homeFormDoctor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(homeFormDoctor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(homeFormDoctor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
+        FlatIntelliJLaf.setup();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new homeFormDoctor().setVisible(true);
+                new HomeFormDoctor().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel bgImage;
+    private javax.swing.JButton btnAppoinments;
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnHospital;
+    private javax.swing.JButton btnLogOut;
+    private javax.swing.JButton btnMedicalRecords;
+    private javax.swing.JButton btnPatient;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel txtDate;
+    private javax.swing.JLabel txtUserName;
     // End of variables declaration//GEN-END:variables
 }

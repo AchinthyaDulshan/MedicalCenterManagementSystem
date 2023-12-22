@@ -4,6 +4,14 @@
  */
 package availableAppoinments;
 
+import com.formdev.flatlaf.FlatIntelliJLaf;
+import static common.CommonFunctions.getSelectedBirthDate;
+import home.HomeForm;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import logIn.LogInForm;
+import static validation.Validation.txtFieldValidation;
+
 /**
  *
  * @author Achinthya Dulshan
@@ -13,8 +21,13 @@ public class createAppoinment extends javax.swing.JFrame {
     /**
      * Creates new form createAppoinment
      */
+    AvailableAppoinment newAvailableAppoinment = new AvailableAppoinment();
+    AvailableAppoinmentDao dao;
+            
     public createAppoinment() {
         initComponents();
+        
+        dao = new AvailableAppoinmentDao();
     }
 
     /**
@@ -29,18 +42,27 @@ public class createAppoinment extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtMedicalStaffId = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jButton1 = new javax.swing.JButton();
+        txtDate = new com.toedter.calendar.JDateChooser();
+        txtStartTime = new javax.swing.JTextField();
+        txtEndTIme = new javax.swing.JTextField();
+        btnAdd = new javax.swing.JButton();
+        headerPanel = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        btnClose = new javax.swing.JButton();
+        btnLogOut = new javax.swing.JButton();
+        btnHome = new javax.swing.JButton();
         bgImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Add Appoinment Time ");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 80, 410, 70));
 
@@ -48,64 +70,204 @@ public class createAppoinment extends javax.swing.JFrame {
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 150, 1020, 10));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Doctor ID :");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 270, 90, 30));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 270, 90, 30));
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 270, 320, -1));
+        txtMedicalStaffId.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        txtMedicalStaffId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMedicalStaffIdKeyReleased(evt);
+            }
+        });
+        getContentPane().add(txtMedicalStaffId, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 270, 320, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Date :");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 340, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 340, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Start Time :");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 400, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("End Time :");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 450, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 460, -1, -1));
 
-        jDateChooser1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        getContentPane().add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 340, 320, -1));
+        txtDate.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 340, 320, -1));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
-        jButton1.setText("Add to Appoinments");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 570, 250, 50));
+        txtStartTime.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        txtStartTime.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtStartTimeKeyReleased(evt);
+            }
+        });
+        getContentPane().add(txtStartTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 400, 320, -1));
+
+        txtEndTIme.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        txtEndTIme.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtEndTImeKeyReleased(evt);
+            }
+        });
+        getContentPane().add(txtEndTIme, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 460, 320, -1));
+
+        btnAdd.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
+        btnAdd.setText("Add to Appoinments");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 570, 250, 50));
+
+        headerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
+        jLabel11.setText("Medical Center Management System");
+        headerPanel.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 228, -1));
+
+        btnClose.setBackground(new java.awt.Color(255, 255, 255));
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/close.png"))); // NOI18N
+        btnClose.setToolTipText("Close Application");
+        btnClose.setBorder(null);
+        btnClose.setBorderPainted(false);
+        btnClose.setContentAreaFilled(false);
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+        headerPanel.add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(1370, 0, 30, 30));
+
+        btnLogOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/logout.png"))); // NOI18N
+        btnLogOut.setToolTipText("Log out");
+        btnLogOut.setBorder(null);
+        btnLogOut.setBorderPainted(false);
+        btnLogOut.setContentAreaFilled(false);
+        btnLogOut.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogOutActionPerformed(evt);
+            }
+        });
+        headerPanel.add(btnLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(1330, 0, 30, 30));
+
+        getContentPane().add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        btnHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/home.png"))); // NOI18N
+        btnHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHomeActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 40, -1, -1));
 
         bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/makeAppoinment.png"))); // NOI18N
         getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 750));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        
+        
+        newAvailableAppoinment.setMedical_staff_id(txtMedicalStaffId.getText());
+        newAvailableAppoinment.setDate(getSelectedBirthDate(txtDate));
+        newAvailableAppoinment.setStartTime(txtStartTime.getText());
+        newAvailableAppoinment.setEndTime(txtEndTIme.getText());
+        
+        String errors = checkErrors(newAvailableAppoinment);
+        
+        if (errors.equals("")) {
+
+            // if it doesn't have empty field 
+            // insert to database and give message
+            dao.addAvailableAppoinment(newAvailableAppoinment);
+            JOptionPane.showMessageDialog(null, "Appoinment Created Successfully.");
+
+        } else {
+            // if it have empty fields indicate using message
+            JOptionPane.showMessageDialog(null, "You have following errors.\n" + errors);
+        }
+        
+        System.out.println(newAvailableAppoinment.getMedical_staff_id()+" | "+newAvailableAppoinment.getDate()+" | "+newAvailableAppoinment.getStartTime()+" | "+newAvailableAppoinment.getEndTime());
+        
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void txtMedicalStaffIdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedicalStaffIdKeyReleased
+        String pattern = "^([M][S][0-9]{13})$";
+        txtFieldValidation(txtMedicalStaffId, pattern, newAvailableAppoinment, "setMedical_staff_id");
+    }//GEN-LAST:event_txtMedicalStaffIdKeyReleased
+
+    private void txtStartTimeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStartTimeKeyReleased
+        String pattern = "^(([0,1][0-9][:][0-5][0-9])||([2][0-3][:][0-5][0-9]))$";
+        txtFieldValidation(txtStartTime, pattern, newAvailableAppoinment, "setStartTime");
+    }//GEN-LAST:event_txtStartTimeKeyReleased
+
+    private void txtEndTImeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEndTImeKeyReleased
+        String pattern = "^(([0,1][0-9][:][0-5][0-9])||([2][0-3][:][0-5][0-9]))$";
+        txtFieldValidation(txtEndTIme, pattern, newAvailableAppoinment, "setEndTime");
+    }//GEN-LAST:event_txtEndTImeKeyReleased
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
+        //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+        if (res == 0) {
+            System.exit(res);
+        } else if (res == 1) {
+            //         System.out.println("Pressed NO");
+        }
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
+        ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\logout 50.png");
+        //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to Log Out ?", "Log Out", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, icon);
+        if (res == 0) {
+            new LogInForm().setVisible(true);
+            this.dispose();
+        } else if (res == 1) {
+            //         System.out.println("Pressed NO");
+        }
+    }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
+        new HomeForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnHomeActionPerformed
+
+    private String checkErrors(AvailableAppoinment appoinment) {
+
+        String errors = "";
+
+        if (appoinment.getMedical_staff_id().equals("")) {
+            errors += "medical staff id not entered.\n";
+        }
+        if (appoinment.getDate().equals("")) {
+            errors += "Date not entered.\n";
+        }
+        if (appoinment.getStartTime()== "null") {
+            errors += "Start time not entered.\n";
+        }
+        if (appoinment.getEndTime()== "null") {
+            errors += "End time not entered.\n";
+        }
+        return errors;
+    }
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(createAppoinment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(createAppoinment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(createAppoinment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(createAppoinment.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
+        FlatIntelliJLaf.setup();
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -116,14 +278,21 @@ public class createAppoinment extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bgImage;
-    private javax.swing.JButton jButton1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnHome;
+    private javax.swing.JButton btnLogOut;
+    private javax.swing.JPanel headerPanel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField1;
+    private com.toedter.calendar.JDateChooser txtDate;
+    private javax.swing.JTextField txtEndTIme;
+    private javax.swing.JTextField txtMedicalStaffId;
+    private javax.swing.JTextField txtStartTime;
     // End of variables declaration//GEN-END:variables
 }

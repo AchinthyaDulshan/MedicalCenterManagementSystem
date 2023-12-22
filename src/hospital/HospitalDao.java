@@ -28,7 +28,7 @@ public class HospitalDao {
 
     // define method for insert hospital to database
     // parameter --> Hospital object
-    public void insertHospital(Hospital hospital,JFrame hospitalRegForm) {
+    public void insertHospital(Hospital hospital) {
         
         // Define SQL statement for insertion
         final String INSERT_HOSPITAL = "INSERT INTO nearbyhospital (hospitalId ,name ,address) VALUES (?,?,?)";
@@ -85,7 +85,6 @@ public class HospitalDao {
 
             hospitalContactStatement.executeUpdate();
 
-            JOptionPane.showMessageDialog(hospitalRegForm, "Data inserted successfully");
 
             //close resources
             getLastHospitalIdStatement.close();
@@ -119,7 +118,7 @@ public class HospitalDao {
     // fill patient table from database values
     public ResultSet fillTableData() {
         
-        final String SELECT_PATIENT_DETAILS = "select hospitalId, name, address, contact_no_1, contact_no_2 from nearbyhospital h, hospitalcontacts c where h.id = c.nearbyHospital_id";
+        final String SELECT_PATIENT_DETAILS = "select hospitalId, name, address, contact_no_1, contact_no_2 from nearbyhospital h, hospitalcontacts c where h.id = c.nearbyHospital_id AND h.delete_status=0";
 
         Connection con = database.getDataBaseConnection();
         PreparedStatement ps;
@@ -136,6 +135,85 @@ public class HospitalDao {
         } 
 
         return rs;
+    }
+    // define methods for delete patient
+    public void deleteHospital(Hospital hospital) {
+
+        //define SQL Delete statement
+        final String DELETE_HOSPITAL = "UPDATE nearbyhospital SET delete_status = 1 WHERE hospitalId=?";
+
+        //create connection 
+        Connection con = database.getDataBaseConnection();
+
+        try {
+
+            PreparedStatement deleteHospital = con.prepareStatement(DELETE_HOSPITAL);
+            deleteHospital.setString(1, hospital.getHospitalId());
+
+            deleteHospital.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Hospital Deleted successfully");
+            //close resources
+            deleteHospital.close();
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void updateHospital(Hospital hospital) {
+
+        final String UPDATE_HOSPITAL = "UPDATE nearbyhospital SET name=? ,address=? WHERE hospitalId=?";
+
+        final String GET_SELECTED_HOSPITAL_ID = "SELECT id FROM nearbyhospital WHERE hospitalId=?";
+
+        final String UPDATE_HOSPITAL_CONTACTS = "UPDATE hospitalcontacts SET contact_no_1=? ,contact_no_2=? WHERE nearbyHospital_id=?";
+
+        try (Connection con = database.getDataBaseConnection()) {
+            // Update patient information
+            try (PreparedStatement updateHospital = con.prepareStatement(UPDATE_HOSPITAL)) {
+                updateHospital.setString(1, hospital.getHospitalName());
+                updateHospital.setString(2, hospital.getHospitalAddress());
+                updateHospital.setString(3, hospital.getHospitalId());
+                
+                // Execute patient update
+                updateHospital.executeUpdate();
+                updateHospital.close();
+            }
+
+            // Get patient ID
+            int hospitalId = -1;
+            try (PreparedStatement getHospitalId = con.prepareStatement(GET_SELECTED_HOSPITAL_ID)) {
+                getHospitalId.setString(1, hospital.getHospitalId());
+
+                // Execute query and retrieve the result set
+                try (ResultSet rs = getHospitalId.executeQuery()) {
+                    // Check if there is a result
+                    if (rs.next()) {
+                        hospitalId = rs.getInt(1);
+                    }
+                }
+                getHospitalId.close();
+            }
+
+            // Update patient contacts
+            try (PreparedStatement hospitalContactUpdate = con.prepareStatement(UPDATE_HOSPITAL_CONTACTS)) {
+                hospitalContactUpdate.setString(1, hospital.getContactNo_1());
+                hospitalContactUpdate.setString(2, hospital.getContactNo_2());
+                hospitalContactUpdate.setInt(3, hospitalId);
+
+                // Execute contacts update
+                hospitalContactUpdate.executeUpdate();
+                hospitalContactUpdate.close();
+            }
+
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     
 }

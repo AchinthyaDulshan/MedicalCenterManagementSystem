@@ -4,6 +4,7 @@
  */
 package home;
 
+import appoinment.ViewAppoinments;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import doctor.DoctorDetailsForm;
@@ -18,6 +19,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import logIn.LogInForm;
+import logIn.UserDao;
+import medicalRecords.ViewMedicalRecords;
 
 /**
  *
@@ -31,6 +34,7 @@ public class HomeForm extends javax.swing.JFrame {
     public HomeForm() {
         initComponents();
         clock();
+         txtUserName.setText(UserDao.logInUser.getUserName());
 //        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 //        LocalDateTime now = LocalDateTime.now();
 ////        System.out.println(dtf.format(now));
@@ -54,10 +58,10 @@ public class HomeForm extends javax.swing.JFrame {
         btnPatient = new javax.swing.JButton();
         btnDoctor = new javax.swing.JButton();
         btnHospital = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnAppoinments = new javax.swing.JButton();
+        btnMedicalRecords = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        txtUserName = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         bgImage = new javax.swing.JLabel();
@@ -152,28 +156,38 @@ public class HomeForm extends javax.swing.JFrame {
         });
         getContentPane().add(btnHospital, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 530, 250, 70));
 
-        jButton4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/healthcare.png"))); // NOI18N
-        jButton4.setText(" Appoinments");
-        jButton4.setToolTipText("View Appoinment Details");
-        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 440, 250, 70));
+        btnAppoinments.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        btnAppoinments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/healthcare.png"))); // NOI18N
+        btnAppoinments.setText(" Appoinments");
+        btnAppoinments.setToolTipText("View Appoinment Details");
+        btnAppoinments.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAppoinments.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAppoinmentsActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAppoinments, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 440, 250, 70));
 
-        jButton3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/records.png"))); // NOI18N
-        jButton3.setText(" Medical Records");
-        jButton3.setToolTipText("View Medical Records");
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 350, 250, 70));
+        btnMedicalRecords.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
+        btnMedicalRecords.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/records.png"))); // NOI18N
+        btnMedicalRecords.setText(" Medical Records");
+        btnMedicalRecords.setToolTipText("View Medical Records");
+        btnMedicalRecords.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnMedicalRecords.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMedicalRecordsActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnMedicalRecords, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 350, 250, 70));
 
         jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jButton1.setText("No of Doctors We have");
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 190, 320, 230));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("admin");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 50, 80, -1));
+        txtUserName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
+        txtUserName.setForeground(new java.awt.Color(0, 0, 0));
+        txtUserName.setText("admin");
+        getContentPane().add(txtUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(1210, 50, 80, -1));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/admin 50.png"))); // NOI18N
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1290, 40, 50, 50));
@@ -267,6 +281,16 @@ public class HomeForm extends javax.swing.JFrame {
       }
     }//GEN-LAST:event_btnLogOutActionPerformed
 
+    private void btnMedicalRecordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMedicalRecordsActionPerformed
+        new ViewMedicalRecords().setVisible(true);
+         this.dispose();
+    }//GEN-LAST:event_btnMedicalRecordsActionPerformed
+
+    private void btnAppoinmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAppoinmentsActionPerformed
+        new ViewAppoinments().setVisible(true);
+         this.dispose();
+    }//GEN-LAST:event_btnAppoinmentsActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -283,19 +307,19 @@ public class HomeForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bgImage;
+    private javax.swing.JButton btnAppoinments;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDoctor;
     private javax.swing.JButton btnHospital;
     private javax.swing.JButton btnLogOut;
+    private javax.swing.JButton btnMedicalRecords;
     private javax.swing.JButton btnPatient;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel txtDate;
+    private javax.swing.JLabel txtUserName;
     // End of variables declaration//GEN-END:variables
 }

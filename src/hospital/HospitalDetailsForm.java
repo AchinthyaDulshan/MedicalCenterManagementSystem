@@ -6,10 +6,17 @@ package hospital;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import home.HomeForm;
+import home.HomeFormDoctor;
+import home.HomeFormReceptionist;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.sql.ResultSet;
+import java.text.ParseException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import logIn.LogInForm;
+import logIn.UserDao;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -19,11 +26,15 @@ import net.proteanit.sql.DbUtils;
 public class HospitalDetailsForm extends javax.swing.JFrame {
 
     HospitalDao dao;
+    private String userRole = UserDao.logInUser.getRole();
     
     public HospitalDetailsForm() {
         initComponents();
         dao = new HospitalDao();
         loadTable();
+        btnUpdate.setVisible(false);
+        btnDelete.setVisible(false);
+        checkPrivillage();
     }
 
     @SuppressWarnings("unchecked")
@@ -35,9 +46,6 @@ public class HospitalDetailsForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
-        btnAdd = new javax.swing.JButton();
-        btnClear = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
         btnRegisterHospital = new javax.swing.JButton();
         btnReturnToHome = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
@@ -63,6 +71,11 @@ public class HospitalDetailsForm extends javax.swing.JFrame {
             }
         ));
         hospitalTable.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        hospitalTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hospitalTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(hospitalTable);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 200, 860, 480));
@@ -76,44 +89,30 @@ public class HospitalDetailsForm extends javax.swing.JFrame {
         btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/edit.png"))); // NOI18N
         btnUpdate.setText(" EDIT");
         btnUpdate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 290, 200, 50));
 
         btnDelete.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/delete.png"))); // NOI18N
         btnDelete.setText(" DELETE");
         btnDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 350, 200, 50));
-
-        btnAdd.setBackground(new java.awt.Color(0, 153, 153));
-        btnAdd.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
-        btnAdd.setText("SEARCH");
-        btnAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 210, 90, 30));
-
-        btnClear.setBackground(new java.awt.Color(255, 51, 51));
-        btnClear.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
-        btnClear.setForeground(new java.awt.Color(255, 255, 255));
-        btnClear.setText("CLEAR");
-        getContentPane().add(btnClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 210, 90, 30));
-
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 160, 200, 30));
 
         btnRegisterHospital.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         btnRegisterHospital.setText("Register Hospital");
         btnRegisterHospital.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnRegisterHospital.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnRegisterHospitalMouseClicked(evt);
+        btnRegisterHospital.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterHospitalActionPerformed(evt);
             }
         });
         getContentPane().add(btnRegisterHospital, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 550, 250, 50));
@@ -122,9 +121,9 @@ public class HospitalDetailsForm extends javax.swing.JFrame {
         btnReturnToHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/home.png"))); // NOI18N
         btnReturnToHome.setText(" Return to Home");
         btnReturnToHome.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnReturnToHome.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnReturnToHomeMouseClicked(evt);
+        btnReturnToHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnToHomeActionPerformed(evt);
             }
         });
         getContentPane().add(btnReturnToHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 610, 250, 50));
@@ -174,24 +173,15 @@ public class HospitalDetailsForm extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAddActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void btnRegisterHospitalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegisterHospitalMouseClicked
-        new HospitalRegForm().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnRegisterHospitalMouseClicked
-
-    private void btnReturnToHomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReturnToHomeMouseClicked
-        new HomeForm().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnReturnToHomeMouseClicked
-
+    public void checkPrivillage() {
+        if (userRole.equals("reception")) {
+            
+        }else if (userRole.equals("doctor")) {
+            btnRegisterHospital.setVisible(false);
+        }
+    }
+    
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
         //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -215,6 +205,81 @@ public class HospitalDetailsForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnLogOutActionPerformed
 
+    private void hospitalTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hospitalTableMouseClicked
+        btnUpdate.setVisible(true);
+        btnDelete.setVisible(true);
+    }//GEN-LAST:event_hospitalTableMouseClicked
+
+    private void btnRegisterHospitalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterHospitalActionPerformed
+        new HospitalRegForm().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegisterHospitalActionPerformed
+
+    private void btnReturnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnToHomeActionPerformed
+        if (userRole.equals("reception")) {
+
+            new HomeFormReceptionist().setVisible(true);
+            this.dispose();
+            
+        } else if (userRole.equals("doctor")) {
+            
+            new HomeFormDoctor().setVisible(true);
+            this.dispose();
+            
+        } else if (userRole.equals("admin")) {
+            
+            new HomeForm().setVisible(true);
+            this.dispose();
+            
+        }
+    }//GEN-LAST:event_btnReturnToHomeActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int res = JOptionPane.showConfirmDialog(null, "Are you sure to delete ?", "Delete Message", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (res == 0) {
+            int selectedRow = hospitalTable.getSelectedRow();
+
+            DefaultTableModel model = (DefaultTableModel) hospitalTable.getModel();
+
+            Hospital deletingHospital = new Hospital();
+
+            deletingHospital.setHospitalId(model.getValueAt(selectedRow, 0).toString());
+
+            dao.deleteHospital(deletingHospital);
+
+            loadTable();
+        } else if (res == 1) {
+            //         System.out.println("Pressed NO");
+        }
+
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        int selectedRow = hospitalTable.getSelectedRow();
+        generateUpdateFormValues(selectedRow);
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void generateUpdateFormValues(int selectedRow) {
+
+        DefaultTableModel model = (DefaultTableModel) hospitalTable.getModel();
+
+        Hospital updatingHospital = new Hospital();
+
+        updatingHospital.setHospitalId(model.getValueAt(selectedRow, 0).toString());
+        updatingHospital.setHospitalName(model.getValueAt(selectedRow, 1).toString());
+        updatingHospital.setHospitalAddress(model.getValueAt(selectedRow, 2).toString());
+        updatingHospital.setContactNo_1(model.getValueAt(selectedRow, 3).toString());
+        updatingHospital.setContactNo_2(model.getValueAt(selectedRow, 4).toString());
+
+
+        HospitalRegForm hospitalForm = new HospitalRegForm();
+        try {
+            hospitalForm.updateHospitalDetails(updatingHospital);
+        } catch (ParseException ex) {
+            Logger.getLogger(HospitalDetailsForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+    }
     
     //create method to load patient details to JTable
     private void loadTable() {
@@ -240,8 +305,6 @@ public class HospitalDetailsForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bgImage;
-    private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnLogOut;
@@ -254,6 +317,5 @@ public class HospitalDetailsForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }

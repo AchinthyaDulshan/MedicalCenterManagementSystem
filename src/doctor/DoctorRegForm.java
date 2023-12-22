@@ -8,6 +8,8 @@ import com.formdev.flatlaf.FlatIntelliJLaf;
 import static common.CommonFunctions.getMinDate;
 import static common.CommonFunctions.getSelectedBirthDate;
 import home.HomeForm;
+import home.HomeFormDoctor;
+import home.HomeFormReceptionist;
 import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import logIn.LogInForm;
+import logIn.UserDao;
 import static validation.Validation.selectFieldValidation;
 import static validation.Validation.txtAreaValidation;
 import static validation.Validation.txtFieldValidation;
@@ -36,15 +39,12 @@ import static validation.Validation.txtFieldValidation;
 public class DoctorRegForm extends javax.swing.JFrame {
 
     DoctorDao doctorDao;
+    private String userRole = UserDao.logInUser.getRole();
 
     //define static variables for future refrence
     private static DoctorRegForm updatingDoctorForm;
     private static Doctor updatingDoctor;
     private static Doctor doctor = new Doctor();
-
-    //define validation borders
-    public static Border invalidBorder = new LineBorder(Color.red, 2, true);
-    public static Border validBorder = new LineBorder(Color.GREEN, 2, true);
 
     //default constructor
     public DoctorRegForm() {
@@ -339,15 +339,26 @@ public class DoctorRegForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnShowDoctorDetailsActionPerformed
 
     private void btnReturnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnToHomeActionPerformed
-        //show Home page and close this one
-        new HomeForm().setVisible(true);
-        this.dispose();
+        if (userRole.equals("reception")) {
+
+            new HomeFormReceptionist().setVisible(true);
+            this.dispose();
+            
+        } else if (userRole.equals("doctor")) {
+            
+            new HomeFormDoctor().setVisible(true);
+            this.dispose();
+            
+        } else if (userRole.equals("admin")) {
+            
+            new HomeForm().setVisible(true);
+            this.dispose();
+            
+        }
     }//GEN-LAST:event_btnReturnToHomeActionPerformed
 
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
 
-        // setAddress in doctor
-//        doctor.setAddress(txtAddress.getText());
         // setDateOfBirth in patient
         doctor.setDateOfBirth(getSelectedBirthDate(txtDateofBirth));
 

@@ -26,9 +26,10 @@ public class AvailableAppoinmentDao {
 
     public ArrayList getAvailableAppoinmentDetails(String staffId) {
 
-        final String GET_SELECTED_DOCTOR_ID = "SELECT id FROM medical_staff WHERE staffId=?";
+        final String GET_SELECTED_DOCTOR_ID = "SELECT id FROM medical_staff WHERE staffId=?;";
 
-        final String GET_AVAILABLE_APPOINMENTS = "SELECT * FROM availableappoinments WHERE medical_staff_id=? AND status=0 AND date";
+
+        final String GET_AVAILABLE_APPOINMENTS = "SELECT * FROM availableappoinments WHERE medical_staff_id=? AND status=0";
 
         ArrayList<ArrayList<String>> appoinmentList = new ArrayList<>();
 
@@ -67,7 +68,11 @@ public class AvailableAppoinmentDao {
     
     public void addAvailableAppoinment(AvailableAppoinment appoinment){
         
-        final String GET_SELECTED_DOCTOR_ID = "SELECT id FROM medical_staff WHERE staffId=?";
+        final String GET_SELECTED_DOCTOR_ID = "SELECT id FROM medical_staff WHERE staffId=?"; 
+                
+        final String GET_LAST_AV_ID = "SELECT max(availableAppoinmentId) FROM availableappoinments;";
+        
+        final String INSERT_AVAILABLE_APPOINMENT = "INSERT INTO availableappoinments (availableAppoinmentId,date,startTime,endTime,status,medical_staff_id) VALUES (?,?,?,?,?,?);";
         
         try (Connection con = dataBase.getDataBaseConnection()) {
             // Get the selected doctorId
@@ -80,21 +85,56 @@ public class AvailableAppoinmentDao {
             if (rs.next()) {
                 doctorId = rs.getInt(1);
             }
+            
+            // Get the last patientId
+            PreparedStatement getLastAvailableAppoinmentIdStatement = con.prepareStatement(GET_LAST_AV_ID);
+            rs = getLastAvailableAppoinmentIdStatement.executeQuery();
 
-            PreparedStatement getAppoinments = con.prepareStatement(GET_AVAILABLE_APPOINMENTS);
-            getAppoinments.setInt(1, doctorId);
-            rs = getAppoinments.executeQuery();
+            String lastAvailableAppoinmentId = "";
+
+            if (rs.next()) {
+                lastAvailableAppoinmentId = rs.getString(1);
+            }
+
+            // Increment the last patientId to get a new one
+            int appoinmentNumber = Integer.parseInt(lastAvailableAppoinmentId.substring(2)) + 1;
+
+            String availableAppoinmentId = "AV" + padWithZeros(Integer.toString(appoinmentNumber), 13);
+
+            PreparedStatement setAppoinments = con.prepareStatement(INSERT_AVAILABLE_APPOINMENT);
+            setAppoinments.setString(1, availableAppoinmentId);
+            setAppoinments.setString(2, appoinment.getDate());
+            setAppoinments.setString(3, appoinment.getStartTime());
+            setAppoinments.setString(4, appoinment.getEndTime());
+            setAppoinments.setInt(5, 0);
+            setAppoinments.setInt(6, doctorId);
+            
+            setAppoinments.executeUpdate();
 
 
-            System.out.println("appoinments " + appoinmentList);
-
+            getLastAvailableAppoinmentIdStatement.close();
             getSelectedDoctorIdStatement.close();
-            getAppoinments.close();
+            setAppoinments.close();
             con.close();
 
 
         } catch (Exception e) {
 
         }
+    }
+    
+    // padding patientId with 0
+    private static String padWithZeros(String original, int targetLength) {
+
+        int originalLength = original.length();
+
+        if (originalLength >= targetLength) {
+            return original; // No need to pad
+        }
+
+        int numberOfZerosToAdd = targetLength - originalLength;
+        String zeros = "0".repeat(numberOfZerosToAdd);
+
+        return zeros + original;
     }
 }

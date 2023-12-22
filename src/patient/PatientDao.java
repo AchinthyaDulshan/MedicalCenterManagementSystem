@@ -151,7 +151,7 @@ public class PatientDao {
 
             deletePatient.executeUpdate();
 
-//            JOptionPane.showMessageDialog(patientDetailsJOptionPane, "Patient Deleted successfully");
+            JOptionPane.showMessageDialog(null, "Patient Deleted successfully");
             //close resources
             deletePatient.close();
             con.close();

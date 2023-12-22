@@ -144,8 +144,26 @@ public class MedicalRecordDao {
     
     
     
-    public void viewMedicalRecord(){
-    
+    public ResultSet viewMedicalRecords(){
+        final String SELECT_Record_DETAILS = "select m.medicalRecordId,p.firstName ,p.lastName ,m.dateOfRecord ,m.diagnosis ,m.tratmentPlan ,m.testResult ,s.staffId, s.firstName,d.prescriptionId,d.link from medicalrecord m,patient p,medical_staff s,prescription d WHERE m.patient_id=p.id AND m.medical_staff_id=s.id AND m.prescription_id = d.id;";
+
+        // medicalRecordId ,dateOfRecord ,diagnosis ,tratmentPlan ,testResult
+        
+        Connection con = database.getDataBaseConnection();
+        PreparedStatement ps;
+        ResultSet rs = null;
+
+        try {
+            ps = con.prepareStatement(SELECT_Record_DETAILS);
+            rs = ps.executeQuery();
+
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        } 
+
+        return rs;
     }
     
 }

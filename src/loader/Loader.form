@@ -108,7 +108,7 @@
         <Component class="javax.swing.JLabel" name="loaderBg">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/images/backgrounds/Untitled-1 v3.png"/>
+              <Image iconType="3" name="/images/backgrounds/loader.png"/>
             </Property>
           </Properties>
           <Constraints>
