@@ -5,6 +5,7 @@ This one is our final project of the course module **COST 21053 - Object Oriente
 ## Table of contents
 
 - [Overview](#overview)
+  - [Functionalities](#functionalities)
   - [Screenshot](#screenshot)
 - [My process](#my-process)
   - [Built with](#built-with)
@@ -12,6 +13,20 @@ This one is our final project of the course module **COST 21053 - Object Oriente
 
 
 ## Overview
+
+### functionalities
+
+- Login with credentials (username and password) 
+- Role based dashboard (Admin,Doctor,reception)
+- Access control based on Role
+- Register, Update, Remove Patients and get Patient Details
+- Register, Update, Remove Doctors and get Doctors Details
+- Add medical record
+- make an appoinment
+- generate medical reports
+
+> [!NOTE]
+> Above functionalities are main functionalities
 
 ### Screenshot - Log in
 
