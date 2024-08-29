@@ -255,6 +255,11 @@ public class PatientRegForm extends javax.swing.JFrame {
                 btnReturnToHomeMouseClicked(evt);
             }
         });
+        btnReturnToHome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReturnToHomeActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnReturnToHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 610, 250, 50));
 
         txtContact_2.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
@@ -541,6 +546,10 @@ public class PatientRegForm extends javax.swing.JFrame {
             //         System.out.println("Pressed NO");
         }
     }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void btnReturnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnToHomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReturnToHomeActionPerformed
 
     // define method to track updates
     private String checkUpdates(Patient existingPatient) {

@@ -7,9 +7,12 @@ package availableAppoinments;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import static common.CommonFunctions.getSelectedBirthDate;
 import home.HomeForm;
+import home.HomeFormDoctor;
+import home.HomeFormReceptionist;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import logIn.LogInForm;
+import logIn.UserDao;
 import static validation.Validation.txtFieldValidation;
 
 /**
@@ -23,6 +26,7 @@ public class createAppoinment extends javax.swing.JFrame {
      */
     AvailableAppoinment newAvailableAppoinment = new AvailableAppoinment();
     AvailableAppoinmentDao dao;
+    private String userRole = UserDao.logInUser.getRole();
             
     public createAppoinment() {
         initComponents();
@@ -64,15 +68,15 @@ public class createAppoinment extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Add Appoinment Time ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 80, 410, 70));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 90, 410, 70));
 
         jSeparator1.setForeground(new java.awt.Color(255, 204, 0));
-        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 150, 1020, 10));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 160, 880, 10));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Doctor ID :");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 270, 90, 30));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 280, 90, 30));
 
         txtMedicalStaffId.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtMedicalStaffId.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -80,25 +84,25 @@ public class createAppoinment extends javax.swing.JFrame {
                 txtMedicalStaffIdKeyReleased(evt);
             }
         });
-        getContentPane().add(txtMedicalStaffId, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 270, 320, -1));
+        getContentPane().add(txtMedicalStaffId, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 280, 320, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Date :");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 340, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 350, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Start Time :");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 400, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 410, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("End Time :");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 460, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 470, -1, -1));
 
         txtDate.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 340, 320, -1));
+        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 350, 320, -1));
 
         txtStartTime.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtStartTime.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -106,7 +110,7 @@ public class createAppoinment extends javax.swing.JFrame {
                 txtStartTimeKeyReleased(evt);
             }
         });
-        getContentPane().add(txtStartTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 400, 320, -1));
+        getContentPane().add(txtStartTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 410, 320, -1));
 
         txtEndTIme.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         txtEndTIme.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -114,7 +118,7 @@ public class createAppoinment extends javax.swing.JFrame {
                 txtEndTImeKeyReleased(evt);
             }
         });
-        getContentPane().add(txtEndTIme, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 460, 320, -1));
+        getContentPane().add(txtEndTIme, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 470, 320, -1));
 
         btnAdd.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         btnAdd.setText("Add to Appoinments");
@@ -123,7 +127,7 @@ public class createAppoinment extends javax.swing.JFrame {
                 btnAddActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 570, 250, 50));
+        getContentPane().add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 570, 250, 50));
 
         headerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -160,21 +164,28 @@ public class createAppoinment extends javax.swing.JFrame {
 
         getContentPane().add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        btnHome.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         btnHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/home.png"))); // NOI18N
+        btnHome.setText(" Return to Home");
         btnHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHomeActionPerformed(evt);
             }
         });
-        getContentPane().add(btnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 40, -1, -1));
+        getContentPane().add(btnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 371, 300, 50));
 
-        bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/makeAppoinment.png"))); // NOI18N
+        bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/makeAppoinmentV2.png"))); // NOI18N
         getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 750));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void checkPrivillage() {
+        if (userRole.equals("reception")) {
+//            btnShowPatientDetails.setVisible(false);
+        }
+    }
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         
         
@@ -240,8 +251,22 @@ public class createAppoinment extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
-        new HomeForm().setVisible(true);
-        this.dispose();
+        if (userRole.equals("reception")) {
+
+            new HomeFormReceptionist().setVisible(true);
+            this.dispose();
+
+        } else if (userRole.equals("doctor")) {
+
+            new HomeFormDoctor().setVisible(true);
+            this.dispose();
+
+        } else if (userRole.equals("admin")) {
+
+            new HomeForm().setVisible(true);
+            this.dispose();
+
+        }
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private String checkErrors(AvailableAppoinment appoinment) {

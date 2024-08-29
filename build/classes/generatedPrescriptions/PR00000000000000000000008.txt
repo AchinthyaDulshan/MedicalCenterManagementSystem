@@ -1,0 +1,8 @@
+********* PRESCRIPTION *********
+Date and Time : 2024/01/03 12:28:23
+Doctor Name : name of doctor
+
+====================================
+| Medication | Dosage | Start date | End date |
+ - asdsaf | 2 | 2024-01-03 | 2024-01-06 | 
+

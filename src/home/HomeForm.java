@@ -61,6 +61,7 @@ public class HomeForm extends javax.swing.JFrame {
         btnAppoinments = new javax.swing.JButton();
         btnMedicalRecords = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jCalendar1 = new com.toedter.calendar.JCalendar();
         txtUserName = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -108,7 +109,7 @@ public class HomeForm extends javax.swing.JFrame {
         txtDate.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         txtDate.setForeground(new java.awt.Color(0, 0, 0));
         txtDate.setText("2023/10/06  10.33.40");
-        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 120, -1, -1));
+        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 120, -1, -1));
 
         btnPatient.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         btnPatient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/patient.png"))); // NOI18N
@@ -183,6 +184,7 @@ public class HomeForm extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         jButton1.setText("No of Doctors We have");
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 190, 320, 230));
+        getContentPane().add(jCalendar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1092, 170, 260, 200));
 
         txtUserName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
         txtUserName.setForeground(new java.awt.Color(0, 0, 0));
@@ -316,6 +318,7 @@ public class HomeForm extends javax.swing.JFrame {
     private javax.swing.JButton btnPatient;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JButton jButton1;
+    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JSeparator jSeparator1;

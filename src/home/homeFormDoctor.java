@@ -8,6 +8,11 @@ import appoinment.ViewAppoinments;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import hospital.HospitalDetailsForm;
 import hospital.HospitalRegForm;
+import static java.lang.Thread.sleep;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import logIn.LogInForm;
@@ -27,6 +32,7 @@ public class HomeFormDoctor extends javax.swing.JFrame {
     public HomeFormDoctor() {
         initComponents();
         txtUserName.setText(UserDao.logInUser.getUserName());
+        clock();
     }
 
     /**
@@ -43,9 +49,11 @@ public class HomeFormDoctor extends javax.swing.JFrame {
         btnClose = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
         txtUserName = new javax.swing.JLabel();
         txtDate = new javax.swing.JLabel();
         btnHospital = new javax.swing.JButton();
+        jCalendar1 = new com.toedter.calendar.JCalendar();
         btnAppoinments = new javax.swing.JButton();
         btnMedicalRecords = new javax.swing.JButton();
         btnPatient = new javax.swing.JButton();
@@ -93,6 +101,9 @@ public class HomeFormDoctor extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/doctor 50.png"))); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1280, 30, 50, 50));
 
+        jSeparator1.setForeground(new java.awt.Color(0, 153, 0));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, 880, 10));
+
         txtUserName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
         txtUserName.setForeground(new java.awt.Color(0, 0, 0));
         txtUserName.setText("doctor");
@@ -101,7 +112,7 @@ public class HomeFormDoctor extends javax.swing.JFrame {
         txtDate.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         txtDate.setForeground(new java.awt.Color(0, 0, 0));
         txtDate.setText("2023/10/06  10.33.40");
-        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 100, -1, -1));
+        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 100, -1, -1));
 
         btnHospital.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         btnHospital.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/redCross.png"))); // NOI18N
@@ -114,6 +125,9 @@ public class HomeFormDoctor extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnHospital, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 560, 250, 70));
+
+        jCalendar1.setMaxSelectableDate(new java.util.Date(253370748680000L));
+        getContentPane().add(jCalendar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1082, 160, 260, 200));
 
         btnAppoinments.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         btnAppoinments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/healthcare.png"))); // NOI18N
@@ -163,6 +177,38 @@ public class HomeFormDoctor extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void clock() {
+        Thread clock = new Thread() {
+            public void run() {
+                try {
+                    while (true) {
+                        Calendar cal = new GregorianCalendar();
+//                         int day=cal.get(Calendar.DAY_OF_MONTH);
+//                         int month=cal.get(Calendar.MONTH)+1;
+//                         int year=cal.get(Calendar.YEAR);                   
+                        int second = cal.get(Calendar.SECOND);
+                        int minute = cal.get(Calendar.MINUTE);
+                        int hour = cal.get(Calendar.HOUR);
+
+                        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy/MM/dd  HH:mm:ss ");
+//                        SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd  hh:mm aa"); 
+                        LocalDateTime now = LocalDateTime.now();
+
+//                        txtTime.setText(hour + ":" + minute + ":" + second);
+                        txtDate.setText(date.format(now));
+//                    txtDate.setText( year +"-"+ month +"-"+ day );
+                        //  getTime=lbltime.getText();
+                        // getDate=lbldate.getText();
+                        sleep(1000);
+                    }
+                } catch (Exception e) {
+//                    JOptionPane.showMessageDialog(rootPane, e);
+
+                }
+            }
+        };
+        clock.start();
+    }
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
         //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -197,7 +243,6 @@ public class HomeFormDoctor extends javax.swing.JFrame {
     private void btnAppoinmentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAppoinmentsActionPerformed
         ViewAppoinments newViewAppoinment = new ViewAppoinments();
         newViewAppoinment.setVisible(true);
-        newViewAppoinment.setStatus("doctor");
         this.dispose();
 
     }//GEN-LAST:event_btnAppoinmentsActionPerformed
@@ -206,7 +251,6 @@ public class HomeFormDoctor extends javax.swing.JFrame {
 
         ViewMedicalRecords newViewMedicalForm = new ViewMedicalRecords();
         newViewMedicalForm.setVisible(true);
-        newViewMedicalForm.setStatus("doctor");
         this.dispose();
     }//GEN-LAST:event_btnMedicalRecordsActionPerformed
 
@@ -243,8 +287,10 @@ public class HomeFormDoctor extends javax.swing.JFrame {
     private javax.swing.JButton btnMedicalRecords;
     private javax.swing.JButton btnPatient;
     private javax.swing.JPanel headerPanel;
+    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtUserName;
     // End of variables declaration//GEN-END:variables

@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import logIn.LogInForm;
+import logIn.UserDao;
 import prescription.Prescription;
 import prescription.PrescriptionController;
 import prescription.PrescriptionDao;
@@ -39,7 +40,6 @@ import prescription.PrescriptionDao;
  */
 public class AddMedicalRecord extends javax.swing.JFrame {
 
-    private static String nowStatus="";
     private MedicalRecordDao recordDao;
     private PrescriptionDao prescriptionDao;
     private Prescription newPrescription;
@@ -47,7 +47,7 @@ public class AddMedicalRecord extends javax.swing.JFrame {
     File newPrescriptionFile;
     ArrayList<ArrayList<String>> medicationsArray;
     private static String dataText = "********* PRESCRIPTION *********\nDate and Time : " + new AddMedicalRecord().getDateAndTime() + "\n" + "Doctor Name : " + "name of doctor" + "\n\n" + "====================================\n" + "| Medication | Dosage | Start date | End date |\n";
-
+    private String userRole = UserDao.logInUser.getRole();
     /**
      * Creates new form AddMedicalRecord
      */
@@ -287,13 +287,15 @@ public class AddMedicalRecord extends javax.swing.JFrame {
 
         mainPanel.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 130, 460, 490));
 
+        btnHome.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
         btnHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/home.png"))); // NOI18N
+        btnHome.setText(" Return to Home");
         btnHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHomeActionPerformed(evt);
             }
         });
-        mainPanel.add(btnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(1260, 40, -1, -1));
+        mainPanel.add(btnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 200, -1));
 
         bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/addMedicalRecord.png"))); // NOI18N
         mainPanel.add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 750));
@@ -322,12 +324,6 @@ public class AddMedicalRecord extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void setStatus(String status) {
-        this.nowStatus = status;
-        if (status.equals("reception")) {
-//            btn.setVisible(false);
-        }
-    }
     
     private void txtMedicationNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMedicationNameActionPerformed
         // TODO add your handling code here:
@@ -511,21 +507,21 @@ public class AddMedicalRecord extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPrintActionPerformed
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
-        if (nowStatus.equals("reception")) {
+        if (userRole.equals("reception")) {
 
             new HomeFormReceptionist().setVisible(true);
             this.dispose();
-            
-        } else if (nowStatus.equals("doctor")) {
-            
+
+        } else if (userRole.equals("doctor")) {
+
             new HomeFormDoctor().setVisible(true);
             this.dispose();
-            
-        } else if (nowStatus.equals("admin")) {
-            
+
+        } else if (userRole.equals("admin")) {
+
             new HomeForm().setVisible(true);
             this.dispose();
-            
+
         }
     }//GEN-LAST:event_btnHomeActionPerformed
 

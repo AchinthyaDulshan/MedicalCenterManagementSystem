@@ -7,6 +7,11 @@ package home;
 import appoinment.AddAppoinment;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import hospital.HospitalDetailsForm;
+import static java.lang.Thread.sleep;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import logIn.LogInForm;
@@ -25,6 +30,7 @@ public class HomeFormReceptionist extends javax.swing.JFrame {
     public HomeFormReceptionist() {
         initComponents();
         txtUserName.setText(UserDao.logInUser.getUserName());
+        clock();
     }
 
     /**
@@ -36,13 +42,15 @@ public class HomeFormReceptionist extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        txtUserName = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         headerPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnClose = new javax.swing.JButton();
         btnLogOut = new javax.swing.JButton();
+        jCalendar1 = new com.toedter.calendar.JCalendar();
+        jSeparator1 = new javax.swing.JSeparator();
         txtDate = new javax.swing.JLabel();
-        txtUserName = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         btnPatient = new javax.swing.JButton();
         btnAppoinments = new javax.swing.JButton();
         btnHospital = new javax.swing.JButton();
@@ -51,6 +59,15 @@ public class HomeFormReceptionist extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtUserName.setBackground(new java.awt.Color(255, 255, 255));
+        txtUserName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
+        txtUserName.setForeground(new java.awt.Color(0, 0, 0));
+        txtUserName.setText("Reception");
+        getContentPane().add(txtUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, -120, 120, -1));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/receptionist 50.png"))); // NOI18N
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1280, 30, 50, 50));
 
         headerPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -87,18 +104,17 @@ public class HomeFormReceptionist extends javax.swing.JFrame {
 
         getContentPane().add(headerPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 30));
 
+        jCalendar1.setDecorationBordersVisible(true);
+        getContentPane().add(jCalendar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 150, 260, 200));
+
+        jSeparator1.setBackground(new java.awt.Color(255, 255, 255));
+        jSeparator1.setForeground(new java.awt.Color(255, 0, 255));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 140, 900, 10));
+
         txtDate.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         txtDate.setForeground(new java.awt.Color(0, 0, 0));
         txtDate.setText("2023/10/06  10.33.40");
-        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 100, -1, -1));
-
-        txtUserName.setFont(new java.awt.Font("Segoe UI Semibold", 0, 24)); // NOI18N
-        txtUserName.setForeground(new java.awt.Color(0, 0, 0));
-        txtUserName.setText("a");
-        getContentPane().add(txtUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 40, 150, -1));
-
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/receptionist 50.png"))); // NOI18N
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1280, 30, 50, 50));
+        getContentPane().add(txtDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 100, -1, -1));
 
         btnPatient.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         btnPatient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/patient.png"))); // NOI18N
@@ -115,7 +131,7 @@ public class HomeFormReceptionist extends javax.swing.JFrame {
                 btnPatientActionPerformed(evt);
             }
         });
-        getContentPane().add(btnPatient, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 330, 250, 70));
+        getContentPane().add(btnPatient, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 310, 250, 70));
 
         btnAppoinments.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         btnAppoinments.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/healthcare.png"))); // NOI18N
@@ -127,7 +143,7 @@ public class HomeFormReceptionist extends javax.swing.JFrame {
                 btnAppoinmentsActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAppoinments, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 440, 250, 70));
+        getContentPane().add(btnAppoinments, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 400, 250, 70));
 
         btnHospital.setFont(new java.awt.Font("Segoe UI Semibold", 0, 18)); // NOI18N
         btnHospital.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/redCross.png"))); // NOI18N
@@ -139,7 +155,7 @@ public class HomeFormReceptionist extends javax.swing.JFrame {
                 btnHospitalMouseClicked(evt);
             }
         });
-        getContentPane().add(btnHospital, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 530, 250, 70));
+        getContentPane().add(btnHospital, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 490, 250, 70));
 
         bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/receptionistHomePanel.png"))); // NOI18N
         getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, 750));
@@ -148,6 +164,38 @@ public class HomeFormReceptionist extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void clock() {
+        Thread clock = new Thread() {
+            public void run() {
+                try {
+                    while (true) {
+                        Calendar cal = new GregorianCalendar();
+//                         int day=cal.get(Calendar.DAY_OF_MONTH);
+//                         int month=cal.get(Calendar.MONTH)+1;
+//                         int year=cal.get(Calendar.YEAR);                   
+                        int second = cal.get(Calendar.SECOND);
+                        int minute = cal.get(Calendar.MINUTE);
+                        int hour = cal.get(Calendar.HOUR);
+
+                        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy/MM/dd  HH:mm:ss ");
+//                        SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd  hh:mm aa"); 
+                        LocalDateTime now = LocalDateTime.now();
+
+//                        txtTime.setText(hour + ":" + minute + ":" + second);
+                        txtDate.setText(date.format(now));
+//                    txtDate.setText( year +"-"+ month +"-"+ day );
+                        //  getTime=lbltime.getText();
+                        // getDate=lbldate.getText();
+                        sleep(1000);
+                    }
+                } catch (Exception e) {
+//                    JOptionPane.showMessageDialog(rootPane, e);
+
+                }
+            }
+        };
+        clock.start();
+    }
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
         //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -185,7 +233,6 @@ public class HomeFormReceptionist extends javax.swing.JFrame {
 
         AddAppoinment newAddAppoinment = new AddAppoinment();
         newAddAppoinment.setVisible(true);
-        newAddAppoinment.setStatus("reception");
         this.dispose();
     }//GEN-LAST:event_btnAppoinmentsActionPerformed
 
@@ -217,8 +264,10 @@ public class HomeFormReceptionist extends javax.swing.JFrame {
     private javax.swing.JButton btnLogOut;
     private javax.swing.JButton btnPatient;
     private javax.swing.JPanel headerPanel;
+    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel txtDate;
     private javax.swing.JLabel txtUserName;
     // End of variables declaration//GEN-END:variables

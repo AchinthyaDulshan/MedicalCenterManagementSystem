@@ -29,7 +29,7 @@ public class AvailableAppoinmentDao {
         final String GET_SELECTED_DOCTOR_ID = "SELECT id FROM medical_staff WHERE staffId=?;";
 
 
-        final String GET_AVAILABLE_APPOINMENTS = "SELECT * FROM availableappoinments WHERE medical_staff_id=? AND status=0";
+        final String GET_AVAILABLE_APPOINMENTS = "SELECT * FROM availableappoinments WHERE medical_staff_id=? AND status=0 AND date>CURDATE();";
 
         ArrayList<ArrayList<String>> appoinmentList = new ArrayList<>();
 

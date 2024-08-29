@@ -12,7 +12,9 @@ import home.HomeFormReceptionist;
 import java.sql.ResultSet;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import logIn.LogInForm;
+import logIn.UserDao;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -22,7 +24,7 @@ import net.proteanit.sql.DbUtils;
 public class ViewAppoinments extends javax.swing.JFrame {
 
     private AppoinmentDao dao;
-    private static String nowStatus="";
+    private String userRole = UserDao.logInUser.getRole();
     /**
      * Creates new form ViewAppoinments
      */
@@ -30,6 +32,7 @@ public class ViewAppoinments extends javax.swing.JFrame {
         initComponents();
         dao = new AppoinmentDao();
         loadTable();
+        checkPrivillage();
     }
 
     /**
@@ -77,6 +80,11 @@ public class ViewAppoinments extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        appoinmentDetailsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                appoinmentDetailsTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(appoinmentDetailsTable);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, 1030, 480));
@@ -123,7 +131,7 @@ public class ViewAppoinments extends javax.swing.JFrame {
                 btnAddAppoinmentActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAddAppoinment, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, 180, 50));
+        getContentPane().add(btnAddAppoinment, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 180, 50));
 
         btnCreateAppoinment.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         btnCreateAppoinment.setText("Create Appoinment");
@@ -132,7 +140,7 @@ public class ViewAppoinments extends javax.swing.JFrame {
                 btnCreateAppoinmentActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCreateAppoinment, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 180, 50));
+        getContentPane().add(btnCreateAppoinment, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 180, 50));
 
         btnHome.setFont(new java.awt.Font("Segoe UI Semibold", 0, 16)); // NOI18N
         btnHome.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons/home.png"))); // NOI18N
@@ -142,7 +150,7 @@ public class ViewAppoinments extends javax.swing.JFrame {
                 btnHomeActionPerformed(evt);
             }
         });
-        getContentPane().add(btnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 180, 50));
+        getContentPane().add(btnHome, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 390, 180, 50));
 
         bgImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/backgrounds/appoinmenDetails.png"))); // NOI18N
         getContentPane().add(bgImage, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1400, -1));
@@ -151,14 +159,9 @@ public class ViewAppoinments extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void setStatus(String status) {
-        this.nowStatus = status;
-//        if (status.equals("reception")) {
-//            btnAddAppoinment.setVisible(false);
-//        }
-        
-        if (status.equals("doctor")) {
-            btnAddAppoinment.setVisible(false);
+    private void checkPrivillage() {
+        if (userRole.equals("reception")) {
+//            btnShowPatientDetails.setVisible(false);
         }
     }
     
@@ -186,21 +189,21 @@ public class ViewAppoinments extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHomeActionPerformed
-        if (nowStatus.equals("reception")) {
+        if (userRole.equals("reception")) {
 
             new HomeFormReceptionist().setVisible(true);
             this.dispose();
-            
-        } else if (nowStatus.equals("doctor")) {
-            
+
+        } else if (userRole.equals("doctor")) {
+
             new HomeFormDoctor().setVisible(true);
             this.dispose();
-            
-        } else if (nowStatus.equals("admin")) {
-            
+
+        } else if (userRole.equals("admin")) {
+
             new HomeForm().setVisible(true);
             this.dispose();
-            
+
         }
     }//GEN-LAST:event_btnHomeActionPerformed
 
@@ -213,6 +216,12 @@ public class ViewAppoinments extends javax.swing.JFrame {
         new createAppoinment().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCreateAppoinmentActionPerformed
+
+    private void appoinmentDetailsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_appoinmentDetailsTableMouseClicked
+        int selectedRow = appoinmentDetailsTable.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) appoinmentDetailsTable.getModel();
+        new ShowAppoinment().fillDataToFrame(model, selectedRow);
+    }//GEN-LAST:event_appoinmentDetailsTableMouseClicked
 
     private void loadTable() {
         ResultSet rs = dao.fillTableData();

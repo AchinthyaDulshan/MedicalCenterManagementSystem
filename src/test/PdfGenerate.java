@@ -6,7 +6,9 @@ package test;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -24,11 +26,15 @@ public class PdfGenerate {
         try {
             String fileName = "D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\pdfs\\test.pdf";
             
-            Document doc = new Document();
-            
+            Document doc = new Document(PageSize.A4);
+
             PdfWriter.getInstance(doc,new FileOutputStream(fileName));
-            
+            float twoCol = 285f;
+            float twoCol150 = twoCol+150f;
+            float twoColumnWidth[]={twoCol150,twoCol};
             doc.open();
+            
+            
             Paragraph para = new Paragraph("Hello World!");
             doc.add(para);
             doc.close();

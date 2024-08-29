@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import logIn.LogInForm;
+import logIn.UserDao;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -21,7 +22,7 @@ import net.proteanit.sql.DbUtils;
 public class ViewMedicalRecords extends javax.swing.JFrame {
 
     private MedicalRecordDao dao;
-    private static String nowStatus="";
+    private String userRole = UserDao.logInUser.getRole();
     /**
      * Creates new form MedicalRecords
      */
@@ -142,12 +143,7 @@ public class ViewMedicalRecords extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void setStatus(String status) {
-        this.nowStatus = status;
-        if (status.equals("reception")) {
-//            btn.setVisible(false);
-        }
-    }
+    
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         ImageIcon icon = new ImageIcon("D:\\Projects\\COST Project\\MedicalCenterManagementSystem\\src\\images\\icons\\warning.png");
         //        int res = JOptionPane.showConfirmDialog(null, "Are you sure to exit ?", "Exit", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
@@ -172,21 +168,21 @@ public class ViewMedicalRecords extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogOutActionPerformed
 
     private void btnReturnToHomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnToHomeActionPerformed
-        if (nowStatus.equals("reception")) {
+        if (userRole.equals("reception")) {
 
             new HomeFormReceptionist().setVisible(true);
             this.dispose();
-            
-        } else if (nowStatus.equals("doctor")) {
-            
+
+        } else if (userRole.equals("doctor")) {
+
             new HomeFormDoctor().setVisible(true);
             this.dispose();
-            
-        } else if (nowStatus.equals("admin")) {
-            
+
+        } else if (userRole.equals("admin")) {
+
             new HomeForm().setVisible(true);
             this.dispose();
-            
+
         }
     }//GEN-LAST:event_btnReturnToHomeActionPerformed
 
